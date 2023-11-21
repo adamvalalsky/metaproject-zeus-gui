@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: ./web
+      dockerfile: docker/dev/Dockerfile
+      target: dev
+      args:
+        - BASE_IMAGE_NODE=${BASE_IMAGE_NODE}
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+    ports:
+      - "5137:5137"
