@@ -1,0 +1,25 @@
+module.exports = {
+    parser: '@typescript-eslint/parser',
+    plugins: ['@typescript-eslint', 'prettier', 'import', 'unused-imports', 'react'],
+    ignorePatterns: ['docker/**', 'dist/**', 'node_modules/**'],
+    extends: [
+        'plugin:@typescript-eslint/recommended',
+        'plugin:prettier/recommended',
+        'plugin:import/warnings',
+        'plugin:import/typescript',
+        'prettier',
+    ],
+    rules: {
+        'import/no-named-as-default': 0,
+        'import/named': ['warn'],
+        'import/imports-first': ['error', 'absolute-first'],
+        'import/newline-after-import': ['warn', { count: 1 }],
+        'import/no-deprecated': ['error'],
+        'import/no-dynamic-require': ['warn'],
+        'import/no-unused-modules': ['warn'],
+        'import/order': ['warn'],
+        'no-console': 'warn',
+        'unused-imports/no-unused-imports': 'error',
+        'react/self-closing-comp': 'error',
+    },
+}
