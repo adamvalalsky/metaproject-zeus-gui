@@ -1,24 +1,16 @@
 import React from 'react';
 import './App.css'
-import {
-    createBrowserRouter,
-    RouterProvider,
-} from "react-router-dom";
-function App() {
-    const router = createBrowserRouter([
-        {
-            path: '/',
-            element: <div>Hello world</div>
-        },
-        {
-            path: 'contacts',
-            element: <div>Hello contacts</div>
-        }
-    ]);
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+function App() {
     return (
         <React.StrictMode>
-            <RouterProvider router={router}></RouterProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/' element={<div>Hello world</div>}></Route>
+                    <Route path='/contacts' element={<div>Hello contacts</div>}></Route>
+                </Routes>
+            </BrowserRouter>
         </React.StrictMode>
     )
 }
