@@ -1,18 +1,26 @@
-import React from 'react';
-import './App.css'
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material';
+import Root from './routes/Root';
+import ErrorPage from './components/ErrorPage';
+import fetchUser from './routes/Root/loader.ts';
+import Index from './routes/Index/index.tsx';
 
 function App() {
-    return (
-        <React.StrictMode>
-            <BrowserRouter>
-                <Routes>
-                    <Route path='/' element={<div>Hello world</div>}></Route>
-                    <Route path='/contacts' element={<div>Hello contacts</div>}></Route>
-                </Routes>
-            </BrowserRouter>
-        </React.StrictMode>
-    )
+	const theme = createTheme();
+
+	const router = createBrowserRouter(
+		createRoutesFromElements(
+			<Route id="root" path="/" loader={() => fetchUser()} element={<Root />} errorElement={<ErrorPage />}>
+				<Route index element={<Index />} />
+			</Route>
+		)
+	);
+
+	return (
+		<ThemeProvider theme={theme}>
+			<RouterProvider router={router} />
+		</ThemeProvider>
+	);
 }
 
-export default App
+export default App;
