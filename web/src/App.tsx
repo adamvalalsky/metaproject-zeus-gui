@@ -1,16 +1,18 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Root from "./routes/Root";
+import { createTheme, ThemeProvider } from '@mui/material';
+import Root from './routes/Root';
 
 function App() {
+	const theme = createTheme();
+
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route
-					path="/"
-					element={<Root />}
-				/>
-			</Routes>
-		</BrowserRouter>
+		<ThemeProvider theme={theme}>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<Root />} />
+				</Routes>
+			</BrowserRouter>
+		</ThemeProvider>
 	);
 }
 
