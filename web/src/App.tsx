@@ -2,6 +2,8 @@ import { BrowserRouter, Route, RouterProvider, Routes, createBrowserRouter, crea
 import { createTheme, ThemeProvider } from '@mui/material';
 import Root from './routes/Root';
 import ErrorPage from "./components/ErrorPage";
+import fetchUser from "./routes/Root/loader.ts";
+import Index from './routes/Index/index.tsx';
 
 function App() {
 	const theme = createTheme();
@@ -9,10 +11,17 @@ function App() {
 	const router = createBrowserRouter(
 		createRoutesFromElements(
 			<Route
+				id="root"
 				path="/"
+				loader={() => fetchUser()}
 				element={<Root />}
 				errorElement={<ErrorPage />}
-			/>
+			>
+				<Route
+					index
+					element={<Index />}
+				></Route>
+			</Route>
 		)
 	);
 
