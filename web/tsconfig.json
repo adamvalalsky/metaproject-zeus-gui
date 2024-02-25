@@ -21,7 +21,6 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "types": ["cypress", "jest", "node"],
 
     /* Bundler mode */
     "moduleResolution": "node",
