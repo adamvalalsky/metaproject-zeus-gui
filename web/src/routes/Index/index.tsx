@@ -1,11 +1,28 @@
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Button, Typography } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
+import { useNavigate } from 'react-router-dom';
 import MuniIcon from '../../components/Icons/MuniIcon';
+import { AuthContext } from '../../modules/auth/context.tsx';
 
 const Index: React.FC = () => {
+	const { signInRedirect, isAuthenticated } = useContext(AuthContext);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (isAuthenticated()) {
+			navigate('/dashboard', { replace: true });
+		}
+	});
+
+	// TODO just temporary real OIDC will be implemented by callbacks
+	const signIn = () => {
+		signInRedirect();
+		navigate('/dashboard', { replace: true });
+	};
+
 	return (
 		<Box
 			sx={{
@@ -26,6 +43,7 @@ const Index: React.FC = () => {
 					variant="contained"
 					size="large"
 					startIcon={<MuniIcon />}
+					onClick={signIn}
 					sx={{
 						marginTop: 3,
 						width: 300
