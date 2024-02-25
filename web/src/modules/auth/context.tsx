@@ -1,42 +1,46 @@
-import {ReactElement, createContext, useState} from "react";
-import {IUser} from "../user/model.ts";
+import { createContext, ReactElement, useState } from 'react';
+import { isAuthenticated } from './methods/isAuthenticated.ts';
+import { signInRedirect } from './methods/signInRedirect.ts';
 
-const getDefaultContext = () => {
-    return {
-        signInRedirectCallback: () => {throw new Error('Sign in redirect callback not used')},
-        logout: async () => {},
-        signOutRedirectCallback: async () => {},
-        isAuthenticated: () => false,
-        signInRedirect: async () => {},
-        signInSilentCallback: async () => {},
-        createSignInRequest: async () => {}
-    }
+const getDefaultContext = (): AuthContextValue => {
+	return {
+		signInRedirectCallback: () => {
+			throw new Error('Sign in redirect callback not used');
+		},
+		logout: async () => {},
+		signOutRedirectCallback: async () => {},
+		isAuthenticated: () => isAuthenticated(),
+		// TODO momentarily it will be ID 1, because it is in the database, change later to real implementation
+		signInRedirect: async () => signInRedirect(1),
+		signInSilentCallback: async () => {},
+		createSignInRequest: async () => {}
+	};
 };
 
 export interface AuthContextValue {
-    signInRedirectCallback: () => Promise<IUser>
-    logout: () => Promise<void>,
-    signOutRedirectCallback: () => Promise<void>,
-    isAuthenticated: () => boolean,
-    signInRedirect: () => Promise<void>,
-    signInSilentCallback: () => Promise<void>,
-    createSignInRequest: () => Promise<any>
+	signInRedirectCallback: () => void;
+	logout: () => Promise<void>;
+	signOutRedirectCallback: () => Promise<void>;
+	isAuthenticated: () => boolean;
+	signInRedirect: () => Promise<void>;
+	signInSilentCallback: () => Promise<void>;
+	createSignInRequest: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValue>({
-    ...getDefaultContext()
+	...getDefaultContext()
 });
 
 export const AuthDispatchContext = createContext<(context: AuthContextValue) => void>(() => {});
 
 export const AuthContextProvider = ({ children }: { children: ReactElement }) => {
-    const [context, setContext] = useState<AuthContextValue>({
-        ...getDefaultContext()
-    });
+	const [context, setContext] = useState<AuthContextValue>({
+		...getDefaultContext()
+	});
 
-    return (
-        <AuthContext.Provider value={context}>
-            <AuthDispatchContext.Provider value={setContext}>{children}</AuthDispatchContext.Provider>
-        </AuthContext.Provider>
-    );
-}
+	return (
+		<AuthContext.Provider value={context}>
+			<AuthDispatchContext.Provider value={setContext}>{children}</AuthDispatchContext.Provider>
+		</AuthContext.Provider>
+	);
+};
