@@ -5,6 +5,8 @@ import ErrorPage from './components/ErrorPage';
 import fetchUser from './routes/Root/loader.ts';
 import Index from './routes/Index/index.tsx';
 import { AuthContextProvider } from './modules/auth/context';
+import Dashboard from './routes/Dashboard';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
 	const theme = createTheme();
@@ -13,6 +15,7 @@ function App() {
 		createRoutesFromElements(
 			<Route id="root" path="/" loader={() => fetchUser()} element={<Root />} errorElement={<ErrorPage />}>
 				<Route index element={<Index />} />
+				<Route path="dashboard" element={<PrivateRoute component={Dashboard} />} />
 			</Route>
 		)
 	);
