@@ -1,8 +1,9 @@
 import Box from '@mui/material/Box';
 import React from 'react';
 import { Alert, Divider, Typography } from '@mui/material';
-import { HeadCellSettings } from '../../components/EnhancedTable/EnhancedTableHead/types.ts';
-import EnhancedTable from '../../components/EnhancedTable';
+import BasicTable from '../../components/BasicTable';
+import useWindowSize from '../../hooks/useWindowSize.ts';
+import { HeadCell } from '../../components/BasicTable/types.ts';
 
 // TODO will be moved somewhere else where project is
 type Project = {
@@ -12,7 +13,29 @@ type Project = {
 	status: string;
 };
 
+const id: HeadCell<Project> = { selector: 'id', displayName: 'ID' };
+const name: HeadCell<Project> = { selector: 'name', displayName: 'Name' };
+const description: HeadCell<Project> = { selector: 'description', displayName: 'Description' };
+const status: HeadCell<Project> = { selector: 'status', displayName: 'Status' };
+
+const getHeadNames = (windowSize: number): HeadCell<Project>[] => {
+	if (windowSize < 600) {
+		return [name];
+	}
+
+	if (windowSize < 900) {
+		return [name, description];
+	}
+
+	if (windowSize < 1100) {
+		return [name, description, status];
+	}
+
+	return [id, name, description, status];
+};
+
 const Dashboard: React.FC = () => {
+	const windowSize = useWindowSize();
 	// TODO this will be some fetch call
 	const projects = [
 		{ id: 1, name: 'Project 1', description: 'Some description', status: 'Active' },
@@ -25,32 +48,7 @@ const Dashboard: React.FC = () => {
 		}
 	];
 
-	const headCells: HeadCellSettings<Project>[] = [
-		{
-			id: 'id',
-			numeric: true,
-			disablePadding: true,
-			label: 'ID'
-		},
-		{
-			id: 'name',
-			numeric: false,
-			disablePadding: false,
-			label: 'Name'
-		},
-		{
-			id: 'description',
-			numeric: false,
-			disablePadding: false,
-			label: 'Description'
-		},
-		{
-			id: 'status',
-			numeric: false,
-			disablePadding: false,
-			label: 'Status'
-		}
-	];
+	const headCells = getHeadNames(windowSize);
 	return (
 		<Box
 			sx={{
@@ -69,19 +67,7 @@ const Dashboard: React.FC = () => {
 					No projects found for current user
 				</Alert>
 			)}
-			{projects.length > 0 && (
-				<Box maxWidth="80%">
-					<EnhancedTable
-						rows={projects}
-						canSelect={false}
-						headCells={headCells}
-						isDense={false}
-						defaultRowsPerPage={5}
-						initialOrder={'asc'}
-						initialOrderBy={'id'}
-					/>
-				</Box>
-			)}
+			{projects.length > 0 && <BasicTable head={headCells} rows={projects} />}
 		</Box>
 	);
 };
