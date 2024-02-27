@@ -16,7 +16,7 @@ const Index: React.FC = () => {
 		if (isAuthenticated()) {
 			navigate('/dashboard', { replace: true });
 		}
-	});
+	}, []);
 
 	// TODO just temporary real OIDC will be implemented by callbacks
 	const signIn = () => {

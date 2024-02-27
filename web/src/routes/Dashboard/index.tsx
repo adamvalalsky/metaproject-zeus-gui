@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import React from 'react';
 import { Alert, Divider, Typography } from '@mui/material';
+import { useLoaderData } from 'react-router-dom';
 import BasicTable from '../../components/BasicTable';
 import useWindowSize from '../../hooks/useWindowSize.ts';
 import { HeadCell } from '../../components/BasicTable/types.ts';
@@ -37,16 +38,7 @@ const getHeadNames = (windowSize: number): HeadCell<Project>[] => {
 const Dashboard: React.FC = () => {
 	const windowSize = useWindowSize();
 	// TODO this will be some fetch call
-	const projects = [
-		{ id: 1, name: 'Project 1', description: 'Some description', status: 'Active' },
-		{
-			id: 2,
-			name: 'Project 2',
-			description:
-				'Some looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong description',
-			status: 'Inactive'
-		}
-	];
+	const projects = useLoaderData();
 
 	const headCells = getHeadNames(windowSize);
 	return (
