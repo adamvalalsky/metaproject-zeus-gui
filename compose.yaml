@@ -13,3 +13,5 @@ services:
       - /app/node_modules
     ports:
       - "5137:5137"
+    environment:
+      - VITE_API_URL
