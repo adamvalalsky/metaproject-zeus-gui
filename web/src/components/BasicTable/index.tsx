@@ -9,7 +9,7 @@ type BasicTableProps<T> = {
 
 const BasicTable = <T,>({ head, rows }: BasicTableProps<T>) => {
 	return (
-		<TableContainer component={Paper} sx={{ maxWidth: '60%', mt: 3 }}>
+		<TableContainer component={Paper} sx={{ mt: 3 }}>
 			<Table aria-label="simple table">
 				<TableHead>
 					<TableRow>
