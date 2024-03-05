@@ -2,7 +2,7 @@ import request from '../../modules/api/request.ts';
 import { ApiRequestPromise } from '../../modules/api/model.ts';
 import { Project } from '../../modules/project/model.ts';
 
-interface MyProjectResponse {
+export interface MyProjectResponse {
 	data: {
 		projects: Project[];
 	};

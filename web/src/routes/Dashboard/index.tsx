@@ -5,6 +5,7 @@ import { useLoaderData } from 'react-router-dom';
 import BasicTable from '../../components/BasicTable';
 import useWindowSize from '../../hooks/useWindowSize.ts';
 import { HeadCell } from '../../components/BasicTable/types.ts';
+import { MyProjectResponse } from './loader.ts';
 
 // TODO will be moved somewhere else where project is
 type Project = {
@@ -38,7 +39,7 @@ const getHeadNames = (windowSize: number): HeadCell<Project>[] => {
 const Dashboard: React.FC = () => {
 	const windowSize = useWindowSize();
 	// TODO this will be some fetch call
-	const projects = useLoaderData();
+	const { data } = useLoaderData() as MyProjectResponse;
 
 	const headCells = getHeadNames(windowSize);
 	return (
@@ -54,12 +55,12 @@ const Dashboard: React.FC = () => {
 				Projects
 			</Typography>
 			<Divider variant="middle" flexItem sx={{ pt: 3, width: 300, alignSelf: 'center' }} />
-			{projects.length === 0 && (
+			{data.projects.length === 0 && (
 				<Alert severity="warning" sx={{ width: 500, mt: 3 }}>
 					No projects found for current user
 				</Alert>
 			)}
-			{projects.length > 0 && <BasicTable head={headCells} rows={projects} />}
+			{data.projects.length > 0 && <BasicTable head={headCells} rows={data.projects} />}
 		</Box>
 	);
 };
