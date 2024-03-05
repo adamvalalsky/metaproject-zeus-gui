@@ -26,7 +26,7 @@ const Index: React.FC = () => {
 
 	return (
 		<>
-			<AppMenu toggleDrawer={null} />
+			<AppMenu isOpen={false} setIsOpen={() => {}} shouldHaveDrawer={false} />
 			<Box
 				sx={{
 					marginTop: 15,

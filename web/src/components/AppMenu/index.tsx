@@ -1,18 +1,15 @@
 import { Divider, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import DrawerList from '../DrawerList';
 import { AppBar, Drawer, DrawerHeader } from './styled.tsx';
 
 type AppMenuProps = {
-	open?: boolean;
+	isOpen: boolean;
+	setIsOpen: (open: boolean) => void;
+	shouldHaveDrawer: boolean;
 };
 
-const AppMenu = ({ open }: AppMenuProps) => {
-	const shouldHaveDrawer = open !== undefined;
-	const [isOpen, setIsOpen] = useState(open);
-
+const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
 	return (
 		<>
 			<AppBar position="fixed" open={isOpen}>
@@ -22,8 +19,8 @@ const AppMenu = ({ open }: AppMenuProps) => {
 							color="inherit"
 							aria-label="open drawer"
 							edge="start"
-							onClick={() => setIsOpen(true)}
-							sx={{ mr: 5, ...(isOpen && { display: 'none' }) }}
+							onClick={() => setIsOpen(!isOpen)}
+							sx={{ mr: 5 }}
 						>
 							<MenuIcon />
 						</IconButton>
@@ -35,11 +32,7 @@ const AppMenu = ({ open }: AppMenuProps) => {
 			</AppBar>
 			{shouldHaveDrawer && (
 				<Drawer variant="permanent" open={isOpen}>
-					<DrawerHeader>
-						<IconButton onClick={() => setIsOpen(false)}>
-							<ChevronLeftIcon />
-						</IconButton>
-					</DrawerHeader>
+					<DrawerHeader />
 					<Divider />
 					<DrawerList open={isOpen} />
 				</Drawer>

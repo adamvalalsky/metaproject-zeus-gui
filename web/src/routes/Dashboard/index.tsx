@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
 			}}
 		>
 			<Box sx={{ width: '80%', marginTop: 2 }}>
-				<Box sx={{ display: 'flex', width: '100%' }}>
+				<Box sx={{ display: 'flex' }}>
 					<Typography component="h1" variant="h4">
 						Projects
 					</Typography>
@@ -58,11 +58,18 @@ const Dashboard: React.FC = () => {
 				</Box>
 				<Divider flexItem sx={{ pt: 3, width: 400, alignSelf: 'center' }} />
 				<Suspense fallback={<LinearProgress />}>
-					<Await resolve={data.response}>
+					<Await
+						resolve={data.response}
+						errorElement={
+							<Alert severity="error" sx={{ mt: 3 }}>
+								Could not load projects, try again later.
+							</Alert>
+						}
+					>
 						{(response) => (
 							<>
 								{response.data.projects.length === 0 && (
-									<Alert severity="warning" sx={{ width: 500, mt: 3 }}>
+									<Alert severity="warning" sx={{ mt: 3 }}>
 										No projects found for current user
 									</Alert>
 								)}

@@ -20,7 +20,8 @@ const DrawerList = ({ open }: DrawerListProps) => {
 						sx={{
 							minWidth: 0,
 							mr: open ? 3 : 'auto',
-							justifyContent: 'center'
+							justifyContent: 'center',
+							color: 'primary.contrastText'
 						}}
 					>
 						<CollectionsBookmark />
