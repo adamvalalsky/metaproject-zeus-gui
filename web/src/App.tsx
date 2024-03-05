@@ -8,15 +8,21 @@ import { AuthContextProvider } from './modules/auth/context';
 import Dashboard from './routes/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import loadProjects from './routes/Dashboard/loader.ts';
+import AddProject from './routes/AddProject';
 
 function App() {
 	const theme = createTheme({
 		palette: {
 			primary: {
-				main: '#00569c'
+				main: '#00569c',
+				dark: '#002D52'
 			},
 			secondary: {
-				main: '#9c4600'
+				main: '#EE6352',
+				dark: '#CC2A14'
+			},
+			success: {
+				main: '#57A773'
 			}
 		}
 	});
@@ -25,11 +31,8 @@ function App() {
 		createRoutesFromElements(
 			<Route id="root" path="/" loader={() => fetchUser()} element={<Root />} errorElement={<ErrorPage />}>
 				<Route index element={<Index />} />
-				<Route
-					path="dashboard"
-					loader={() => loadProjects()}
-					element={<PrivateRoute component={Dashboard} />}
-				/>
+				<Route path="project" loader={() => loadProjects()} element={<PrivateRoute component={Dashboard} />} />
+				<Route path="project/add" element={<PrivateRoute component={AddProject} />} />
 			</Route>
 		)
 	);

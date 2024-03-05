@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import React, { Suspense } from 'react';
-import { Alert, Divider, LinearProgress, Typography } from '@mui/material';
-import { Await, useLoaderData } from 'react-router-dom';
+import { Alert, Button, Divider, LinearProgress, Typography } from '@mui/material';
+import { Await, Link, useLoaderData } from 'react-router-dom';
+import { Add } from '@mui/icons-material';
 import useWindowSize from '../../hooks/useWindowSize.ts';
 import { HeadCell } from '../../components/BasicTable/types.ts';
 import BasicTable from '../../components/BasicTable';
@@ -40,14 +41,22 @@ const Dashboard: React.FC = () => {
 				marginTop: 15,
 				display: 'flex',
 				flexDirection: 'column',
-				alignItems: 'center'
+				alignItems: 'center',
+				justifyContent: 'left'
 			}}
 		>
-			<Typography component="h1" variant="h4">
-				Projects
-			</Typography>
-			<Divider variant="middle" flexItem sx={{ pt: 3, width: 300, alignSelf: 'center' }} />
 			<Box sx={{ width: '80%', marginTop: 2 }}>
+				<Box sx={{ display: 'flex', width: '100%' }}>
+					<Typography component="h1" variant="h4">
+						Projects
+					</Typography>
+					<Link to={`add`} style={{ marginLeft: 'auto' }}>
+						<Button variant="contained" startIcon={<Add />}>
+							Add project
+						</Button>
+					</Link>
+				</Box>
+				<Divider flexItem sx={{ pt: 3, width: 400, alignSelf: 'center' }} />
 				<Suspense fallback={<LinearProgress />}>
 					<Await resolve={data.response}>
 						{(response) => (

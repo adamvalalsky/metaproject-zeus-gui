@@ -14,14 +14,14 @@ const Index: React.FC = () => {
 
 	useEffect(() => {
 		if (isAuthenticated()) {
-			navigate('/dashboard', { replace: true });
+			navigate('/project', { replace: true });
 		}
 	}, []);
 
 	// TODO just temporary real OIDC will be implemented by callbacks
 	const signIn = () => {
 		signInRedirect();
-		navigate('/dashboard', { replace: true });
+		navigate('/project', { replace: true });
 	};
 
 	return (
