@@ -10,7 +10,16 @@ import PrivateRoute from './components/PrivateRoute';
 import loadProjects from './routes/Dashboard/loader.ts';
 
 function App() {
-	const theme = createTheme();
+	const theme = createTheme({
+		palette: {
+			primary: {
+				main: '#00569c'
+			},
+			secondary: {
+				main: '#9c4600'
+			}
+		}
+	});
 
 	const router = createBrowserRouter(
 		createRoutesFromElements(
