@@ -27,10 +27,7 @@ const request = (url: string, init?: RequestInit): ApiRequestPromise<ApiResponse
 				const errorResponse = await createApiResponse(response);
 
 				const isApiError =
-					errorResponse.data &&
-					typeof errorResponse.data === 'object' &&
-					'code' in errorResponse.data &&
-					'message' in errorResponse.data;
+					errorResponse.data && typeof errorResponse.data === 'object' && 'message' in errorResponse.data;
 				if (isApiError) {
 					throw new ApiClientError('Api client error', errorResponse as ApiClientErrorResponse);
 				}

@@ -9,6 +9,8 @@ import Dashboard from './routes/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import loadProjects from './routes/Dashboard/loader.ts';
 import AddProject from './routes/AddProject';
+import { addProjectAction } from './routes/AddProject/action.ts';
+import ProjectDetail from './routes/ProjectDetail';
 
 function App() {
 	const theme = createTheme({
@@ -32,7 +34,8 @@ function App() {
 			<Route id="root" path="/" loader={() => fetchUser()} element={<Root />} errorElement={<ErrorPage />}>
 				<Route index element={<Index />} />
 				<Route path="project" loader={() => loadProjects()} element={<PrivateRoute component={Dashboard} />} />
-				<Route path="project/add" element={<PrivateRoute component={AddProject} />} />
+				<Route path="project/add" action={addProjectAction} element={<PrivateRoute component={AddProject} />} />
+				<Route path="project/:id" element={<PrivateRoute component={ProjectDetail} />} />
 			</Route>
 		)
 	);
