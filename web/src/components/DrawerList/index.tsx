@@ -1,5 +1,6 @@
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { CollectionsBookmark } from '@mui/icons-material';
+import { NavLink } from 'react-router-dom';
 
 type DrawerListProps = {
 	open: boolean;
@@ -7,13 +8,21 @@ type DrawerListProps = {
 
 const DrawerList = ({ open }: DrawerListProps) => {
 	return (
-		<List>
+		<List disablePadding>
 			<ListItem disablePadding sx={{ display: 'block' }}>
 				<ListItemButton
+					component={NavLink}
+					to="/project"
 					sx={{
 						minHeight: 48,
 						justifyContent: open ? 'initial' : 'center',
-						px: 2.5
+						px: 2.5,
+						'&.active': {
+							backgroundColor: 'primary.dark'
+						},
+						'&:hover': {
+							backgroundColor: 'primary.light'
+						}
 					}}
 				>
 					<ListItemIcon
@@ -26,7 +35,7 @@ const DrawerList = ({ open }: DrawerListProps) => {
 					>
 						<CollectionsBookmark />
 					</ListItemIcon>
-					<ListItemText primary="Projekty" sx={{ opacity: open ? 1 : 0 }} />
+					<ListItemText primary="Projects" sx={{ opacity: open ? 1 : 0 }} />
 				</ListItemButton>
 			</ListItem>
 		</List>
