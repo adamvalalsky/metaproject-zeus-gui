@@ -1,5 +1,6 @@
 import { Divider, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useTranslation } from 'react-i18next';
 import DrawerList from '../DrawerList';
 import { AppBar, Drawer, DrawerHeader } from './styled.tsx';
 
@@ -10,6 +11,8 @@ type AppMenuProps = {
 };
 
 const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
+	const { t } = useTranslation();
+
 	return (
 		<>
 			<AppBar position="fixed" open={isOpen}>
@@ -26,7 +29,7 @@ const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
 						</IconButton>
 					)}
 					<Typography variant="h6" color="inherit" noWrap>
-						Resource manager
+						{t('components.AppMenu.header')}
 					</Typography>
 				</Toolbar>
 			</AppBar>

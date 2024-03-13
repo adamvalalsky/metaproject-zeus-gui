@@ -1,5 +1,6 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { I18nextProvider } from 'react-i18next';
 import Root from './routes/Root';
 import ErrorPage from './components/ErrorPage';
 import fetchUser from './routes/Root/loader.ts';
@@ -11,6 +12,7 @@ import loadProjects from './routes/Dashboard/loader.ts';
 import AddProject from './routes/AddProject';
 import { addProjectAction } from './routes/AddProject/action.ts';
 import ProjectDetail from './routes/ProjectDetail';
+import i18next from './modules/language/i18next.ts';
 
 function App() {
 	const theme = createTheme({
@@ -42,9 +44,11 @@ function App() {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<AuthContextProvider>
-				<RouterProvider router={router} />
-			</AuthContextProvider>
+			<I18nextProvider i18n={i18next}>
+				<AuthContextProvider>
+					<RouterProvider router={router} />
+				</AuthContextProvider>
+			</I18nextProvider>
 		</ThemeProvider>
 	);
 }

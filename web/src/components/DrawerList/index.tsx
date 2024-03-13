@@ -1,12 +1,15 @@
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { CollectionsBookmark } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 type DrawerListProps = {
 	open: boolean;
 };
 
 const DrawerList = ({ open }: DrawerListProps) => {
+	const { t } = useTranslation();
+
 	return (
 		<List disablePadding>
 			<ListItem disablePadding sx={{ display: 'block' }}>
@@ -35,7 +38,7 @@ const DrawerList = ({ open }: DrawerListProps) => {
 					>
 						<CollectionsBookmark />
 					</ListItemIcon>
-					<ListItemText primary="Projects" sx={{ opacity: open ? 1 : 0 }} />
+					<ListItemText primary={t('components.DrawerList.links.projects')} sx={{ opacity: open ? 1 : 0 }} />
 				</ListItemButton>
 			</ListItem>
 		</List>
