@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/named
 import { CSSObject, styled, Theme } from '@mui/material/styles';
 import { DRAWER_WIDTH } from '../AppMenu/constants.ts';
 

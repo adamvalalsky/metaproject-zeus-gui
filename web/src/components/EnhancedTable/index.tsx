@@ -77,11 +77,10 @@ const EnhancedTable = <T extends { id: number }>({
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-	// @ts-expect-error wrong comparator
-	const visibleRows = useMemo(
-		() => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).sort(getComparator(order, orderBy)),
-		[order, orderBy, page, rowsPerPage]
-	);
+	const visibleRows = useMemo(() => {
+		// @ts-expect-error wrong comparator
+		return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).sort(getComparator(order, orderBy));
+	}, [order, orderBy, page, rowsPerPage]);
 
 	return (
 		<Box sx={{ width: '100%' }}>
@@ -93,14 +92,14 @@ const EnhancedTable = <T extends { id: number }>({
 							headCells={headCells}
 							numSelected={selected.length}
 							order={order}
-							orderBy={orderBy}
+							orderBy={orderBy.toString()}
 							canSelect={canSelect}
 							onSelectAllClick={handleSelectAllClick}
 							onRequestSort={handleRequestSort}
 							rowCount={rows.length}
 						/>
 						<TableBody>
-							{visibleRows.map((row, index) => {
+							{visibleRows.map((row: T, index) => {
 								const isItemSelected = isSelected(row.id);
 								const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -126,17 +125,17 @@ const EnhancedTable = <T extends { id: number }>({
 												/>
 											</TableCell>
 										)}
-										{Object.keys(row).map((column) => (
-											<TableCell
-												sx={{
-													maxWidth: 100,
-													textOverflow: 'ellipsis ellipsis',
-													overflow: 'hidden'
-												}}
-											>
-												{row[column]}
-											</TableCell>
-										))}
+										{/*{Object.keys(row).map((column) => (*/}
+										{/*	<TableCell*/}
+										{/*		sx={{*/}
+										{/*			maxWidth: 100,*/}
+										{/*			textOverflow: 'ellipsis ellipsis',*/}
+										{/*			overflow: 'hidden'*/}
+										{/*		}}*/}
+										{/*	>*/}
+										{/*		{column in row && row[column]}*/}
+										{/*	</TableCell>*/}
+										{/*))}*/}
 									</TableRow>
 								);
 							})}

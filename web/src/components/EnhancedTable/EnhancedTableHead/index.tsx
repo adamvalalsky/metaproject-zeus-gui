@@ -1,6 +1,7 @@
 import { Checkbox, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import { visuallyHidden } from '@mui/utils';
+import { Order } from '../types.ts';
 import { HeadCellSettings } from './types.ts';
 
 type EnhancedTableProps<T> = {
