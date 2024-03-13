@@ -1,0 +1,7 @@
+{
+  "components": {
+    "test": {
+      "hello": "Hello, World!"
+    }
+  }
+}
