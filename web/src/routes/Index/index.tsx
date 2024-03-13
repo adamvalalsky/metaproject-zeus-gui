@@ -4,12 +4,14 @@ import React, { useContext, useEffect } from 'react';
 import { Button, Typography } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import MuniIcon from '../../components/Icons/MuniIcon';
 import { AuthContext } from '../../modules/auth/context.tsx';
 import AppMenu from '../../components/AppMenu';
 
 const Index: React.FC = () => {
 	const { signInRedirect, isAuthenticated } = useContext(AuthContext);
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -39,7 +41,7 @@ const Index: React.FC = () => {
 					<LockIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					{t('routes.Index.title')}
 				</Typography>
 				<Box>
 					<Button
@@ -52,7 +54,7 @@ const Index: React.FC = () => {
 							width: 300
 						}}
 					>
-						MUNI
+						{t('routes.Index.buttons.MUNI')}
 					</Button>
 				</Box>
 			</Box>

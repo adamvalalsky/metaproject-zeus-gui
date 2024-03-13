@@ -1,7 +1,48 @@
 {
   "components": {
-    "test": {
-      "hello": "Hello, World!"
+    "AppMenu": {
+      "header": "Resource manager"
+    },
+    "DrawerList": {
+      "links": {
+        "projects": "Projects"
+      }
+    },
+    "ErrorPage": {
+      "title": "Ooops!",
+      "description": "Something went wrong. Please try again later."
+    }
+  },
+  "routes": {
+    "AddProject": {
+      "title": "Request project",
+      "error": {
+        "connection": "Could not request new project",
+        "projectExists": "Project with same name already exists"
+      },
+      "form": {
+        "submit": "Request"
+      }
+    },
+    "Dashboard": {
+      "title": "Projects",
+      "requestButton": "Request new project",
+      "error": {
+        "connection": "Could not load projects, try again later.",
+        "noProjects": "No projects found for current user"
+      },
+      "table": {
+        "id": "ID",
+        "name": "Name",
+        "description": "Description",
+        "status": "Status"
+      }
+    },
+    "Index": {
+      "title": "Sign in",
+      "buttons": {
+        "MUNI": "Sign in with MUNI"
+      }
     }
   }
 }

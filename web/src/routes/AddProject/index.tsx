@@ -1,9 +1,11 @@
 import { Alert, Box, Button, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { Form, useActionData } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ProjectActionData } from './action.ts';
 
 const AddProject: React.FC = () => {
+	const { t } = useTranslation();
 	const actionData = useActionData() as ProjectActionData;
 
 	return (
@@ -17,7 +19,7 @@ const AddProject: React.FC = () => {
 			}}
 		>
 			<Typography component="h1" variant="h4">
-				Add project
+				{t('routes.AddProject.title')}
 			</Typography>
 			<Box
 				sx={{
@@ -26,7 +28,7 @@ const AddProject: React.FC = () => {
 			>
 				{actionData?.showConnectionError && (
 					<Alert severity="error" sx={{ mt: 2 }}>
-						Could not add new project.
+						{t('routes.AddProject.error.connection')}
 					</Alert>
 				)}
 				<Form method="post">
@@ -38,7 +40,7 @@ const AddProject: React.FC = () => {
 						label="Title"
 						variant="outlined"
 						margin="normal"
-						helperText={actionData?.showConflictError ? 'Project with same name already exists.' : ''}
+						helperText={actionData?.showConflictError ? t('routes.AddProject.error.projectExists') : ''}
 						required
 					/>
 					<TextField
@@ -57,7 +59,7 @@ const AddProject: React.FC = () => {
 						color="success"
 						sx={{ margin: '0 auto', mt: 2, display: 'block', width: 200, color: 'primary.contrastText' }}
 					>
-						Add
+						{t('routes.AddProject.form.submit')}
 					</Button>
 				</Form>
 			</Box>
