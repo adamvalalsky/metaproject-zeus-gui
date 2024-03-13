@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
 									</Alert>
 								)}
 								{response.data.projects.length > 0 && (
-									<BasicTable head={headCells} rows={response.data.projects} />
+									<BasicTable head={headCells} rows={response.data.projects} isRowClickable={true} />
 								)}
 							</>
 						)}
