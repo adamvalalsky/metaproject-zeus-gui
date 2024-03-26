@@ -1,13 +1,17 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { darken, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { HeadCell } from './types.ts';
 
 type BasicTableProps<T> = {
 	rows: T[];
 	head: HeadCell<T>[];
+	isRowClickable: boolean;
 };
 
-const BasicTable = <T,>({ head, rows }: BasicTableProps<T>) => {
+const BasicTable = <T extends { id: number }>({ head, rows, isRowClickable }: BasicTableProps<T>) => {
+	const navigate = useNavigate();
+
 	return (
 		<TableContainer component={Paper} sx={{ mt: 3 }}>
 			<Table aria-label="simple table">
@@ -22,7 +26,15 @@ const BasicTable = <T,>({ head, rows }: BasicTableProps<T>) => {
 				</TableHead>
 				<TableBody>
 					{rows.map((row, index) => (
-						<TableRow key={index}>
+						<TableRow
+							onClick={isRowClickable ? () => navigate(`${row.id}`) : undefined}
+							key={index}
+							sx={
+								isRowClickable
+									? { cursor: 'pointer', '&:hover': { backgroundColor: darken('#fff', 0.03) } }
+									: {}
+							}
+						>
 							{head.map((key, columnIndex) => (
 								<TableCell
 									align="left"

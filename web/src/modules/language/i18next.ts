@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/named
 import i18next, { Resource, use } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { Language } from './model.ts';

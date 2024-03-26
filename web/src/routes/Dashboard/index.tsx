@@ -21,7 +21,6 @@ const Dashboard: React.FC = () => {
 		selector: 'description',
 		displayName: t('routes.Dashboard.table.description')
 	};
-	const status: HeadCell<Project> = { selector: 'status', displayName: t('routes.Dashboard.table.status') };
 
 	const getHeadNames = (windowSize: number): HeadCell<Project>[] => {
 		if (windowSize < 600) {
@@ -33,10 +32,10 @@ const Dashboard: React.FC = () => {
 		}
 
 		if (windowSize < 1100) {
-			return [name, description, status];
+			return [name, description];
 		}
 
-		return [id, name, description, status];
+		return [id, name, description];
 	};
 
 	const headCells = getHeadNames(windowSize);
@@ -62,29 +61,70 @@ const Dashboard: React.FC = () => {
 					</Link>
 				</Box>
 				<Divider flexItem sx={{ pt: 3, width: 400, alignSelf: 'center' }} />
-				<Suspense fallback={<LinearProgress />}>
-					<Await
-						resolve={data.response}
-						errorElement={
-							<Alert severity="error" sx={{ mt: 3 }}>
-								{t('routes.Dashboard.error.connection')}
-							</Alert>
-						}
-					>
-						{(response) => (
-							<>
-								{response.data.projects.length === 0 && (
-									<Alert severity="warning" sx={{ mt: 3 }}>
-										{t('routes.Dashboard.error.noProjects')}
-									</Alert>
-								)}
-								{response.data.projects.length > 0 && (
-									<BasicTable head={headCells} rows={response.data.projects} />
-								)}
-							</>
-						)}
-					</Await>
-				</Suspense>
+				<Box sx={{ marginTop: 3 }}>
+					<Typography component="h2" variant="h5">
+						{t('routes.Dashboard.activeProjects.title')}
+					</Typography>
+					<Suspense fallback={<LinearProgress />}>
+						<Await
+							resolve={data.activeProjects}
+							errorElement={
+								<Alert severity="error" sx={{ mt: 3 }}>
+									{t('routes.Dashboard.error.connection')}
+								</Alert>
+							}
+						>
+							{(activeProjects) => (
+								<>
+									{activeProjects.data.projects.length === 0 && (
+										<Alert severity="info" sx={{ mt: 3 }}>
+											{t('routes.Dashboard.error.noActiveProjects')}
+										</Alert>
+									)}
+									{activeProjects.data.projects.length > 0 && (
+										<BasicTable
+											head={headCells}
+											rows={activeProjects.data.projects}
+											isRowClickable={true}
+										/>
+									)}
+								</>
+							)}
+						</Await>
+					</Suspense>
+				</Box>
+				<Box sx={{ marginTop: 3 }}>
+					<Typography component="h2" variant="h5">
+						{t('routes.Dashboard.requestedProjects.title')}
+					</Typography>
+					<Suspense fallback={<LinearProgress />}>
+						<Await
+							resolve={data.requestedProjects}
+							errorElement={
+								<Alert severity="error" sx={{ mt: 3 }}>
+									{t('routes.Dashboard.error.connection')}
+								</Alert>
+							}
+						>
+							{(requestedProjects) => (
+								<>
+									{requestedProjects.data.projects.length === 0 && (
+										<Alert severity="info" sx={{ mt: 3 }}>
+											{t('routes.Dashboard.error.noRequestedProjects')}
+										</Alert>
+									)}
+									{requestedProjects.data.projects.length > 0 && (
+										<BasicTable
+											head={headCells}
+											rows={requestedProjects.data.projects}
+											isRowClickable={true}
+										/>
+									)}
+								</>
+							)}
+						</Await>
+					</Suspense>
+				</Box>
 			</Box>
 		</Box>
 	);

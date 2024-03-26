@@ -29,7 +29,14 @@
       "requestButton": "Request new project",
       "error": {
         "connection": "Could not load projects, try again later.",
-        "noProjects": "No projects found for current user"
+        "noActiveProjects": "No active projects found for current user",
+        "noRequestedProjects": "No requested projects found for current user"
+      },
+      "activeProjects": {
+        "title": "Active projects"
+      },
+      "requestedProjects": {
+        "title": "Requested projects"
       },
       "table": {
         "id": "ID",
