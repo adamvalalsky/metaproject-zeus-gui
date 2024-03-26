@@ -7,7 +7,7 @@ import DrawerList from '../DrawerList';
 import UserMenu from '../UserMenu';
 import AdministratorToggle from '../AdministratorToggle';
 import { AuthContext } from '../../modules/auth/context.tsx';
-import { AdminAccess } from '../../modules/auth/model.ts';
+import { isAdminLoggedIn } from '../../modules/user/utils/admin.ts';
 import { AppBar, Drawer, DrawerHeader } from './styled.tsx';
 import { ADMIN_WARNING_HEIGHT, MENU_HEIGHT } from './constants.ts';
 
@@ -26,7 +26,7 @@ const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
 	return (
 		<>
 			<AppBar open={isOpen}>
-				{adminAccess === AdminAccess.LOGGED && (
+				{isAdminLoggedIn(adminAccess) && (
 					<Alert
 						variant="filled"
 						severity="warning"
@@ -60,7 +60,7 @@ const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
 			</AppBar>
 			{shouldHaveDrawer && (
 				<Drawer variant="permanent" open={isOpen}>
-					<DrawerHeader hasAdminWarning={adminAccess === AdminAccess.LOGGED} />
+					<DrawerHeader hasAdminWarning={isAdminLoggedIn(adminAccess)} />
 					<Divider />
 					<DrawerList open={isOpen} />
 				</Drawer>

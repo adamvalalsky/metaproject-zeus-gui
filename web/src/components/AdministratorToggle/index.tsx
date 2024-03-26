@@ -4,6 +4,7 @@ import { FormEvent, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdminAccess } from '../../modules/auth/model.ts';
 import { AuthContext } from '../../modules/auth/context.tsx';
+import { isAdminLoggedIn } from '../../modules/user/utils/admin.ts';
 
 type AdministratorToggleProps = {
 	adminAccess: AdminAccess;
@@ -19,7 +20,7 @@ const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleP
 	}
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [checked, setChecked] = useState(adminAccess === AdminAccess.LOGGED);
+	const [checked, setChecked] = useState(isAdminLoggedIn(adminAccess));
 
 	const onChange = () => {
 		if (checked) {
@@ -49,10 +50,12 @@ const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleP
 
 	return (
 		<Box>
-			<FormControlLabel
-				control={<Switch size="small" color="secondary" checked={checked} onChange={onChange} />}
-				label={t('components.AdministratorToggle.switchLabel')}
-			/>
+			{adminAccess !== AdminAccess.NONE && (
+				<FormControlLabel
+					control={<Switch size="small" color="secondary" checked={checked} onChange={onChange} />}
+					label={t('components.AdministratorToggle.switchLabel')}
+				/>
+			)}
 			<Dialog onClose={closeDialog} open={isOpen}>
 				<Box sx={{ padding: 3 }}>
 					<DialogTitle>{t('components.AdministratorToggle.dialog.title')}</DialogTitle>
