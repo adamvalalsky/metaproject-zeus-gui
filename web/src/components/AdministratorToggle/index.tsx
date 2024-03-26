@@ -50,12 +50,10 @@ const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleP
 
 	return (
 		<Box>
-			{adminAccess !== AdminAccess.NONE && (
-				<FormControlLabel
-					control={<Switch size="small" color="secondary" checked={checked} onChange={onChange} />}
-					label={t('components.AdministratorToggle.switchLabel')}
-				/>
-			)}
+			<FormControlLabel
+				control={<Switch size="small" color="secondary" checked={checked} onChange={onChange} />}
+				label={t('components.AdministratorToggle.switchLabel')}
+			/>
 			<Dialog onClose={closeDialog} open={isOpen}>
 				<Box sx={{ padding: 3 }}>
 					<DialogTitle>{t('components.AdministratorToggle.dialog.title')}</DialogTitle>

@@ -2,8 +2,9 @@
 import { CSSObject, styled, Theme } from '@mui/material/styles';
 // eslint-disable-next-line import/named
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import MuiDrawer from '@mui/material/Drawer';
+// eslint-disable-next-line import/named
 import { BoxProps } from '@mui/material';
+import MuiDrawer from '@mui/material/Drawer';
 import { ADMIN_WARNING_HEIGHT, DRAWER_WIDTH } from './constants.ts';
 
 interface AppBarProps extends MuiAppBarProps {
