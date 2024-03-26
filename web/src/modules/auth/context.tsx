@@ -5,6 +5,7 @@ import { logout } from './methods/logout.ts';
 import { getAdminAccess } from './methods/getAdminAccess.ts';
 import { AdminAccess } from './model.ts';
 import { removeAdminAccess } from './methods/removeAdminAccess.ts';
+import { setAdminAccess } from './methods/setAdminAccess.ts';
 
 const getDefaultContext = (): AuthContextValue => {
 	return {
@@ -19,7 +20,8 @@ const getDefaultContext = (): AuthContextValue => {
 		signInSilentCallback: async () => {},
 		createSignInRequest: async () => {},
 		getAdminAccess: () => getAdminAccess(),
-		removeAdminAccess: () => removeAdminAccess()
+		removeAdminAccess: () => removeAdminAccess(),
+		setAdminAccess: (key: string) => setAdminAccess(key)
 	};
 };
 
@@ -32,7 +34,8 @@ export interface AuthContextValue {
 	signInSilentCallback: () => Promise<void>;
 	createSignInRequest: () => Promise<void>;
 	getAdminAccess: () => AdminAccess;
-	removeAdminAccess: () => void;
+	removeAdminAccess: () => AdminAccess;
+	setAdminAccess: (key: string) => void;
 }
 
 export const AuthContext = createContext<AuthContextValue>({

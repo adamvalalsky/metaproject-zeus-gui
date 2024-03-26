@@ -9,7 +9,8 @@
       }
     },
     "AppMenu": {
-      "header": "Resource manager"
+      "header": "Resource manager",
+      "adminWarning": "You are now logged in as Administrator and have all permissions."
     },
     "DrawerList": {
       "links": {

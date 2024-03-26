@@ -1,10 +1,13 @@
-import { Divider, IconButton, Toolbar, Typography } from '@mui/material';
+import { Alert, Divider, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
+import { useContext, useState } from 'react';
 import DrawerList from '../DrawerList';
 import UserMenu from '../UserMenu';
 import AdministratorToggle from '../AdministratorToggle';
+import { AuthContext } from '../../modules/auth/context.tsx';
+import { AdminAccess } from '../../modules/auth/model.ts';
 import { AppBar, Drawer, DrawerHeader } from './styled.tsx';
 
 type AppMenuProps = {
@@ -14,11 +17,23 @@ type AppMenuProps = {
 };
 
 const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
+	const { getAdminAccess } = useContext(AuthContext);
+	const [adminAccess, setAdminMenu] = useState(getAdminAccess());
+
 	const { t } = useTranslation();
 
 	return (
 		<>
 			<AppBar position="fixed" open={isOpen}>
+				{adminAccess === AdminAccess.LOGGED && (
+					<Alert
+						variant="filled"
+						severity="warning"
+						sx={{ padding: '1px', borderRadius: 0, justifyContent: 'center' }}
+					>
+						{t('components.AppMenu.adminWarning')}
+					</Alert>
+				)}
 				<Toolbar sx={{ display: 'grid', gridAutoFlow: 'column' }}>
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>
 						{shouldHaveDrawer && (
@@ -37,7 +52,7 @@ const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
 						</Typography>
 					</Box>
 					<Box sx={{ justifySelf: 'end', display: 'flex', alignItems: 'center' }}>
-						<AdministratorToggle />
+						<AdministratorToggle adminAccess={adminAccess} setAdminMenu={setAdminMenu} />
 						<UserMenu />
 					</Box>
 				</Toolbar>

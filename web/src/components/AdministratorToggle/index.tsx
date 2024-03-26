@@ -1,14 +1,17 @@
 import { Button, Dialog, DialogTitle, FormControlLabel, Switch, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
-import { useContext, useState } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form } from 'react-router-dom';
-import { AuthContext } from '../../modules/auth/context.tsx';
 import { AdminAccess } from '../../modules/auth/model.ts';
+import { AuthContext } from '../../modules/auth/context.tsx';
 
-const AdministratorToggle = () => {
-	const { getAdminAccess, removeAdminAccess } = useContext(AuthContext);
-	const adminAccess = getAdminAccess();
+type AdministratorToggleProps = {
+	adminAccess: AdminAccess;
+	setAdminMenu: (adminAccess: AdminAccess) => void;
+};
+
+const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleProps) => {
+	const { removeAdminAccess, setAdminAccess } = useContext(AuthContext);
 	const { t } = useTranslation();
 
 	if (adminAccess === AdminAccess.NONE) {
@@ -20,11 +23,24 @@ const AdministratorToggle = () => {
 
 	const onChange = () => {
 		if (checked) {
-			removeAdminAccess();
+			const defaultAccess = removeAdminAccess();
 			setChecked(false);
+			setAdminMenu(defaultAccess);
 		} else {
 			setIsOpen(true);
 		}
+	};
+
+	const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		// TODO: authorize via backend
+		const key = 'test';
+
+		setAdminAccess(key);
+		setAdminMenu(AdminAccess.LOGGED);
+		setChecked(true);
+		setIsOpen(false);
 	};
 
 	const closeDialog = () => {
@@ -34,15 +50,16 @@ const AdministratorToggle = () => {
 	return (
 		<Box>
 			<FormControlLabel
-				control={<Switch size="small" color="default" checked={checked} onChange={onChange} />}
+				control={<Switch size="small" color="secondary" checked={checked} onChange={onChange} />}
 				label={t('components.AdministratorToggle.switchLabel')}
 			/>
 			<Dialog onClose={closeDialog} open={isOpen}>
 				<Box sx={{ padding: 3 }}>
 					<DialogTitle>{t('components.AdministratorToggle.dialog.title')}</DialogTitle>
-					<Form method="post">
+					<form method="post" onSubmit={onSubmit}>
 						<TextField
 							fullWidth
+							type="password"
 							id="title"
 							name="title"
 							label={t('components.AdministratorToggle.dialog.password')}
@@ -68,7 +85,7 @@ const AdministratorToggle = () => {
 						>
 							{t('components.AdministratorToggle.dialog.submit')}
 						</Button>
-					</Form>
+					</form>
 				</Box>
 			</Dialog>
 		</Box>
