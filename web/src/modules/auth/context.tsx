@@ -1,13 +1,14 @@
 import { createContext, ReactElement, useState } from 'react';
 import { isAuthenticated } from './methods/isAuthenticated.ts';
 import { signInRedirect } from './methods/signInRedirect.ts';
+import { logout } from './methods/logout.ts';
 
 const getDefaultContext = (): AuthContextValue => {
 	return {
 		signInRedirectCallback: () => {
 			throw new Error('Sign in redirect callback not used');
 		},
-		logout: async () => {},
+		logout: async () => logout(),
 		signOutRedirectCallback: async () => {},
 		isAuthenticated: () => isAuthenticated(),
 		// TODO momentarily it will be ID 1, because it is in the database, change later to real implementation

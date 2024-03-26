@@ -2,16 +2,26 @@ import Box from '@mui/material/Box';
 import { Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { Logout } from '@mui/icons-material';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../modules/auth/context.tsx';
 
 const UserMenu = () => {
+	const { logout } = useContext(AuthContext);
+	const navigate = useNavigate();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
+
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	const handleLogout = async () => {
+		await logout();
+		navigate('/', { replace: true });
 	};
 
 	return (
@@ -65,14 +75,14 @@ const UserMenu = () => {
 				transformOrigin={{ horizontal: 'right', vertical: 'top' }}
 				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
 			>
-				<MenuItem onClick={handleClose}>
+				<MenuItem>
 					<Avatar /> Profile
 				</MenuItem>
-				<MenuItem onClick={handleClose}>
+				<MenuItem>
 					<Avatar /> My account
 				</MenuItem>
 				<Divider />
-				<MenuItem onClick={handleClose}>
+				<MenuItem onClick={handleLogout}>
 					<ListItemIcon>
 						<Logout fontSize="small" />
 					</ListItemIcon>
