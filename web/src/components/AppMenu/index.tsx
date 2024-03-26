@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
 import DrawerList from '../DrawerList';
 import UserMenu from '../UserMenu';
+import AdministratorToggle from '../AdministratorToggle';
 import { AppBar, Drawer, DrawerHeader } from './styled.tsx';
 
 type AppMenuProps = {
@@ -35,7 +36,8 @@ const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
 							{t('components.AppMenu.header')}
 						</Typography>
 					</Box>
-					<Box sx={{ justifySelf: 'end' }}>
+					<Box sx={{ justifySelf: 'end', display: 'flex', alignItems: 'center' }}>
+						<AdministratorToggle />
 						<UserMenu />
 					</Box>
 				</Toolbar>

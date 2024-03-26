@@ -1,5 +1,13 @@
 {
   "components": {
+    "AdministratorToggle": {
+      "switchLabel": "Admin",
+      "dialog": {
+        "title": "Use administrator account",
+        "password": "Administrator password",
+        "submit": "Sign in"
+      }
+    },
     "AppMenu": {
       "header": "Resource manager"
     },
