@@ -9,6 +9,7 @@ import AdministratorToggle from '../AdministratorToggle';
 import { AuthContext } from '../../modules/auth/context.tsx';
 import { AdminAccess } from '../../modules/auth/model.ts';
 import { AppBar, Drawer, DrawerHeader } from './styled.tsx';
+import { ADMIN_WARNING_HEIGHT, MENU_HEIGHT } from './constants.ts';
 
 type AppMenuProps = {
 	isOpen: boolean;
@@ -24,17 +25,17 @@ const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
 
 	return (
 		<>
-			<AppBar position="fixed" open={isOpen}>
+			<AppBar open={isOpen}>
 				{adminAccess === AdminAccess.LOGGED && (
 					<Alert
 						variant="filled"
 						severity="warning"
-						sx={{ padding: '1px', borderRadius: 0, justifyContent: 'center' }}
+						sx={{ padding: '1px', borderRadius: 0, justifyContent: 'center', height: ADMIN_WARNING_HEIGHT }}
 					>
 						{t('components.AppMenu.adminWarning')}
 					</Alert>
 				)}
-				<Toolbar sx={{ display: 'grid', gridAutoFlow: 'column' }}>
+				<Toolbar sx={{ display: 'grid', gridAutoFlow: 'column', height: MENU_HEIGHT }}>
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>
 						{shouldHaveDrawer && (
 							<IconButton
@@ -59,7 +60,7 @@ const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
 			</AppBar>
 			{shouldHaveDrawer && (
 				<Drawer variant="permanent" open={isOpen}>
-					<DrawerHeader />
+					<DrawerHeader hasAdminWarning={adminAccess === AdminAccess.LOGGED} />
 					<Divider />
 					<DrawerList open={isOpen} />
 				</Drawer>

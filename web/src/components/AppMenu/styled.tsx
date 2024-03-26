@@ -3,10 +3,15 @@ import { CSSObject, styled, Theme } from '@mui/material/styles';
 // eslint-disable-next-line import/named
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
-import { DRAWER_WIDTH } from './constants.ts';
+import { BoxProps } from '@mui/material';
+import { ADMIN_WARNING_HEIGHT, DRAWER_WIDTH } from './constants.ts';
 
 interface AppBarProps extends MuiAppBarProps {
 	open?: boolean;
+}
+
+interface DrawerHeaderProps extends BoxProps {
+	hasAdminWarning: boolean;
 }
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -32,9 +37,12 @@ const closedMixin = (theme: Theme): CSSObject => ({
 	}
 });
 
-export const DrawerHeader = styled('div')(({ theme }) => ({
+export const DrawerHeader = styled('div', {
+	shouldForwardProp: (prop) => prop !== 'open'
+})<DrawerHeaderProps>(({ theme, hasAdminWarning }) => ({
 	// necessary for content to be below app bar
-	...theme.mixins.toolbar
+	...theme.mixins.toolbar,
+	marginTop: hasAdminWarning ? ADMIN_WARNING_HEIGHT : 0
 }));
 
 export const AppBar = styled(MuiAppBar, {
