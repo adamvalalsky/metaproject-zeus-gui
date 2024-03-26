@@ -1,7 +1,9 @@
 import { Divider, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslation } from 'react-i18next';
+import Box from '@mui/material/Box';
 import DrawerList from '../DrawerList';
+import UserMenu from '../UserMenu';
 import { AppBar, Drawer, DrawerHeader } from './styled.tsx';
 
 type AppMenuProps = {
@@ -16,21 +18,26 @@ const AppMenu = ({ isOpen, setIsOpen, shouldHaveDrawer }: AppMenuProps) => {
 	return (
 		<>
 			<AppBar position="fixed" open={isOpen}>
-				<Toolbar>
-					{shouldHaveDrawer && (
-						<IconButton
-							color="inherit"
-							aria-label="open drawer"
-							edge="start"
-							onClick={() => setIsOpen(!isOpen)}
-							sx={{ mr: 5 }}
-						>
-							<MenuIcon />
-						</IconButton>
-					)}
-					<Typography variant="h6" color="inherit" noWrap>
-						{t('components.AppMenu.header')}
-					</Typography>
+				<Toolbar sx={{ display: 'grid', gridAutoFlow: 'column' }}>
+					<Box sx={{ display: 'flex', alignItems: 'center' }}>
+						{shouldHaveDrawer && (
+							<IconButton
+								color="inherit"
+								aria-label="open drawer"
+								edge="start"
+								onClick={() => setIsOpen(!isOpen)}
+								sx={{ mr: 5 }}
+							>
+								<MenuIcon />
+							</IconButton>
+						)}
+						<Typography variant="h6" color="inherit" noWrap>
+							{t('components.AppMenu.header')}
+						</Typography>
+					</Box>
+					<Box sx={{ justifySelf: 'end' }}>
+						<UserMenu />
+					</Box>
 				</Toolbar>
 			</AppBar>
 			{shouldHaveDrawer && (
