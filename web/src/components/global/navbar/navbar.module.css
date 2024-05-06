@@ -1,0 +1,29 @@
+.wrapper {
+    z-index: 500;
+    background-color: var(--mantine-color-sky-9);
+    position: sticky;
+    top: 0;
+    height: 64px;
+    max-height: 64px;
+    box-shadow: 0 3px 3px -2px #0003,0 3px 4px #00000024,0 1px 8px #0000001f;
+}
+
+.sidebar {
+    background-color: var(--mantine-color-sky-9);
+    height: 100vh;
+    color: white;
+    width: 300px;
+    transition: 0.2s ease-in-out;
+
+    &[data-closed="true"] {
+        margin-left: -300px;
+    }
+}
+
+.link {
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+
+    &:hover {
+        background-color: var(--mantine-color-sky-8);
+    }
+}
