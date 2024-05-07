@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import MuniIcon from '../../components/Icons/MuniIcon';
 import { AuthContext } from '../../modules/auth/context.tsx';
-import AppMenu from '../../components/global/navbar';
 
 const Index: React.FC = () => {
 	const { signInRedirect, isAuthenticated } = useContext(AuthContext);
@@ -28,7 +27,6 @@ const Index: React.FC = () => {
 
 	return (
 		<>
-			<AppMenu isOpen={false} setIsOpen={() => {}} shouldHaveDrawer={false} />
 			<Box
 				sx={{
 					marginTop: 15,

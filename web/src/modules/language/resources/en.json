@@ -8,9 +8,11 @@
         "submit": "Sign in"
       }
     },
-    "AppMenu": {
-      "header": "Resource manager",
-      "adminWarning": "You are now logged in as Administrator and have all permissions."
+    "global": {
+      "navbar": {
+        "header": "Resource manager",
+        "adminWarning": "You are now logged in as Administrator and have all permissions."
+      }
     },
     "DrawerList": {
       "links": {
