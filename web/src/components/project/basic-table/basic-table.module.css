@@ -1,0 +1,7 @@
+.table-row {
+    &[data-clickable] {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

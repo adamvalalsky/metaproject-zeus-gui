@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Box, Button, Divider, Flex, Group, Skeleton, Title } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import useWindowSize from '../../hooks/useWindowSize.ts';
-import { HeadCell } from '../../components/BasicTable/types.ts';
-import BasicTable from '../../components/BasicTable';
 import { Project } from '../../modules/project/model.ts';
+import BasicTable from '../../components/project/basic-table';
+import { HeadCell } from '../../components/project/basic-table/types.ts';
 import { DeferredProjectResponse } from './loader.ts';
 
 const Dashboard: React.FC = () => {
@@ -60,7 +60,7 @@ const Dashboard: React.FC = () => {
 							}
 						>
 							{(activeProjects) => (
-								<>
+								<Box mt={15}>
 									{activeProjects.data.projects.length === 0 && (
 										<Alert color="blue" variant="light" mt={15}>
 											{t('routes.Dashboard.error.noActiveProjects')}
@@ -73,7 +73,7 @@ const Dashboard: React.FC = () => {
 											isRowClickable={true}
 										/>
 									)}
-								</>
+								</Box>
 							)}
 						</Await>
 					</Suspense>
@@ -90,7 +90,7 @@ const Dashboard: React.FC = () => {
 							}
 						>
 							{(requestedProjects) => (
-								<>
+								<Box mt={15}>
 									{requestedProjects.data.projects.length === 0 && (
 										<Alert color="blue" variant="light">
 											{t('routes.Dashboard.error.noRequestedProjects')}
@@ -103,7 +103,7 @@ const Dashboard: React.FC = () => {
 											isRowClickable={true}
 										/>
 									)}
-								</>
+								</Box>
 							)}
 						</Await>
 					</Suspense>
