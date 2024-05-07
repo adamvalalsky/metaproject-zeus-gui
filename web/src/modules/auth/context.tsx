@@ -1,4 +1,5 @@
 import { createContext, ReactElement, useState } from 'react';
+import { User } from '../user/model.ts';
 import { isAuthenticated } from './methods/isAuthenticated.ts';
 import { signInRedirect } from './methods/signInRedirect.ts';
 import { logout } from './methods/logout.ts';
@@ -6,6 +7,7 @@ import { getAdminAccess } from './methods/getAdminAccess.ts';
 import { AdminAccess } from './model.ts';
 import { removeAdminAccess } from './methods/removeAdminAccess.ts';
 import { setAdminAccess } from './methods/setAdminAccess.ts';
+import { getLoggedUserInfo } from './methods/getLoggedUserInfo.ts';
 
 const getDefaultContext = (): AuthContextValue => {
 	return {
@@ -21,7 +23,8 @@ const getDefaultContext = (): AuthContextValue => {
 		createSignInRequest: async () => {},
 		getAdminAccess: () => getAdminAccess(),
 		removeAdminAccess: () => removeAdminAccess(),
-		setAdminAccess: (key: string) => setAdminAccess(key)
+		setAdminAccess: (key: string) => setAdminAccess(key),
+		getLoggedUserInfo: () => getLoggedUserInfo()
 	};
 };
 
@@ -36,6 +39,7 @@ export interface AuthContextValue {
 	getAdminAccess: () => AdminAccess;
 	removeAdminAccess: () => AdminAccess;
 	setAdminAccess: (key: string) => void;
+	getLoggedUserInfo: () => User | null;
 }
 
 export const AuthContext = createContext<AuthContextValue>({

@@ -8,6 +8,7 @@ import useWindowSize from '../../../hooks/useWindowSize.ts';
 import AdministratorToggle from '../administrator-toggle';
 import classes from './navbar.module.css';
 import DrawerList from './drawer-list';
+import UserMenu from './user-menu';
 
 const Navbar = ({ children }: PropsWithChildren) => {
 	const { getAdminAccess } = useContext(AuthContext);
@@ -44,9 +45,12 @@ const Navbar = ({ children }: PropsWithChildren) => {
 						</Anchor>
 					</Group>
 				</Box>
-				<Group mr={10}>
-					<AdministratorToggle adminAccess={adminAccess} setAdminMenu={setAdminMenu} />
-				</Group>
+				{isLoggedIn && (
+					<Group mr={10}>
+						<AdministratorToggle adminAccess={adminAccess} setAdminMenu={setAdminMenu} />
+						<UserMenu />
+					</Group>
+				)}
 			</Flex>
 			<Flex>
 				{isLoggedIn && <DrawerList open={drawerOpened} />}
