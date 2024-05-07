@@ -17,11 +17,11 @@
       "errorPage": {
         "title": "Ooops!",
         "description": "Something went wrong. Please try again later."
-      }
-    },
-    "DrawerList": {
-      "links": {
-        "projects": "Projects"
+      },
+      "drawerList": {
+        "links": {
+          "projects": "Projects"
+        }
       }
     }
   },

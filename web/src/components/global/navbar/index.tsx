@@ -1,17 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
-import { Anchor, Box, Burger, Flex, Group, NavLink, rem, ScrollArea, Tooltip } from '@mantine/core';
-import { Link, useLocation } from 'react-router-dom';
+import { Anchor, Box, Burger, Flex, Group, Tooltip } from '@mantine/core';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../modules/auth/context.tsx';
 
 import useWindowSize from '../../../hooks/useWindowSize.ts';
 import AdministratorToggle from '../administrator-toggle';
 import classes from './navbar.module.css';
-
-const LINKS = [{ title: 'Projects', href: '/project' }];
+import DrawerList from './drawer-list';
 
 const Navbar = ({ children }: PropsWithChildren) => {
-	const { pathname } = useLocation();
 	const { getAdminAccess } = useContext(AuthContext);
 	const { isAuthenticated } = useContext(AuthContext);
 	const windowSize = useWindowSize();
@@ -51,25 +49,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 				</Group>
 			</Flex>
 			<Flex>
-				{isLoggedIn && (
-					<Box className={classes.sidebar} data-opened={drawerOpened}>
-						<ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-							<Box px="md">
-								{LINKS.map(({ title, href }) => (
-									<NavLink
-										className={classes.link}
-										key={title}
-										to={href}
-										component={Link}
-										label={title}
-										active={pathname === href}
-										variant="filled"
-									/>
-								))}
-							</Box>
-						</ScrollArea>
-					</Box>
-				)}
+				{isLoggedIn && <DrawerList open={drawerOpened} />}
 				<Box w="100%">{children}</Box>
 			</Flex>
 		</>
