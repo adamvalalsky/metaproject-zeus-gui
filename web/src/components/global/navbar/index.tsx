@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../../modules/auth/context.tsx';
 
 import useWindowSize from '../../../hooks/useWindowSize.ts';
+import AdministratorToggle from '../administrator-toggle';
 import classes from './navbar.module.css';
 
 const LINKS = [{ title: 'Projects', href: '/project' }];
@@ -45,6 +46,9 @@ const Navbar = ({ children }: PropsWithChildren) => {
 						</Anchor>
 					</Group>
 				</Box>
+				<Group mr={10}>
+					<AdministratorToggle adminAccess={adminAccess} setAdminMenu={setAdminMenu} />
+				</Group>
 			</Flex>
 			<Flex>
 				{isLoggedIn && (
