@@ -1,11 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
+import { type PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
 import { Anchor, Box, Burger, Flex, Group, Tooltip } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../../modules/auth/context.tsx';
 
-import useWindowSize from '../../../hooks/useWindowSize.ts';
+import { AuthContext } from '@/modules/auth/context';
+import useWindowSize from '@/hooks/useWindowSize';
+
 import AdministratorToggle from '../administrator-toggle';
+
 import classes from './navbar.module.css';
 import DrawerList from './drawer-list';
 import UserMenu from './user-menu';
@@ -24,7 +26,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 
 	// TODO implement admin access
 	const [adminAccess, setAdminMenu] = useState(getAdminAccess());
-	const toggleDrawer = () => setDrawerOpened((opened) => !opened);
+	const toggleDrawer = () => setDrawerOpened(opened => !opened);
 
 	const { t } = useTranslation();
 

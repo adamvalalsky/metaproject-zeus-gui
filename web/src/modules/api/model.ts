@@ -3,21 +3,21 @@ export enum Method {
 	POST = 'post'
 }
 
-export interface ApiResponse<T = unknown> {
+export type ApiResponse<T = unknown> = {
 	readonly status: number;
 	readonly data?: T;
-}
+};
 
-export interface ApiClientErrorResponse extends ApiResponse {
+export type ApiClientErrorResponse = {
 	readonly data: {
 		readonly code: number;
 		readonly message: string;
 	};
-}
+} & ApiResponse;
 
-export interface ApiRequestPromise<T> extends Promise<T> {
+export type ApiRequestPromise<T> = {
 	cancel: () => void;
-}
+} & Promise<T>;
 
 export class ApiClientError extends Error {
 	constructor(

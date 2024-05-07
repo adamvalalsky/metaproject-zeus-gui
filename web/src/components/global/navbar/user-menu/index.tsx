@@ -2,7 +2,9 @@ import { useContext, useState } from 'react';
 import { Avatar, Group, Menu, MenuDropdown, MenuItem, MenuTarget, rem, Text, UnstyledButton } from '@mantine/core';
 import { IconChevronDown, IconLogout, IconSettings } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../../../modules/auth/context.tsx';
+
+import { AuthContext } from '@/modules/auth/context';
+
 import classes from './user-menu.module.css';
 
 type UserMenuProps = {

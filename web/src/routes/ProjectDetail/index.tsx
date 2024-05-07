@@ -1,5 +1,3 @@
-const ProjectDetail: React.FC = () => {
-	return <div>Detail</div>;
-};
+const ProjectDetail: React.FC = () => <div>Detail</div>;
 
 export default ProjectDetail;

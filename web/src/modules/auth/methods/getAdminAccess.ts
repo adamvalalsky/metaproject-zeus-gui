@@ -1,6 +1,6 @@
-import { ADMIN_KEY } from '../constants.ts';
-import { AdminAccess } from '../model.ts';
-import { isAuthenticated } from './isAuthenticated.ts';
+import { ADMIN_KEY } from '@/modules/auth/constants';
+import { AdminAccess } from '@/modules/auth/model';
+import { isAuthenticated } from '@/modules/auth/methods/isAuthenticated';
 
 export const getAdminAccess = (): AdminAccess => {
 	if (!isAuthenticated()) {

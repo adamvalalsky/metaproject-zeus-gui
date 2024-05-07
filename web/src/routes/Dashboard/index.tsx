@@ -3,11 +3,13 @@ import { Await, Link, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Alert, Box, Button, Divider, Flex, Group, Skeleton, Title } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
-import useWindowSize from '../../hooks/useWindowSize.ts';
-import { Project } from '../../modules/project/model.ts';
+
+import { type Project } from '@/modules/project/model';
+import { type HeadCell } from '@/components/project/basic-table/types';
+import { type DeferredProjectResponse } from '@/routes/Dashboard/loader';
+
+import useWindowSize from '../../hooks/useWindowSize';
 import BasicTable from '../../components/project/basic-table';
-import { HeadCell } from '../../components/project/basic-table/types.ts';
-import { DeferredProjectResponse } from './loader.ts';
 
 const Dashboard: React.FC = () => {
 	const windowSize = useWindowSize();
@@ -59,7 +61,7 @@ const Dashboard: React.FC = () => {
 								</Alert>
 							}
 						>
-							{(activeProjects) => (
+							{activeProjects => (
 								<Box mt={15}>
 									{activeProjects.data.projects.length === 0 && (
 										<Alert color="blue" variant="light" mt={15}>
@@ -70,7 +72,7 @@ const Dashboard: React.FC = () => {
 										<BasicTable
 											head={headCells}
 											rows={activeProjects.data.projects}
-											isRowClickable={true}
+											isRowClickable
 										/>
 									)}
 								</Box>
@@ -89,7 +91,7 @@ const Dashboard: React.FC = () => {
 								</Alert>
 							}
 						>
-							{(requestedProjects) => (
+							{requestedProjects => (
 								<Box mt={15}>
 									{requestedProjects.data.projects.length === 0 && (
 										<Alert color="blue" variant="light">
@@ -100,7 +102,7 @@ const Dashboard: React.FC = () => {
 										<BasicTable
 											head={headCells}
 											rows={requestedProjects.data.projects}
-											isRowClickable={true}
+											isRowClickable
 										/>
 									)}
 								</Box>

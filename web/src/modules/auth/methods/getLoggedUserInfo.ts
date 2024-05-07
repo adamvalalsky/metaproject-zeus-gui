@@ -1,5 +1,5 @@
-import { USER_ID } from '../constants.ts';
-import { User } from '../../user/model.ts';
+import { USER_ID } from '@/modules/auth/constants';
+import { type User } from '@/modules/user/model';
 
 export const getLoggedUserInfo = (): User | null => {
 	const userId = localStorage.getItem(USER_ID);

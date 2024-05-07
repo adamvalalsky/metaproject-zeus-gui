@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, NavLink, rem, ScrollArea } from '@mantine/core';
 import { IconReport } from '@tabler/icons-react';
+
 import classes from '../navbar.module.css';
 
 type DrawerListProps = {

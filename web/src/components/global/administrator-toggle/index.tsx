@@ -1,10 +1,11 @@
-import { FormEvent, useContext, useState } from 'react';
+import { type FormEvent, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Flex, Modal, Switch, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { AdminAccess } from '../../../modules/auth/model.ts';
-import { AuthContext } from '../../../modules/auth/context.tsx';
-import { isAdminLoggedIn } from '../../../modules/user/utils/admin.ts';
+
+import { AdminAccess } from '@/modules/auth/model';
+import { AuthContext } from '@/modules/auth/context';
+import { isAdminLoggedIn } from '@/modules/user/utils/admin';
 
 type AdministratorToggleProps = {
 	adminAccess: AdminAccess;

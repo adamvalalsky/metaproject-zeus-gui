@@ -1,5 +1,3 @@
-import { AdminAccess } from '../../auth/model.ts';
+import { AdminAccess } from '@/modules/auth/model';
 
-export const isAdminLoggedIn = (adminAccess: AdminAccess) => {
-	return adminAccess === AdminAccess.LOGGED;
-};
+export const isAdminLoggedIn = (adminAccess: AdminAccess) => adminAccess === AdminAccess.LOGGED;

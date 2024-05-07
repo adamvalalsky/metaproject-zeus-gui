@@ -1,18 +1,19 @@
 import { defer } from 'react-router-dom';
-import request from '../../modules/api/request.ts';
-import { ApiRequestPromise } from '../../modules/api/model.ts';
-import { Project } from '../../modules/project/model.ts';
 
-export interface DeferredProjectResponse {
+import request from '@/modules/api/request';
+import { type ApiRequestPromise } from '@/modules/api/model';
+import { type Project } from '@/modules/project/model';
+
+export type DeferredProjectResponse = {
 	activeProjects: ApiRequestPromise<MyProjectResponse>;
 	requestedProjects: ApiRequestPromise<MyProjectResponse>;
-}
+};
 
-interface MyProjectResponse {
+type MyProjectResponse = {
 	data: {
 		projects: Project[];
 	};
-}
+};
 
 const loadProjects = async () => {
 	const requestedProjects = request('/project?status=new') as ApiRequestPromise<MyProjectResponse>;

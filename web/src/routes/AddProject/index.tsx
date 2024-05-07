@@ -2,7 +2,8 @@ import React from 'react';
 import { Form, useActionData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Alert, Box, Button, Flex, Textarea, TextInput, Title } from '@mantine/core';
-import { ProjectActionData } from './action.ts';
+
+import { type ProjectActionData } from '@/routes/AddProject/action';
 
 const AddProject: React.FC = () => {
 	const { t } = useTranslation();

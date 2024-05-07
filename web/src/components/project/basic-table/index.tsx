@@ -1,9 +1,10 @@
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table } from '@mantine/core';
 
+import { type HeadCell } from '@/components/project/basic-table/types';
+
 import classes from './basic-table.module.css';
-import { HeadCell } from './types.ts';
 
 type BasicTableProps<T> = {
 	rows: T[];
@@ -18,20 +19,20 @@ const BasicTable = <T extends { id: number }>({ head, rows, isRowClickable }: Ba
 		<Table striped highlightOnHover withTableBorder>
 			<Table.Thead>
 				<Table.Tr>
-					{head.map((h) => (
+					{head.map(h => (
 						<Table.Th key={h.displayName}>{h.displayName}</Table.Th>
 					))}
 				</Table.Tr>
 			</Table.Thead>
 			<Table.Tbody>
-				{rows.map((row) => (
+				{rows.map(row => (
 					<Table.Tr
 						onClick={isRowClickable ? () => navigate(`${row.id}`) : undefined}
 						key={row.id}
 						className={classes.tableRow}
 						data-clickable={isRowClickable}
 					>
-						{head.map((key) => (
+						{head.map(key => (
 							<Table.Td key={`${row.id}-${key.displayName}`}>{row[key.selector] as ReactNode}</Table.Td>
 						))}
 					</Table.Tr>

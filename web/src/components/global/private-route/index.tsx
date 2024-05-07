@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../../../modules/auth/context.tsx';
+
+import { AuthContext } from '@/modules/auth/context';
 
 // eslint-disable-next-line
 const PrivateRoute = ({ component: Component, ...children }: any) => {
@@ -10,11 +11,7 @@ const PrivateRoute = ({ component: Component, ...children }: any) => {
 		return <Navigate to="/" replace />;
 	}
 
-	return (
-		<>
-			<Component {...children} />
-		</>
-	);
+	return <Component {...children} />;
 };
 
 export default PrivateRoute;

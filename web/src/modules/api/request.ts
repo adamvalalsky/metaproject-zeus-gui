@@ -1,5 +1,11 @@
-import { getLoggedUserToken } from '../auth/methods/getLoggedUserToken.ts';
-import { ApiClientError, ApiClientErrorResponse, ApiRequestPromise, ApiResponse, Method } from './model.ts';
+import { getLoggedUserToken } from '@/modules/auth/methods/getLoggedUserToken';
+import {
+	ApiClientError,
+	type ApiClientErrorResponse,
+	type ApiRequestPromise,
+	type ApiResponse,
+	Method
+} from '@/modules/api/model';
 
 const request = (url: string, init?: RequestInit): ApiRequestPromise<ApiResponse> => {
 	const abortController = new AbortController();
@@ -34,7 +40,7 @@ const request = (url: string, init?: RequestInit): ApiRequestPromise<ApiResponse
 			}
 			return createApiResponse(response);
 		})
-		.catch((error) => {
+		.catch(error => {
 			throw error;
 		}) as ApiRequestPromise<ApiResponse>;
 
@@ -43,11 +49,9 @@ const request = (url: string, init?: RequestInit): ApiRequestPromise<ApiResponse
 	return promise;
 };
 
-const createApiResponse = async (response: Response): Promise<{ status: number; data: unknown }> => {
-	return {
-		status: response.status,
-		data: await response.json()
-	};
-};
+const createApiResponse = async (response: Response): Promise<{ status: number; data: unknown }> => ({
+	status: response.status,
+	data: await response.json()
+});
 
 export default request;
