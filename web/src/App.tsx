@@ -2,8 +2,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { I18nextProvider } from 'react-i18next';
 import { createTheme, MantineProvider } from '@mantine/core';
 
-import Index from '@/routes/index/index';
-
+import Index from './routes/index/index';
 import Root from './routes/root';
 import { AuthContextProvider } from './modules/auth/context';
 import Dashboard from './routes/Dashboard';
