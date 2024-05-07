@@ -12,16 +12,16 @@
       "navbar": {
         "header": "Resource manager",
         "adminWarning": "You are now logged in as Administrator and have all permissions."
+      },
+      "errorPage": {
+        "title": "Ooops!",
+        "description": "Something went wrong. Please try again later."
       }
     },
     "DrawerList": {
       "links": {
         "projects": "Projects"
       }
-    },
-    "ErrorPage": {
-      "title": "Ooops!",
-      "description": "Something went wrong. Please try again later."
     }
   },
   "routes": {

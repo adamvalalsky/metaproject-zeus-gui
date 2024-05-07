@@ -3,7 +3,6 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { I18nextProvider } from 'react-i18next';
 import { createTheme, MantineProvider } from '@mantine/core';
 import Root from './routes/root';
-import ErrorPage from './components/ErrorPage';
 import Index from './routes/index/index.tsx';
 import { AuthContextProvider } from './modules/auth/context';
 import Dashboard from './routes/Dashboard';
@@ -13,6 +12,7 @@ import { addProjectAction } from './routes/AddProject/action.ts';
 import ProjectDetail from './routes/ProjectDetail';
 import i18next from './modules/language/i18next.ts';
 import PrivateRoute from './components/global/private-route';
+import ErrorPage from './components/global/error-page';
 
 function App() {
 	const theme = createTheme({
