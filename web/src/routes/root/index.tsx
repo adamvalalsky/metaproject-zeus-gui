@@ -1,12 +1,15 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../../components/global/navbar';
+import MainContentWrapper from '../../components/global/content-wrapper';
 
 const Root: React.FC = () => {
 	return (
 		<>
 			<Navbar>
-				<Outlet />
+				<MainContentWrapper>
+					<Outlet />
+				</MainContentWrapper>
 			</Navbar>
 		</>
 	);

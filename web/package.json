@@ -19,6 +19,7 @@
     "@mantine/hooks": "^7.8.1",
     "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.11",
+    "@tabler/icons-react": "^3.3.0",
     "i18next": "^23.10.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",

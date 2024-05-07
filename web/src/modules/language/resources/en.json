@@ -56,7 +56,7 @@
         "status": "Status"
       }
     },
-    "Index": {
+    "index": {
       "title": "Sign in",
       "buttons": {
         "MUNI": "Sign in with MUNI"

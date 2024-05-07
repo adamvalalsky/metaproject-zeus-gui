@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { PropsWithChildren, useContext, useMemo, useState } from 'react';
+import { PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
 import { Anchor, Box, Burger, Flex, Group, NavLink, rem, ScrollArea, Tooltip } from '@mantine/core';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../../modules/auth/context.tsx';
 
+import useWindowSize from '../../../hooks/useWindowSize.ts';
 import classes from './navbar.module.css';
 
 const LINKS = [{ title: 'Projects', href: '/project' }];
@@ -12,13 +13,17 @@ const Navbar = ({ children }: PropsWithChildren) => {
 	const { pathname } = useLocation();
 	const { getAdminAccess } = useContext(AuthContext);
 	const { isAuthenticated } = useContext(AuthContext);
+	const windowSize = useWindowSize();
+	const [drawerOpened, setDrawerOpened] = useState(windowSize > 1000);
+
+	useEffect(() => {
+		setDrawerOpened(windowSize > 1000);
+	}, [windowSize]);
 
 	const isLoggedIn = useMemo(() => isAuthenticated(), [isAuthenticated]);
 
 	// TODO implement admin access
 	const [adminAccess, setAdminMenu] = useState(getAdminAccess());
-
-	const [drawerOpened, setDrawerOpened] = useState(true);
 	const toggleDrawer = () => setDrawerOpened((opened) => !opened);
 
 	const { t } = useTranslation();
