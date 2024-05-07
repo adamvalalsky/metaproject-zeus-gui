@@ -1,9 +1,8 @@
-import Box from '@mui/material/Box';
 import React, { Suspense } from 'react';
-import { Alert, Button, Divider, LinearProgress, Typography } from '@mui/material';
 import { Await, Link, useLoaderData } from 'react-router-dom';
-import { Add } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { Alert, Box, Button, Divider, Flex, Group, Skeleton, Title } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
 import useWindowSize from '../../hooks/useWindowSize.ts';
 import { HeadCell } from '../../components/BasicTable/types.ts';
 import BasicTable from '../../components/BasicTable';
@@ -40,36 +39,22 @@ const Dashboard: React.FC = () => {
 
 	const headCells = getHeadNames(windowSize);
 	return (
-		<Box
-			sx={{
-				marginTop: 15,
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				justifyContent: 'left'
-			}}
-		>
-			<Box sx={{ width: '80%', marginTop: 2 }}>
-				<Box sx={{ display: 'flex' }}>
-					<Typography component="h1" variant="h4">
-						{t('routes.Dashboard.title')}
-					</Typography>
-					<Link to={`add`} style={{ marginLeft: 'auto' }}>
-						<Button variant="contained" startIcon={<Add />}>
-							{t('routes.Dashboard.requestButton')}
-						</Button>
-					</Link>
-				</Box>
-				<Divider flexItem sx={{ pt: 3, width: 400, alignSelf: 'center' }} />
-				<Box sx={{ marginTop: 3 }}>
-					<Typography component="h2" variant="h5">
-						{t('routes.Dashboard.activeProjects.title')}
-					</Typography>
-					<Suspense fallback={<LinearProgress />}>
+		<Flex mt={15} direction="column" align="center">
+			<Box w="80%" mt={20}>
+				<Group justify="space-between" mb={10}>
+					<Title order={2}>{t('routes.Dashboard.title')}</Title>
+					<Button component={Link} to="add" variant="contained" leftSection={<IconPlus />}>
+						{t('routes.Dashboard.requestButton')}
+					</Button>
+				</Group>
+				<Divider />
+				<Box mt={15}>
+					<Title order={4}>{t('routes.Dashboard.activeProjects.title')}</Title>
+					<Suspense fallback={<Skeleton w={200} />}>
 						<Await
 							resolve={data.activeProjects}
 							errorElement={
-								<Alert severity="error" sx={{ mt: 3 }}>
+								<Alert color="red" mt={15} variant="light">
 									{t('routes.Dashboard.error.connection')}
 								</Alert>
 							}
@@ -77,7 +62,7 @@ const Dashboard: React.FC = () => {
 							{(activeProjects) => (
 								<>
 									{activeProjects.data.projects.length === 0 && (
-										<Alert severity="info" sx={{ mt: 3 }}>
+										<Alert color="blue" variant="light" mt={15}>
 											{t('routes.Dashboard.error.noActiveProjects')}
 										</Alert>
 									)}
@@ -93,15 +78,13 @@ const Dashboard: React.FC = () => {
 						</Await>
 					</Suspense>
 				</Box>
-				<Box sx={{ marginTop: 3 }}>
-					<Typography component="h2" variant="h5">
-						{t('routes.Dashboard.requestedProjects.title')}
-					</Typography>
-					<Suspense fallback={<LinearProgress />}>
+				<Box mt={15}>
+					<Title order={4}>{t('routes.Dashboard.requestedProjects.title')}</Title>
+					<Suspense fallback={<Skeleton w={200} />}>
 						<Await
 							resolve={data.requestedProjects}
 							errorElement={
-								<Alert severity="error" sx={{ mt: 3 }}>
+								<Alert color="red" mt={15} variant="light">
 									{t('routes.Dashboard.error.connection')}
 								</Alert>
 							}
@@ -109,7 +92,7 @@ const Dashboard: React.FC = () => {
 							{(requestedProjects) => (
 								<>
 									{requestedProjects.data.projects.length === 0 && (
-										<Alert severity="info" sx={{ mt: 3 }}>
+										<Alert color="blue" variant="light">
 											{t('routes.Dashboard.error.noRequestedProjects')}
 										</Alert>
 									)}
@@ -126,7 +109,7 @@ const Dashboard: React.FC = () => {
 					</Suspense>
 				</Box>
 			</Box>
-		</Box>
+		</Flex>
 	);
 };
 
