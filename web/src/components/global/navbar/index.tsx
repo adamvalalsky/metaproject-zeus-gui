@@ -66,7 +66,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 						</ScrollArea>
 					</Box>
 				)}
-				{children}
+				<Box w="100%">{children}</Box>
 			</Flex>
 		</>
 	);
