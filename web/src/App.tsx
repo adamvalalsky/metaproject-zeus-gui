@@ -41,9 +41,11 @@ const App = () => {
 		createRoutesFromElements(
 			<Route id="root" path="/" element={<Root />} errorElement={<ErrorPage />}>
 				<Route index element={<Index />} />
-				<Route path="project" loader={() => loadProjects()} element={<PrivateRoute component={Dashboard} />} />
-				<Route path="project/add" action={addProjectAction} element={<PrivateRoute component={AddProject} />} />
-				<Route path="project/:id" element={<PrivateRoute component={ProjectDetail} />} />
+				<Route path="/project" element={<PrivateRoute />}>
+					<Route index loader={() => loadProjects()} element={<Dashboard />} />
+					<Route path="add" action={addProjectAction} element={<AddProject />} />
+					<Route path=":id" element={<ProjectDetail />} />
+				</Route>
 			</Route>
 		)
 	);
