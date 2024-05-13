@@ -7,7 +7,7 @@ import {
 	Method
 } from '@/modules/api/model';
 
-const request = (url: string, init?: RequestInit): ApiRequestPromise<ApiResponse> => {
+const request = <T>(url: string, init?: RequestInit): ApiRequestPromise<ApiResponse<T>> => {
 	const abortController = new AbortController();
 	const signal = abortController.signal;
 
@@ -42,7 +42,7 @@ const request = (url: string, init?: RequestInit): ApiRequestPromise<ApiResponse
 		})
 		.catch(error => {
 			throw error;
-		}) as ApiRequestPromise<ApiResponse>;
+		}) as ApiRequestPromise<ApiResponse<T>>;
 
 	promise.cancel = () => abortController.abort();
 

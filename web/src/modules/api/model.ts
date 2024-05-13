@@ -5,7 +5,7 @@ export enum Method {
 
 export type ApiResponse<T = unknown> = {
 	readonly status: number;
-	readonly data?: T;
+	readonly data: T;
 };
 
 export type ApiClientErrorResponse = {

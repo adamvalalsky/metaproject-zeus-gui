@@ -24,14 +24,9 @@ const BasicTable = <T extends { id: number }>({ head, rows, isRowClickable }: Ba
 					))}
 				</Table.Tr>
 			</Table.Thead>
-			<Table.Tbody>
+			<Table.Tbody className={classes.tableBody} data-clickable={isRowClickable}>
 				{rows.map(row => (
-					<Table.Tr
-						onClick={isRowClickable ? () => navigate(`${row.id}`) : undefined}
-						key={row.id}
-						className={classes.tableRow}
-						data-clickable={isRowClickable}
-					>
+					<Table.Tr onClick={isRowClickable ? () => navigate(`${row.id}`) : undefined} key={row.id}>
 						{head.map(key => (
 							<Table.Td key={`${row.id}-${key.displayName}`}>{row[key.selector] as ReactNode}</Table.Td>
 						))}
