@@ -4,12 +4,11 @@ import { createTheme, MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Project from '@/routes/project';
+import AddProject from '@/routes/project/add';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
 import { AuthContextProvider } from './modules/auth/context';
-import AddProject from './routes/AddProject';
-import { addProjectAction } from './routes/AddProject/action';
 import ProjectDetail from './routes/ProjectDetail';
 import i18next from './modules/language/i18next';
 import PrivateRoute from './components/global/private-route';
@@ -43,7 +42,7 @@ const App = () => {
 				<Route index element={<Index />} />
 				<Route path="/project" element={<PrivateRoute />}>
 					<Route index element={<Project />} />
-					<Route path="add" action={addProjectAction} element={<AddProject />} />
+					<Route path="add" element={<AddProject />} />
 					<Route path=":id" element={<ProjectDetail />} />
 				</Route>
 			</Route>
