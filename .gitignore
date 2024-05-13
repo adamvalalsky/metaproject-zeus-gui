@@ -2,5 +2,6 @@
 .idea
 .vscode
 **/logs/
+web/tsconfig.tsbuildinfo
 
 .env
