@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 import request from '@/modules/api/request';
 import type { Project } from '@/modules/project/model';
@@ -17,4 +17,10 @@ export const useRequestedProjectsQuery = () =>
 	useQuery({
 		queryKey: ['project', 'requested'],
 		queryFn: () => request<MyProjectResponse>('/project?status=new')
+	});
+
+export const useProjectDetailQuery = (id: number) =>
+	useSuspenseQuery({
+		queryKey: ['project', id],
+		queryFn: () => request<Project>(`/project/${id}`)
 	});

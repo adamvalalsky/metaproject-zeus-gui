@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Project from '@/routes/project';
 import AddProject from '@/routes/project/add';
 import ProjectDetail from '@/routes/project/detail';
+import NotFound from '@/components/global/not-found';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -45,6 +46,7 @@ const App = () => {
 					<Route path="add" element={<AddProject />} />
 					<Route path=":id" element={<ProjectDetail />} />
 				</Route>
+				<Route path="*" element={<NotFound />} />
 			</Route>
 		)
 	);

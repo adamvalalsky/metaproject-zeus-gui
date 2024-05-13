@@ -6,7 +6,7 @@ import { IconPlus } from '@tabler/icons-react';
 
 import { type Project } from '@/modules/project/model';
 import { type HeadCell } from '@/components/project/basic-table/types';
-import { useActiveProjectsQuery, useRequestedProjectsQuery } from '@/modules/project/tanstack';
+import { useActiveProjectsQuery, useRequestedProjectsQuery } from '@/modules/project/queries';
 
 import useWindowSize from '../../hooks/useWindowSize';
 import BasicTable from '../../components/project/basic-table';
