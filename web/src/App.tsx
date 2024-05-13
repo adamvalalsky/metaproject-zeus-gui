@@ -5,11 +5,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Project from '@/routes/project';
 import AddProject from '@/routes/project/add';
+import ProjectDetail from '@/routes/project/detail';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
 import { AuthContextProvider } from './modules/auth/context';
-import ProjectDetail from './routes/ProjectDetail';
 import i18next from './modules/language/i18next';
 import PrivateRoute from './components/global/private-route';
 import ErrorPage from './components/global/error-page';
