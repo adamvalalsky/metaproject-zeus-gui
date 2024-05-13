@@ -1,20 +1,29 @@
-import React, { Suspense } from 'react';
-import { Await, Link, useLoaderData } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Alert, Box, Button, Divider, Flex, Group, Skeleton, Title } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 
 import { type Project } from '@/modules/project/model';
 import { type HeadCell } from '@/components/project/basic-table/types';
-import { type DeferredProjectResponse } from '@/routes/Dashboard/loader';
+import { useActiveProjectsQuery, useRequestedProjectsQuery } from '@/modules/project/tanstack';
 
 import useWindowSize from '../../hooks/useWindowSize';
 import BasicTable from '../../components/project/basic-table';
 
-const Dashboard: React.FC = () => {
+const Project: React.FC = () => {
 	const windowSize = useWindowSize();
 	const { t } = useTranslation();
-	const data = useLoaderData() as DeferredProjectResponse;
+	const {
+		data: activeProjects,
+		isLoading: activeProjectsLoading,
+		isError: activeProjectsError
+	} = useActiveProjectsQuery();
+	const {
+		data: requestedProjects,
+		isLoading: requestedProjectsLoading,
+		isError: requestedProjectsError
+	} = useRequestedProjectsQuery();
 
 	const id: HeadCell<Project> = { selector: 'id', displayName: t('routes.Dashboard.table.id') };
 	const name: HeadCell<Project> = { selector: 'title', displayName: t('routes.Dashboard.table.name') };
@@ -40,6 +49,15 @@ const Dashboard: React.FC = () => {
 	};
 
 	const headCells = getHeadNames(windowSize);
+
+	if (requestedProjectsError || activeProjectsError) {
+		return (
+			<Alert color="red" mt={15} variant="light">
+				{t('routes.Dashboard.error.connection')}
+			</Alert>
+		);
+	}
+
 	return (
 		<Flex mt={15} direction="column" align="center">
 			<Box w="80%" mt={20}>
@@ -52,67 +70,41 @@ const Dashboard: React.FC = () => {
 				<Divider />
 				<Box mt={15}>
 					<Title order={4}>{t('routes.Dashboard.activeProjects.title')}</Title>
-					<Suspense fallback={<Skeleton w={200} />}>
-						<Await
-							resolve={data.activeProjects}
-							errorElement={
-								<Alert color="red" mt={15} variant="light">
-									{t('routes.Dashboard.error.connection')}
+					{activeProjectsLoading || !activeProjects?.data ? (
+						<Skeleton w={200} />
+					) : (
+						<Box mt={15}>
+							{activeProjects.data.projects.length === 0 && (
+								<Alert color="blue" variant="light" mt={15}>
+									{t('routes.Dashboard.error.noActiveProjects')}
 								</Alert>
-							}
-						>
-							{activeProjects => (
-								<Box mt={15}>
-									{activeProjects.data.projects.length === 0 && (
-										<Alert color="blue" variant="light" mt={15}>
-											{t('routes.Dashboard.error.noActiveProjects')}
-										</Alert>
-									)}
-									{activeProjects.data.projects.length > 0 && (
-										<BasicTable
-											head={headCells}
-											rows={activeProjects.data.projects}
-											isRowClickable
-										/>
-									)}
-								</Box>
 							)}
-						</Await>
-					</Suspense>
+							{activeProjects.data.projects.length > 0 && (
+								<BasicTable head={headCells} rows={activeProjects.data.projects} isRowClickable />
+							)}
+						</Box>
+					)}
 				</Box>
 				<Box mt={15}>
 					<Title order={4}>{t('routes.Dashboard.requestedProjects.title')}</Title>
-					<Suspense fallback={<Skeleton w={200} />}>
-						<Await
-							resolve={data.requestedProjects}
-							errorElement={
-								<Alert color="red" mt={15} variant="light">
-									{t('routes.Dashboard.error.connection')}
+					{requestedProjectsLoading || !requestedProjects?.data ? (
+						<Skeleton w={200} />
+					) : (
+						<Box mt={15}>
+							{requestedProjects.data.projects.length === 0 && (
+								<Alert color="blue" variant="light" mt={15}>
+									{t('routes.Dashboard.error.noActiveProjects')}
 								</Alert>
-							}
-						>
-							{requestedProjects => (
-								<Box mt={15}>
-									{requestedProjects.data.projects.length === 0 && (
-										<Alert color="blue" variant="light">
-											{t('routes.Dashboard.error.noRequestedProjects')}
-										</Alert>
-									)}
-									{requestedProjects.data.projects.length > 0 && (
-										<BasicTable
-											head={headCells}
-											rows={requestedProjects.data.projects}
-											isRowClickable
-										/>
-									)}
-								</Box>
 							)}
-						</Await>
-					</Suspense>
+							{requestedProjects.data.projects.length > 0 && (
+								<BasicTable head={headCells} rows={requestedProjects.data.projects} isRowClickable />
+							)}
+						</Box>
+					)}
 				</Box>
 			</Box>
 		</Flex>
 	);
 };
 
-export default Dashboard;
+export default Project;

@@ -3,11 +3,11 @@ import { I18nextProvider } from 'react-i18next';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import Project from '@/routes/project';
+
 import Index from './routes/index/index';
 import Root from './routes/root';
 import { AuthContextProvider } from './modules/auth/context';
-import Dashboard from './routes/Dashboard';
-import loadProjects from './routes/Dashboard/loader';
 import AddProject from './routes/AddProject';
 import { addProjectAction } from './routes/AddProject/action';
 import ProjectDetail from './routes/ProjectDetail';
@@ -42,7 +42,7 @@ const App = () => {
 			<Route id="root" path="/" element={<Root />} errorElement={<ErrorPage />}>
 				<Route index element={<Index />} />
 				<Route path="/project" element={<PrivateRoute />}>
-					<Route index loader={() => loadProjects()} element={<Dashboard />} />
+					<Route index element={<Project />} />
 					<Route path="add" action={addProjectAction} element={<AddProject />} />
 					<Route path=":id" element={<ProjectDetail />} />
 				</Route>
