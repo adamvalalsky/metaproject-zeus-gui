@@ -12,7 +12,8 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:jsx-a11y/recommended',
-        'plugin:prettier/recommended'
+        'plugin:prettier/recommended',
+        'plugin:@tanstack/eslint-plugin-query/recommended'
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {

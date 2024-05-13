@@ -1,6 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import { createTheme, MantineProvider } from '@mantine/core';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -47,13 +48,17 @@ const App = () => {
 		)
 	);
 
+	const queryClient = new QueryClient();
+
 	return (
 		<MantineProvider theme={theme}>
-			<I18nextProvider i18n={i18next}>
-				<AuthContextProvider>
-					<RouterProvider router={router} />
-				</AuthContextProvider>
-			</I18nextProvider>
+			<QueryClientProvider client={queryClient}>
+				<I18nextProvider i18n={i18next}>
+					<AuthContextProvider>
+						<RouterProvider router={router} />
+					</AuthContextProvider>
+				</I18nextProvider>
+			</QueryClientProvider>
 		</MantineProvider>
 	);
 };
