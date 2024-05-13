@@ -1,25 +1,28 @@
 {
   "components": {
-    "AdministratorToggle": {
-      "switchLabel": "Admin",
-      "dialog": {
-        "title": "Use administrator account",
-        "password": "Administrator password",
-        "submit": "Sign in"
+    "global": {
+      "administratorToggle": {
+        "switchLabel": "Admin",
+        "switchDescription": "Toggle administrator mode",
+        "dialog": {
+          "title": "Use administrator account",
+          "password": "Administrator password",
+          "submit": "Sign in as administrator"
+        }
+      },
+      "navbar": {
+        "header": "Resource manager",
+        "adminWarning": "You are now logged in as Administrator and have all permissions."
+      },
+      "errorPage": {
+        "title": "Ooops!",
+        "description": "Something went wrong. Please try again later."
+      },
+      "drawerList": {
+        "links": {
+          "projects": "Projects"
+        }
       }
-    },
-    "AppMenu": {
-      "header": "Resource manager",
-      "adminWarning": "You are now logged in as Administrator and have all permissions."
-    },
-    "DrawerList": {
-      "links": {
-        "projects": "Projects"
-      }
-    },
-    "ErrorPage": {
-      "title": "Ooops!",
-      "description": "Something went wrong. Please try again later."
     }
   },
   "routes": {
@@ -54,7 +57,7 @@
         "status": "Status"
       }
     },
-    "Index": {
+    "index": {
       "title": "Sign in",
       "buttons": {
         "MUNI": "Sign in with MUNI"

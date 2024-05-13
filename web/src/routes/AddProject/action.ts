@@ -1,7 +1,8 @@
 import { redirect } from 'react-router-dom';
-import fetch from '../../modules/api/request.ts';
-import { ApiClientError, ApiResponse, Method } from '../../modules/api/model.ts';
-import { Project } from '../../modules/project/model.ts';
+
+import { ApiClientError, type ApiResponse, Method } from '@/modules/api/model';
+import { type Project } from '@/modules/project/model';
+import fetch from '@/modules/api/request';
 
 export type ProjectActionData = {
 	showConflictError?: boolean;

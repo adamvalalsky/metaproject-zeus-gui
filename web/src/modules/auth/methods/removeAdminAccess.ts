@@ -1,5 +1,5 @@
-import { ADMIN_KEY } from '../constants';
-import { getAdminAccess } from './getAdminAccess.ts';
+import { ADMIN_KEY } from '@/modules/auth/constants';
+import { getAdminAccess } from '@/modules/auth/methods/getAdminAccess';
 
 export const removeAdminAccess = () => {
 	localStorage.removeItem(ADMIN_KEY);

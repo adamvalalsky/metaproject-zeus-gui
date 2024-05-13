@@ -1,6 +1,5 @@
-import { USER_ID } from '../constants.ts';
+import { USER_ID } from '@/modules/auth/constants';
 
-export const isAuthenticated = () => {
+export const isAuthenticated = () =>
 	// TODO probably will call something with OAuth, for now we just store ID in local storage
-	return localStorage.getItem(USER_ID) != null;
-};
+	localStorage.getItem(USER_ID) !== null;

@@ -1,5 +1,3 @@
-import { USER_ID } from '../constants.ts';
+import { USER_ID } from '@/modules/auth/constants';
 
-export const getLoggedUserToken = () => {
-	return localStorage.getItem(USER_ID);
-};
+export const getLoggedUserToken = () => localStorage.getItem(USER_ID);

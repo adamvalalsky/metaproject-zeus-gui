@@ -1,12 +1,12 @@
 ARG BASE_IMAGE_NODE
 
 # install node_modules
-#FROM $BASE_IMAGE_NODE as node_modules
-#
-#COPY package.json package-lock.json /app/
-#RUN \
-#	cd /app/ &&\
-#	npm install
+FROM $BASE_IMAGE_NODE as node_modules
+
+COPY package.json package-lock.json /app/
+RUN \
+	cd /app/ &&\
+	npm install
 
 
 # for dev and unit tests

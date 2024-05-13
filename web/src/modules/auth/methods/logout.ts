@@ -1,4 +1,4 @@
-import { USER_ID } from '../constants.ts';
+import { USER_ID } from '@/modules/auth/constants';
 
 export const logout = async () => {
 	localStorage.removeItem(USER_ID);
