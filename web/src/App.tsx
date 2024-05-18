@@ -7,6 +7,7 @@ import Project from '@/routes/project';
 import AddProject from '@/routes/project/add';
 import ProjectDetail from '@/routes/project/detail';
 import NotFound from '@/components/global/not-found';
+import ProjectDetailMembers from '@/routes/project/detail/members';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -19,7 +20,7 @@ const App = () => {
 	const theme = createTheme({
 		primaryShade: 7,
 		primaryColor: 'sky',
-		autoContrast: true,
+		// autoContrast: true,
 		cursorType: 'pointer',
 		colors: {
 			sky: [
@@ -45,6 +46,7 @@ const App = () => {
 					<Route index element={<Project />} />
 					<Route path="add" element={<AddProject />} />
 					<Route path=":id" element={<ProjectDetail />} />
+					<Route path=":id/members" element={<ProjectDetailMembers />} />
 				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Route>

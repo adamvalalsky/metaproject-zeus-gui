@@ -27,7 +27,7 @@ const ProjectDetail = () => {
 				</Alert>
 			)}
 			<Text mt={10}>{project.description}</Text>
-			<ProjectMembers />
+			<ProjectMembers id={+id} />
 		</MainContentWrapper>
 	);
 };
