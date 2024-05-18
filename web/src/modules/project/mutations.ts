@@ -3,15 +3,16 @@ import { useMutation } from '@tanstack/react-query';
 import fetch from '@/modules/api/request';
 import { type ApiResponse, Method } from '@/modules/api/model';
 import type { Project } from '@/modules/project/model';
+import { type RequestProjectSchema } from '@/modules/project/form';
 
 export const useAddProjectMutation = () =>
 	useMutation({
-		mutationFn: async (formData: FormData) => {
+		mutationFn: async (values: RequestProjectSchema) => {
 			const response = (await fetch('/project', {
 				method: Method.POST,
 				body: JSON.stringify({
-					title: formData.get('title'),
-					description: formData.get('description')
+					title: values.title,
+					description: values.description
 				})
 			})) as ApiResponse<Project>;
 

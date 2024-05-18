@@ -1,0 +1,7 @@
+**/node_modules
+**/.docker
+**/logs
+.build
+.env.example
+README.md
+.gitlab-ci.yml

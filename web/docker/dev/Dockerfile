@@ -6,7 +6,7 @@ FROM $BASE_IMAGE_NODE as node_modules
 COPY package.json package-lock.json /app/
 RUN \
 	cd /app/ &&\
-	npm install
+	npm ci
 
 
 # for dev and unit tests
