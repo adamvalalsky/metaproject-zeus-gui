@@ -6,6 +6,8 @@ import { useProjectDetailQuery } from '@/modules/project/queries';
 import MainContentWrapper from '@/components/global/content-wrapper';
 import { type Project } from '@/modules/project/model';
 import Loading from '@/components/global/loading';
+import ErrorPage from '@/components/global/error-page';
+import { ApiClientError } from '@/modules/api/model';
 
 type ContextType = { project: Project };
 
@@ -21,7 +23,11 @@ const ProjectDetailGuard = () => {
 	const { data: projectData, error, isPending } = useProjectDetailQuery(+id);
 
 	if (error) {
-		return <NotFound />;
+		if (error instanceof ApiClientError && error.response.data.code === 10002) {
+			return <NotFound />;
+		}
+
+		return <ErrorPage />;
 	}
 
 	if (isPending) {
