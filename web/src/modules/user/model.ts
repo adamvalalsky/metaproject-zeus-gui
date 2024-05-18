@@ -4,3 +4,10 @@ export type User = {
 	readonly externalId: string;
 	readonly username: string;
 };
+
+export type UserInfo = {
+	id: number;
+	name: string;
+	email: string;
+	username: string;
+};

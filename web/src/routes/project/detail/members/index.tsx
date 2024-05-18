@@ -1,11 +1,20 @@
-import { Title } from '@mantine/core';
+import { Box, Title } from '@mantine/core';
 
-import MainContentWrapper from '@/components/global/content-wrapper';
+import { useProjectOutletContext } from '@/routes/project/detail/guard';
+import AddMembersSelect from '@/components/project/members/add-members-select';
 
-const ProjectDetailMembers = () => (
-	<MainContentWrapper mt={30}>
-		<Title>Add members</Title>
-	</MainContentWrapper>
-);
+const ProjectDetailMembers = () => {
+	const { project } = useProjectOutletContext();
+
+	return (
+		<Box>
+			<Title>{project.title}</Title>
+			<Title order={3} mt={20}>
+				Add members
+				<AddMembersSelect />
+			</Title>
+		</Box>
+	);
+};
 
 export default ProjectDetailMembers;
