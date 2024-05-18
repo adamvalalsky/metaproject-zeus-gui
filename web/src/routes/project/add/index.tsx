@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Button, Flex, Textarea, TextInput, Title } from '@mantine/core';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { notifications } from '@mantine/notifications';
 
 import { useAddProjectMutation } from '@/modules/project/mutations';
 import { ApiClientError } from '@/modules/api/model';
@@ -16,6 +17,7 @@ const AddProject: React.FC = () => {
 	const {
 		handleSubmit,
 		register,
+		setError,
 		formState: { errors }
 	} = useForm<RequestProjectSchema>({
 		resolver: zodResolver(requestProjectSchema)
@@ -28,16 +30,30 @@ const AddProject: React.FC = () => {
 					navigate('/project');
 				}
 
+				notifications.show({
+					title: 'Project request created.',
+					message: 'You can now wait for the project to be approved by the admin.'
+				});
 				navigate(`/project/${projectId}`);
 			},
 			onError: error => {
 				if (error instanceof ApiClientError) {
 					if (error.response.status === 409) {
-						// TODO Project exists validation
+						notifications.show({
+							title: 'Project with this title already exists.',
+							message: 'Please choose a different title.',
+							color: 'red'
+						});
+						setError('title', { type: 'custom', message: 'Project with this title already exists.' });
+						return;
 					}
 				}
 
-				// TODO general error
+				notifications.show({
+					title: 'Failed to create project.',
+					message: 'Please try again later.',
+					color: 'red'
+				});
 			}
 		});
 	};
