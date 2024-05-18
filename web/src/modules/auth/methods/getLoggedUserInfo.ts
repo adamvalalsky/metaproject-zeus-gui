@@ -10,6 +10,8 @@ export const getLoggedUserInfo = (): User | null => {
 
 	return {
 		id: +userId,
+		source: 'perun',
+		externalId: '123',
 		username: 'testUser',
 		firstName: 'Adam',
 		lastName: 'Valalsky'

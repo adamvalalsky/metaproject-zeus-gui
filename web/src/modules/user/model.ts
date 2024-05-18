@@ -3,6 +3,8 @@ export type User = {
 	readonly source: string;
 	readonly externalId: string;
 	readonly username: string;
+	readonly firstName: string;
+	readonly lastName: string;
 };
 
 export type UserInfo = {

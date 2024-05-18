@@ -1,12 +1,10 @@
 import { Link, useRouteError } from 'react-router-dom';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, Container, Group, Text, Title } from '@mantine/core';
 
 import classes from './error.module.css';
 
 const ErrorPage: React.FC = () => {
-	const { t } = useTranslation();
 	const error = useRouteError() as { statusText: string; message: string };
 
 	return (
