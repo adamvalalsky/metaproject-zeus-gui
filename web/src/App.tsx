@@ -8,6 +8,7 @@ import AddProject from '@/routes/project/add';
 import ProjectDetail from '@/routes/project/detail';
 import NotFound from '@/components/global/not-found';
 import ProjectDetailMembers from '@/routes/project/detail/members';
+import ProjectDetailGuard from '@/routes/project/detail/guard';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -45,8 +46,10 @@ const App = () => {
 				<Route path="/project" element={<PrivateRoute />}>
 					<Route index element={<Project />} />
 					<Route path="add" element={<AddProject />} />
-					<Route path=":id" element={<ProjectDetail />} />
-					<Route path=":id/members" element={<ProjectDetailMembers />} />
+					<Route path=":id" element={<ProjectDetailGuard />}>
+						<Route index element={<ProjectDetail />} />
+						<Route path="members" element={<ProjectDetailMembers />} />
+					</Route>
 				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Route>

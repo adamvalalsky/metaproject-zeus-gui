@@ -1,24 +1,14 @@
-import { Alert, Text, Title } from '@mantine/core';
-import { useParams } from 'react-router';
+import { Alert, Box, Text, Title } from '@mantine/core';
 import { IconInfoCircle } from '@tabler/icons-react';
 
-import MainContentWrapper from '@/components/global/content-wrapper';
-import NotFound from '@/components/global/not-found';
-import { useProjectDetailQuery } from '@/modules/project/queries';
 import ProjectMembers from '@/components/project/members';
+import { useProjectOutletContext } from '@/routes/project/detail/guard';
 
 const ProjectDetail = () => {
-	const { id } = useParams();
-
-	if (!id || isNaN(+id)) {
-		return <NotFound />;
-	}
-
-	const { data: projectData } = useProjectDetailQuery(+id);
-	const project = projectData.data;
+	const { project } = useProjectOutletContext();
 
 	return (
-		<MainContentWrapper mt={30}>
+		<Box>
 			<Title>{project.title}</Title>
 			{project.status === 'new' && (
 				<Alert mt={5} variant="light" color="yellow" title="Project is not active" icon={<IconInfoCircle />}>
@@ -27,8 +17,8 @@ const ProjectDetail = () => {
 				</Alert>
 			)}
 			<Text mt={10}>{project.description}</Text>
-			<ProjectMembers id={+id} />
-		</MainContentWrapper>
+			<ProjectMembers id={project.id} />
+		</Box>
 	);
 };
 
