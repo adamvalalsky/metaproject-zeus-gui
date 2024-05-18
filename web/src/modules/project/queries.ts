@@ -1,11 +1,7 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 import request from '@/modules/api/request';
-import type { Project } from '@/modules/project/model';
-
-type MyProjectResponse = {
-	projects: Project[];
-};
+import type { MemberList, MyProjectResponse } from '@/modules/project/model';
 
 export const useActiveProjectsQuery = () =>
 	useQuery({
@@ -22,5 +18,11 @@ export const useRequestedProjectsQuery = () =>
 export const useProjectDetailQuery = (id: number) =>
 	useSuspenseQuery({
 		queryKey: ['project', id],
-		queryFn: () => request<Project>(`/project/${id}`)
+		queryFn: () => request<MemberList>(`/project/${id}`)
+	});
+
+export const useProjectMembersQuery = (id: number) =>
+	useQuery({
+		queryKey: ['project', id, 'members'],
+		queryFn: () => request<MemberList>(`/project/${id}/members`)
 	});

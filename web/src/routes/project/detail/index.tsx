@@ -5,6 +5,7 @@ import { IconInfoCircle } from '@tabler/icons-react';
 import MainContentWrapper from '@/components/global/content-wrapper';
 import NotFound from '@/components/global/not-found';
 import { useProjectDetailQuery } from '@/modules/project/queries';
+import ProjectMembers from '@/components/project/members';
 
 const ProjectDetail = () => {
 	const { id } = useParams();
@@ -25,7 +26,8 @@ const ProjectDetail = () => {
 					information, but some actions may be forbidden.
 				</Alert>
 			)}
-			<Text>{project.description}</Text>
+			<Text mt={10}>{project.description}</Text>
+			<ProjectMembers />
 		</MainContentWrapper>
 	);
 };
