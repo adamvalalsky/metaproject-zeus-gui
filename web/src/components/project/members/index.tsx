@@ -1,4 +1,6 @@
-import { Box, Group, Skeleton, Stack, Text, Title } from '@mantine/core';
+import { ActionIcon, Box, Group, Skeleton, Stack, Text, Title } from '@mantine/core';
+import { DataTable } from 'mantine-datatable';
+import { IconTrash } from '@tabler/icons-react';
 
 import { useProjectMembersQuery } from '@/modules/project/queries';
 import ErrorAlert from '@/components/global/error-alert';
@@ -32,6 +34,48 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 					<Text>No members added yet.</Text>
 					<AddButton id={id} />
 				</Stack>
+			)}
+			{members.length > 0 && (
+				<DataTable
+					height={500}
+					withTableBorder
+					records={members}
+					columns={[
+						{
+							accessor: 'id',
+							title: 'ID',
+							width: 150
+						},
+						{
+							accessor: 'fullName',
+							title: 'Full name',
+							render: member => `${member.userInfo.firstName} ${member.userInfo.lastName}`
+						},
+						{
+							accessor: 'username',
+							title: 'Username',
+							render: member => member.userInfo.username
+						},
+						{
+							accessor: 'role',
+							title: 'Role',
+							render: member => member.role
+						},
+						{
+							accessor: 'actions',
+							title: '',
+							textAlign: 'center',
+							width: 120,
+							render: () => (
+								<Group gap={4} justify="space-between" wrap="nowrap">
+									<ActionIcon size="sm" variant="subtle" color="red">
+										<IconTrash size={24} />
+									</ActionIcon>
+								</Group>
+							)
+						}
+					]}
+				/>
 			)}
 		</Box>
 	);
