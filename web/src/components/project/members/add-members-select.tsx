@@ -1,4 +1,4 @@
-import { Combobox, Loader, Stack, Text, TextInput, useCombobox } from '@mantine/core';
+import { CheckIcon, Combobox, Group, Loader, Stack, Text, TextInput, useCombobox } from '@mantine/core';
 import { useRef, useState } from 'react';
 
 import { type UserInfo } from '@/modules/user/model';
@@ -16,14 +16,19 @@ const getAsyncData = async (query: string, signal: AbortSignal): Promise<UserInf
 	return response.data.users;
 };
 
-const AddMembersSelect = () => {
+type AddMembersSelectProps = {
+	pickedMembers: UserInfo[];
+	handleSelect: (member: UserInfo) => void;
+};
+
+const AddMembersSelect = ({ pickedMembers, handleSelect }: AddMembersSelectProps) => {
 	const combobox = useCombobox({
 		onDropdownClose: () => combobox.resetSelectedOption()
 	});
 
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState<UserInfo[] | null>(null);
-	const [value, setValue] = useState('');
+	const [query, setQuery] = useState('');
 	const [empty, setEmpty] = useState(false);
 	const abortController = useRef<AbortController>();
 
@@ -49,23 +54,33 @@ const AddMembersSelect = () => {
 			.catch(() => {});
 	};
 
-	const options = (data ?? []).map((user: UserInfo) => (
-		<Combobox.Option key={user.id} value={user.username}>
-			<Stack gap={2}>
-				<Text>
-					{user.name} ({user.username})
-				</Text>
-				<Text c="dimmed">{user.email}</Text>
-			</Stack>
-		</Combobox.Option>
-	));
+	const options = (data ?? []).map((user: UserInfo) => {
+		const active = pickedMembers.some(m => m.id === user.id);
+		return (
+			<Combobox.Option key={user.id} value={user.username} active={active}>
+				<Group gap="sm">
+					{active && <CheckIcon size={12} />}
+					<Stack gap={2}>
+						<Text>
+							{user.name} ({user.username})
+						</Text>
+						<Text c="dimmed">{user.email}</Text>
+					</Stack>
+				</Group>
+			</Combobox.Option>
+		);
+	});
 
 	return (
 		<Combobox
 			store={combobox}
 			withinPortal={false}
 			onOptionSubmit={optionValue => {
-				setValue(optionValue);
+				setQuery('');
+				const user = data?.find(user => user.username === optionValue);
+				if (user) {
+					handleSelect(user);
+				}
 				combobox.closeDropdown();
 			}}
 		>
@@ -73,17 +88,17 @@ const AddMembersSelect = () => {
 				<TextInput
 					label="Search users"
 					placeholder="Start typing for search..."
-					value={value}
+					value={query}
 					onChange={event => {
 						const value = event.currentTarget.value;
-						setValue(value);
+						setQuery(value);
 						fetchOptions(value);
 						combobox.resetSelectedOption();
 						combobox.openDropdown();
 					}}
 					onFocus={() => {
 						if (data === null) {
-							fetchOptions(value);
+							fetchOptions(query);
 						}
 					}}
 					onBlur={() => combobox.closeDropdown()}
