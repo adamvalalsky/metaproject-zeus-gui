@@ -2,15 +2,47 @@ import { ActionIcon, Box, Button, Group, Select, Title } from '@mantine/core';
 import { useState } from 'react';
 import { IconTrash } from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
+import { notifications } from '@mantine/notifications';
+import { useNavigate } from 'react-router-dom';
 
 import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import AddMembersSelect from '@/components/project/members/add-members-select';
 import { type UserInfo } from '@/modules/user/model';
+import { useAddProjectMemberMutation } from '@/modules/project/mutations';
+import { addMembersSchema } from '@/modules/project/form';
 
 const ProjectDetailMembers = () => {
 	const { project } = useProjectOutletContext();
+	const navigate = useNavigate();
+	const { mutate, isPending } = useAddProjectMemberMutation();
 	const [pickedMembers, setPickedMembers] = useState<UserInfo[]>([]);
 	const [roles, setRoles] = useState<Record<number, string>>({});
+
+	const onClick = () => {
+		const members = pickedMembers.map(member => ({
+			id: member.id,
+			role: roles[member.id]
+		}));
+
+		const body = addMembersSchema.parse({
+			projectId: project.id,
+			members
+		});
+
+		mutate(body, {
+			onSuccess: () => {
+				notifications.show({ title: 'Members added', message: 'Members added to project', color: 'teal' });
+				navigate(`/project/${project.id}`);
+			},
+			onError: error => {
+				notifications.show({
+					title: 'Members not added.',
+					message: 'Could not add members. Try again later.',
+					color: 'red'
+				});
+			}
+		});
+	};
 
 	const handleSelect = (member: UserInfo) => {
 		// user is picked - remove
@@ -99,7 +131,7 @@ const ProjectDetailMembers = () => {
 							}
 						]}
 					/>
-					<Button color="teal" fullWidth mt={10}>
+					<Button color="teal" fullWidth mt={10} onClick={onClick} loading={isPending}>
 						Add {pickedMembers.length} member{pickedMembers.length > 1 ? 's' : ''}
 					</Button>
 				</Box>

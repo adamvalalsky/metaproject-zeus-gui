@@ -6,3 +6,15 @@ export const requestProjectSchema = z.object({
 });
 
 export type RequestProjectSchema = z.infer<typeof requestProjectSchema>;
+
+export const addMembersSchema = z.object({
+	projectId: z.number(),
+	members: z.array(
+		z.object({
+			id: z.number(),
+			role: z.string().min(3).max(100)
+		})
+	)
+});
+
+export type AddMembersSchema = z.infer<typeof addMembersSchema>;
