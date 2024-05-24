@@ -1,4 +1,4 @@
-import { type User } from '@/modules/user/model';
+import { type User, type UserInfo } from '@/modules/user/model';
 
 export type MyProjectResponse = {
 	projects: Project[];
@@ -18,7 +18,7 @@ export type Project = {
 
 export type ProjectMember = {
 	id: number;
-	userInfo: User;
+	userInfo: UserInfo;
 	role: string;
 	status: string;
 };

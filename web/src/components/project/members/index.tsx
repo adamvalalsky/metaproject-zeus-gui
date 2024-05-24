@@ -1,6 +1,6 @@
 import { ActionIcon, Box, Group, Skeleton, Stack, Text, Title } from '@mantine/core';
 import { DataTable } from 'mantine-datatable';
-import { IconTrash } from '@tabler/icons-react';
+import { IconCheck, IconClock, IconForbid, IconTrash, IconUser, IconUserUp } from '@tabler/icons-react';
 
 import { useProjectMembersQuery } from '@/modules/project/queries';
 import ErrorAlert from '@/components/global/error-alert';
@@ -25,7 +25,7 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 
 	return (
 		<Box mt={30}>
-			<Group justify="space-between">
+			<Group justify="space-between" mb={5}>
 				<Title order={3}>Project members</Title>
 				{members.length > 0 && <AddButton id={id} />}
 			</Group>
@@ -48,8 +48,7 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 						},
 						{
 							accessor: 'fullName',
-							title: 'Full name',
-							render: member => `${member.userInfo.firstName} ${member.userInfo.lastName}`
+							title: 'Full name'
 						},
 						{
 							accessor: 'username',
@@ -59,7 +58,50 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 						{
 							accessor: 'role',
 							title: 'Role',
-							render: member => member.role
+							render: member => {
+								if (member.role === 'manager') {
+									return (
+										<Group gap={4}>
+											<IconUserUp size={16} />
+											<Text>Manager</Text>
+										</Group>
+									);
+								}
+								return (
+									<Group gap={4}>
+										<IconUser size={16} />
+										<Text>User</Text>
+									</Group>
+								);
+							}
+						},
+						{
+							accessor: 'status',
+							title: 'Status',
+							render: member => {
+								if (member.status === 'active') {
+									return (
+										<Group gap={4} c="green">
+											<IconCheck size={14} />
+											<Text size="sm">Active</Text>
+										</Group>
+									);
+								}
+								if (member.status === 'pending') {
+									return (
+										<Group gap={4} c="orange">
+											<IconClock size={14} />
+											<Text size="sm">Pending</Text>
+										</Group>
+									);
+								}
+								return (
+									<Group gap={4} c="red">
+										<IconForbid size={14} />
+										<Text size="sm">Inactive</Text>
+									</Group>
+								);
+							}
 						},
 						{
 							accessor: 'actions',
