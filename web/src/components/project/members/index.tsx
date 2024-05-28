@@ -1,17 +1,23 @@
 import { ActionIcon, Box, Group, Skeleton, Stack, Text, Title } from '@mantine/core';
 import { DataTable } from 'mantine-datatable';
 import { IconCheck, IconClock, IconForbid, IconTrash, IconUser, IconUserUp } from '@tabler/icons-react';
+import { useState } from 'react';
+import { notifications } from '@mantine/notifications';
 
 import { useProjectMembersQuery } from '@/modules/project/queries';
 import ErrorAlert from '@/components/global/error-alert';
 import AddButton from '@/components/project/members/add-button';
+import { useRemoveProjectMemberMutation } from '@/modules/project/mutations';
 
 type ProjectMembersProps = {
 	id: number;
 };
 
 const ProjectMembers = ({ id }: ProjectMembersProps) => {
-	const { data: response, isPending, isError } = useProjectMembersQuery(id);
+	const { mutate, isPending: isRemovePending } = useRemoveProjectMemberMutation();
+	const { data: response, isPending, isError, refetch } = useProjectMembersQuery(id);
+
+	const [currentMember, setCurrentMember] = useState<number | null>(null);
 
 	if (isPending) {
 		return <Skeleton w={300} />;
@@ -22,6 +28,24 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 	}
 
 	const members = response.data.members;
+
+	const removeUser = (memberId: number) => {
+		setCurrentMember(memberId);
+		mutate(
+			{ projectId: id, memberId },
+			{
+				onSuccess: async () => {
+					await refetch();
+					setCurrentMember(null);
+					notifications.show({
+						title: 'Success',
+						message: 'Member removed successfully',
+						color: 'blue'
+					});
+				}
+			}
+		);
+	};
 
 	return (
 		<Box mt={30}>
@@ -37,7 +61,7 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 			)}
 			{members.length > 0 && (
 				<DataTable
-					height={500}
+					height={300}
 					withTableBorder
 					records={members}
 					columns={[
@@ -47,8 +71,9 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 							width: 150
 						},
 						{
-							accessor: 'fullName',
-							title: 'Full name'
+							accessor: 'name',
+							title: 'Full name',
+							render: member => member.userInfo.name
 						},
 						{
 							accessor: 'username',
@@ -108,9 +133,15 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 							title: '',
 							textAlign: 'center',
 							width: 120,
-							render: () => (
+							render: member => (
 								<Group gap={4} justify="space-between" wrap="nowrap">
-									<ActionIcon size="sm" variant="subtle" color="red">
+									<ActionIcon
+										size="sm"
+										variant="subtle"
+										color="red"
+										loading={isRemovePending && currentMember === member.id}
+										onClick={() => removeUser(member.id)}
+									>
 										<IconTrash size={24} />
 									</ActionIcon>
 								</Group>

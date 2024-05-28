@@ -1,6 +1,7 @@
 export enum Method {
 	GET = 'get',
-	POST = 'post'
+	POST = 'post',
+	DELETE = 'delete'
 }
 
 export type ApiResponse<T = unknown> = {

@@ -2,6 +2,7 @@ import type { AddMembersSchema, RequestProjectSchema } from '@/modules/project/f
 import fetch from '@/modules/api/request';
 import { type ApiResponse, Method } from '@/modules/api/model';
 import type { Project } from '@/modules/project/model';
+import { type ProjectMemberRemoveSchema } from '@/modules/project/schema';
 
 export const addProject = async (values: RequestProjectSchema) => {
 	const response = (await fetch('/project', {
@@ -21,5 +22,11 @@ export const addProjectMember = async ({ projectId, members }: AddMembersSchema)
 		body: JSON.stringify({
 			members
 		})
+	});
+};
+
+export const removeProjectMember = async ({ projectId, memberId }: ProjectMemberRemoveSchema): Promise<void> => {
+	await fetch(`/project/${projectId}/members/${memberId}`, {
+		method: Method.DELETE
 	});
 };
