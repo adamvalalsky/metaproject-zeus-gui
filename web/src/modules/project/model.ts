@@ -4,6 +4,11 @@ export type MyProjectResponse = {
 	projects: Project[];
 };
 
+export type ProjectDetailResponse = {
+	project: Project;
+	permissions: string[];
+};
+
 export type MemberList = {
 	members: ProjectMember[];
 };

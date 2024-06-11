@@ -12,7 +12,7 @@ import { useAddProjectMemberMutation } from '@/modules/project/mutations';
 import { addMembersSchema } from '@/modules/project/form';
 
 const ProjectDetailMembers = () => {
-	const { project } = useProjectOutletContext();
+	const { project, permissions } = useProjectOutletContext();
 	const navigate = useNavigate();
 	const { mutate, isPending } = useAddProjectMemberMutation();
 	const [pickedMembers, setPickedMembers] = useState<UserInfo[]>([]);
@@ -95,21 +95,27 @@ const ProjectDetailMembers = () => {
 								accessor: 'role',
 								title: 'Role',
 								width: 200,
-								render: userInfo => (
-									<Select
-										allowDeselect={false}
-										value={roles[userInfo.id] || 'user'}
-										onChange={value => {
-											if (value) {
-												setRoles({ ...roles, [userInfo.id]: value });
-											}
-										}}
-										data={[
-											{ value: 'user', label: 'User' },
-											{ value: 'manager', label: 'Manager' }
-										]}
-									/>
-								)
+								render: userInfo => {
+									if (permissions.includes('edit_managers')) {
+										return (
+											<Select
+												allowDeselect={false}
+												value={roles[userInfo.id] || 'user'}
+												onChange={value => {
+													if (value) {
+														setRoles({ ...roles, [userInfo.id]: value });
+													}
+												}}
+												data={[
+													{ value: 'user', label: 'User' },
+													{ value: 'manager', label: 'Manager' }
+												]}
+											/>
+										);
+									}
+
+									return 'User';
+								}
 							},
 							{
 								accessor: 'actions',

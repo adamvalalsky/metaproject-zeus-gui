@@ -9,7 +9,7 @@ import Loading from '@/components/global/loading';
 import ErrorPage from '@/components/global/error-page';
 import { ApiClientError } from '@/modules/api/model';
 
-type ContextType = { project: Project };
+type ContextType = { project: Project; permissions: string[] };
 
 export const useProjectOutletContext = () => useOutletContext<ContextType>();
 
@@ -34,11 +34,12 @@ const ProjectDetailGuard = () => {
 		return <Loading text="Loading project..." />;
 	}
 
-	const project = projectData.data;
+	const project = projectData.data.project;
+	const permissions = projectData.data.permissions;
 
 	return (
 		<MainContentWrapper mt={30}>
-			<Outlet context={{ project }} />
+			<Outlet context={{ project, permissions }} />
 		</MainContentWrapper>
 	);
 };

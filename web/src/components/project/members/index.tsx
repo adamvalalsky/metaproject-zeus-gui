@@ -8,12 +8,14 @@ import { useProjectMembersQuery } from '@/modules/project/queries';
 import ErrorAlert from '@/components/global/error-alert';
 import AddButton from '@/components/project/members/add-button';
 import { useRemoveProjectMemberMutation } from '@/modules/project/mutations';
+import { useProjectOutletContext } from '@/routes/project/detail/guard';
 
 type ProjectMembersProps = {
 	id: number;
 };
 
 const ProjectMembers = ({ id }: ProjectMembersProps) => {
+	const { permissions } = useProjectOutletContext();
 	const { mutate, isPending: isRemovePending } = useRemoveProjectMemberMutation();
 	const { data: response, isPending, isError, refetch } = useProjectMembersQuery(id);
 
@@ -51,12 +53,12 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 		<Box mt={30}>
 			<Group justify="space-between" mb={5}>
 				<Title order={3}>Project members</Title>
-				{members.length > 0 && <AddButton id={id} />}
+				{members.length > 0 && permissions.includes('edit_members') && <AddButton id={id} />}
 			</Group>
 			{members.length === 0 && (
 				<Stack mt={20} align="center" gap={5}>
 					<Text>No members added yet.</Text>
-					<AddButton id={id} />
+					{permissions.includes('edit_members') && <AddButton id={id} />}
 				</Stack>
 			)}
 			{members.length > 0 && (
