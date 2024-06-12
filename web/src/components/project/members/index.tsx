@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Group, Skeleton, Stack, Text, Title } from '@mantine/core';
+import { ActionIcon, Badge, Box, Group, Skeleton, Stack, Text, Title } from '@mantine/core';
 import { DataTable } from 'mantine-datatable';
 import { IconCheck, IconClock, IconForbid, IconTrash, IconUser, IconUserUp } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -9,17 +9,28 @@ import ErrorAlert from '@/components/global/error-alert';
 import AddButton from '@/components/project/members/add-button';
 import { useRemoveProjectMemberMutation } from '@/modules/project/mutations';
 import { useProjectOutletContext } from '@/routes/project/detail/guard';
+import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 
 type ProjectMembersProps = {
 	id: number;
 };
 
 const ProjectMembers = ({ id }: ProjectMembersProps) => {
+	const [page, setPage] = useState(1);
+	const [limit, setLimit] = useState(PAGE_SIZES[0]);
+	const [currentMember, setCurrentMember] = useState<number | null>(null);
+
 	const { permissions } = useProjectOutletContext();
 	const { mutate, isPending: isRemovePending } = useRemoveProjectMemberMutation();
-	const { data: response, isPending, isError, refetch } = useProjectMembersQuery(id);
-
-	const [currentMember, setCurrentMember] = useState<number | null>(null);
+	const {
+		data: response,
+		isPending,
+		isError,
+		refetch
+	} = useProjectMembersQuery(id, {
+		page,
+		limit
+	});
 
 	if (isPending) {
 		return <Skeleton w={300} />;
@@ -29,7 +40,18 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 		return <ErrorAlert />;
 	}
 
+	const metadata = response.data.metadata;
 	const members = response.data.members;
+
+	const onPageChange = async (newPage: number) => {
+		setPage(newPage);
+		await refetch();
+	};
+
+	const onRecordsPerPageChange = async (newRecordsPerPage: number) => {
+		setLimit(newRecordsPerPage);
+		await refetch();
+	};
 
 	const removeUser = (memberId: number) => {
 		setCurrentMember(memberId);
@@ -55,7 +77,12 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 	return (
 		<Box mt={30}>
 			<Group justify="space-between" mb={5}>
-				<Title order={3}>Project members</Title>
+				<Group>
+					<Title order={3}>Project members</Title>
+					<Badge variant="filled" color="orange">
+						{metadata.totalRecords}
+					</Badge>
+				</Group>
 				{members.length > 0 && permissions.includes('edit_members') && <AddButton id={id} />}
 			</Group>
 			{members.length === 0 && (
@@ -68,7 +95,13 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 				<DataTable
 					height={300}
 					withTableBorder
+					page={page}
+					totalRecords={metadata.totalRecords}
+					recordsPerPage={limit}
 					records={members}
+					onPageChange={onPageChange}
+					recordsPerPageOptions={PAGE_SIZES}
+					onRecordsPerPageChange={onRecordsPerPageChange}
 					columns={[
 						{
 							accessor: 'id',

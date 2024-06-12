@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import request from '@/modules/api/request';
 import type { MemberList, MyProjectResponse, ProjectDetailResponse } from '@/modules/project/model';
+import { type Pagination } from '@/modules/api/pagination/model';
 
 export const useActiveProjectsQuery = () =>
 	useQuery({
@@ -22,8 +23,8 @@ export const useProjectDetailQuery = (id: number) =>
 		retry: false
 	});
 
-export const useProjectMembersQuery = (id: number) =>
+export const useProjectMembersQuery = (id: number, pagination: Pagination) =>
 	useQuery({
-		queryKey: ['project', id, 'members'],
-		queryFn: () => request<MemberList>(`/project/${id}/members`)
+		queryKey: ['project', id, 'members', pagination.page, pagination.limit],
+		queryFn: () => request<MemberList>(`/project/${id}/members?page=${pagination.page}&limit=${pagination.limit}`)
 	});
