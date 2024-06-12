@@ -36,14 +36,17 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 		mutate(
 			{ projectId: id, memberId },
 			{
-				onSuccess: async () => {
-					await refetch();
-					setCurrentMember(null);
-					notifications.show({
-						title: 'Success',
-						message: 'Member removed successfully',
-						color: 'blue'
+				onSuccess: () => {
+					refetch().then(() => {
+						notifications.show({
+							title: 'Success',
+							message: 'Member removed successfully',
+							color: 'blue'
+						});
 					});
+				},
+				onSettled: () => {
+					setCurrentMember(null);
 				}
 			}
 		);
