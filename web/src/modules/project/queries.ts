@@ -23,8 +23,11 @@ export const useProjectDetailQuery = (id: number) =>
 		retry: false
 	});
 
-export const useProjectMembersQuery = (id: number, pagination: Pagination) =>
+export const useProjectMembersQuery = (id: number, pagination: Pagination, sortSelector: string) =>
 	useQuery({
-		queryKey: ['project', id, 'members', pagination.page, pagination.limit],
-		queryFn: () => request<MemberList>(`/project/${id}/members?page=${pagination.page}&limit=${pagination.limit}`)
+		queryKey: ['project', id, 'members', pagination.page, pagination.limit, sortSelector],
+		queryFn: () =>
+			request<MemberList>(
+				`/project/${id}/members?page=${pagination.page}&limit=${pagination.limit}&sort=${sortSelector}`
+			)
 	});
