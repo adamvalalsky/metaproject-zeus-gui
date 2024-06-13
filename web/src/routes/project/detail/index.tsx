@@ -13,7 +13,7 @@ import {
 	Title,
 	Tooltip
 } from '@mantine/core';
-import { IconInfoCircle, IconPencil } from '@tabler/icons-react';
+import { IconArchive, IconInfoCircle } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
@@ -39,7 +39,7 @@ const ProjectDetail = () => {
 						{t(`routes.ProjectDetail.status.${project.status}`)}
 					</Badge>
 					{permissions.includes('edit_project') && (
-						<Tooltip label="Edit project" position="bottom">
+						<Tooltip label="Archive project" position="bottom">
 							<ActionIcon
 								variant={isEditMode ? 'light' : 'transparent'}
 								color="gray"
@@ -48,7 +48,7 @@ const ProjectDetail = () => {
 								aria-label="Settings"
 								onClick={() => setEditMode(!isEditMode)}
 							>
-								<IconPencil style={{ width: rem(24), height: rem(24) }} stroke={1.5} />
+								<IconArchive style={{ width: rem(24), height: rem(24) }} stroke={1.5} />
 							</ActionIcon>
 						</Tooltip>
 					)}
