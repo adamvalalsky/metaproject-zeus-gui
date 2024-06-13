@@ -60,7 +60,7 @@ const ProjectDetailMembers = () => {
 			<Title>{project.title}</Title>
 			<Title order={3} mt={20}>
 				Add members
-				<AddMembersSelect pickedMembers={pickedMembers} handleSelect={handleSelect} />
+				<AddMembersSelect projectId={project.id} pickedMembers={pickedMembers} handleSelect={handleSelect} />
 			</Title>
 			{pickedMembers.length > 0 && (
 				<Box mt={30}>

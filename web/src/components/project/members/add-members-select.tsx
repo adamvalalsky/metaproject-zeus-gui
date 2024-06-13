@@ -8,8 +8,8 @@ type UserResponse = {
 	users: UserInfo[];
 };
 
-const getAsyncData = async (query: string, signal: AbortSignal): Promise<UserInfo[]> => {
-	const response = await request<UserResponse>(`/users?query=${query}`, {
+const getAsyncData = async (projectId: number, query: string, signal: AbortSignal): Promise<UserInfo[]> => {
+	const response = await request<UserResponse>(`/users?query=${query}&projectId=${projectId}`, {
 		signal
 	});
 
@@ -17,11 +17,12 @@ const getAsyncData = async (query: string, signal: AbortSignal): Promise<UserInf
 };
 
 type AddMembersSelectProps = {
+	projectId: number;
 	pickedMembers: UserInfo[];
 	handleSelect: (member: UserInfo) => void;
 };
 
-const AddMembersSelect = ({ pickedMembers, handleSelect }: AddMembersSelectProps) => {
+const AddMembersSelect = ({ projectId, pickedMembers, handleSelect }: AddMembersSelectProps) => {
 	const combobox = useCombobox({
 		onDropdownClose: () => combobox.resetSelectedOption()
 	});
@@ -33,7 +34,7 @@ const AddMembersSelect = ({ pickedMembers, handleSelect }: AddMembersSelectProps
 	const abortController = useRef<AbortController>();
 
 	const fetchOptions = (query: string) => {
-		if (!query) {
+		if (query.length < 3) {
 			setData([]);
 			setLoading(false);
 			setEmpty(true);
@@ -44,7 +45,7 @@ const AddMembersSelect = ({ pickedMembers, handleSelect }: AddMembersSelectProps
 		abortController.current = new AbortController();
 		setLoading(true);
 
-		getAsyncData(query, abortController.current?.signal)
+		getAsyncData(projectId, query, abortController.current?.signal)
 			.then(response => {
 				setData(response);
 				setLoading(false);
@@ -72,47 +73,57 @@ const AddMembersSelect = ({ pickedMembers, handleSelect }: AddMembersSelectProps
 	});
 
 	return (
-		<Combobox
-			store={combobox}
-			withinPortal={false}
-			onOptionSubmit={optionValue => {
-				setQuery('');
-				const user = data?.find(user => user.username === optionValue);
-				if (user) {
-					handleSelect(user);
-				}
-				combobox.closeDropdown();
-			}}
-		>
-			<Combobox.Target>
-				<TextInput
-					label="Search users"
-					placeholder="Start typing for search..."
-					value={query}
-					onChange={event => {
-						const value = event.currentTarget.value;
-						setQuery(value);
-						fetchOptions(value);
-						combobox.resetSelectedOption();
-						combobox.openDropdown();
-					}}
-					onFocus={() => {
-						if (data === null) {
-							fetchOptions(query);
-						}
-					}}
-					onBlur={() => combobox.closeDropdown()}
-					rightSection={loading && <Loader size={10} />}
-				/>
-			</Combobox.Target>
+		<Stack gap={2}>
+			<Combobox
+				store={combobox}
+				withinPortal={false}
+				onOptionSubmit={optionValue => {
+					setQuery('');
+					const user = data?.find(user => user.username === optionValue);
+					if (user) {
+						handleSelect(user);
+					}
+					combobox.closeDropdown();
+				}}
+			>
+				<Combobox.Target>
+					<TextInput
+						label="Search users"
+						placeholder="Start typing for search..."
+						value={query}
+						onChange={event => {
+							const value = event.currentTarget.value;
+							setQuery(value);
+							fetchOptions(value);
+							combobox.resetSelectedOption();
+							combobox.openDropdown();
+						}}
+						onFocus={() => {
+							if (data === null) {
+								fetchOptions(query);
+							}
+						}}
+						onBlur={() => combobox.closeDropdown()}
+						rightSection={loading && <Loader size={10} />}
+					/>
+				</Combobox.Target>
 
-			<Combobox.Dropdown hidden={data === null}>
-				<Combobox.Options>
-					{options}
-					{empty && <Combobox.Empty>No users found.</Combobox.Empty>}
-				</Combobox.Options>
-			</Combobox.Dropdown>
-		</Combobox>
+				<Combobox.Dropdown hidden={data === null}>
+					<Combobox.Options>
+						{options}
+						{query.length < 3 && (
+							<Combobox.Empty>
+								No users found. You need to type at least 3 characters to start searching
+							</Combobox.Empty>
+						)}
+						{empty && query.length >= 3 && <Combobox.Empty>No users found.</Combobox.Empty>}
+					</Combobox.Options>
+				</Combobox.Dropdown>
+			</Combobox>
+			<Text c="dimmed" size="sm">
+				Users that are already part of the projects will not be included in search.
+			</Text>
+		</Stack>
 	);
 };
 
