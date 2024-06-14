@@ -34,7 +34,7 @@ const ProjectDetailMembers = () => {
 				notifications.show({ title: 'Members added', message: 'Members added to project', color: 'teal' });
 				navigate(`/project/${project.id}`);
 			},
-			onError: error => {
+			onError: () => {
 				notifications.show({
 					title: 'Members not added.',
 					message: 'Could not add members. Try again later.',

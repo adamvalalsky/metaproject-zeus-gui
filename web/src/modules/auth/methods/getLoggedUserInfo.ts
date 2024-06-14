@@ -13,7 +13,6 @@ export const getLoggedUserInfo = (): User | null => {
 		source: 'perun',
 		externalId: '123',
 		username: 'testUser',
-		firstName: 'Adam',
-		lastName: 'Valalsky'
+		name: 'Adam Valalsky'
 	};
 };

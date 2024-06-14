@@ -37,7 +37,7 @@ const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 					<Group gap={7}>
 						<Avatar color="white" variant="filled" size="sm" />
 						<Text fw={500} size="sm" lh={1} mr={3} flex={1}>
-							{user.firstName} {user.lastName}
+							{user.name}
 						</Text>
 						<IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
 					</Group>
