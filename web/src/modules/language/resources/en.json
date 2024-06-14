@@ -36,6 +36,13 @@
         "submit": "Request"
       }
     },
+    "ProjectDetail": {
+      "status": {
+        "inactive": "Inactive",
+        "active": "Active",
+        "new": "New"
+      }
+    },
     "Dashboard": {
       "title": "Projects",
       "requestButton": "Request new project",

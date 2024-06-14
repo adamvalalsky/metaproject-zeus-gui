@@ -1,21 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 
-import fetch from '@/modules/api/request';
-import { type ApiResponse, Method } from '@/modules/api/model';
-import type { Project } from '@/modules/project/model';
-import { type RequestProjectSchema } from '@/modules/project/form';
+import { addProject, addProjectMember, removeProjectMember } from '@/modules/project/api';
 
 export const useAddProjectMutation = () =>
 	useMutation({
-		mutationFn: async (values: RequestProjectSchema) => {
-			const response = (await fetch('/project', {
-				method: Method.POST,
-				body: JSON.stringify({
-					title: values.title,
-					description: values.description
-				})
-			})) as ApiResponse<Project>;
+		mutationFn: addProject
+	});
 
-			return response.data?.id;
-		}
+export const useAddProjectMemberMutation = () =>
+	useMutation({
+		mutationFn: addProjectMember
+	});
+
+export const useRemoveProjectMemberMutation = () =>
+	useMutation({
+		mutationFn: removeProjectMember
 	});

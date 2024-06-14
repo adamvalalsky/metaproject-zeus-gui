@@ -1,11 +1,8 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import request from '@/modules/api/request';
-import type { Project } from '@/modules/project/model';
-
-type MyProjectResponse = {
-	projects: Project[];
-};
+import type { MemberList, MyProjectResponse, ProjectDetailResponse } from '@/modules/project/model';
+import { type Pagination } from '@/modules/api/pagination/model';
 
 export const useActiveProjectsQuery = () =>
 	useQuery({
@@ -20,7 +17,17 @@ export const useRequestedProjectsQuery = () =>
 	});
 
 export const useProjectDetailQuery = (id: number) =>
-	useSuspenseQuery({
+	useQuery({
 		queryKey: ['project', id],
-		queryFn: () => request<Project>(`/project/${id}`)
+		queryFn: () => request<ProjectDetailResponse>(`/project/${id}`),
+		retry: false
+	});
+
+export const useProjectMembersQuery = (id: number, pagination: Pagination, sortSelector: string) =>
+	useQuery({
+		queryKey: ['project', id, 'members', pagination.page, pagination.limit, sortSelector],
+		queryFn: () =>
+			request<MemberList>(
+				`/project/${id}/members?page=${pagination.page}&limit=${pagination.limit}&sort=${sortSelector}`
+			)
 	});

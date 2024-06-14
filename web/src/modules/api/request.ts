@@ -49,9 +49,20 @@ const request = <T>(url: string, init?: RequestInit): ApiRequestPromise<ApiRespo
 	return promise;
 };
 
-const createApiResponse = async (response: Response): Promise<{ status: number; data: unknown }> => ({
-	status: response.status,
-	data: await response.json()
-});
+const createApiResponse = async (response: Response): Promise<{ status: number; data: unknown }> => {
+	const data = await response.text();
+
+	if (!data) {
+		return {
+			status: response.status,
+			data: null
+		};
+	}
+
+	return {
+		status: response.status,
+		data: JSON.parse(data)
+	};
+};
 
 export default request;

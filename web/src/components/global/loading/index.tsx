@@ -1,12 +1,17 @@
-import { Group, Loader, rem } from '@mantine/core';
+import { Loader, rem, Stack, Text } from '@mantine/core';
 
 import MainContentWrapper from '@/components/global/content-wrapper';
 
-const Loading = () => (
+type LoadingProps = {
+	text?: string;
+};
+
+const Loading = ({ text }: LoadingProps) => (
 	<MainContentWrapper>
-		<Group justify="center" py={rem(150)}>
+		<Stack align="center" py={rem(150)}>
 			<Loader color="sky" size={rem(40)} />
-		</Group>
+			{text && <Text>{text}</Text>}
+		</Stack>
 	</MainContentWrapper>
 );
 
