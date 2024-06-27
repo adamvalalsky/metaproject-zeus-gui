@@ -9,6 +9,7 @@ import ProjectDetail from '@/routes/project/detail';
 import NotFound from '@/components/global/not-found';
 import ProjectDetailMembers from '@/routes/project/detail/members';
 import ProjectDetailGuard from '@/routes/project/detail/guard';
+import ProjectArchivePage from '@/routes/project/detail/archive';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -49,6 +50,7 @@ const App = () => {
 					<Route path=":id" element={<ProjectDetailGuard />}>
 						<Route index element={<ProjectDetail />} />
 						<Route path="members" element={<ProjectDetailMembers />} />
+						<Route path="archive" element={<ProjectArchivePage />} />
 					</Route>
 				</Route>
 				<Route path="*" element={<NotFound />} />

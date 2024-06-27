@@ -1,22 +1,8 @@
-import {
-	ActionIcon,
-	Alert,
-	Badge,
-	Box,
-	Divider,
-	Flex,
-	Group,
-	rem,
-	Stack,
-	Text,
-	Textarea,
-	Title,
-	Tooltip
-} from '@mantine/core';
+import { ActionIcon, Alert, Badge, Box, Divider, Flex, Group, rem, Stack, Text, Title, Tooltip } from '@mantine/core';
 import { IconArchive, IconInfoCircle } from '@tabler/icons-react';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 
 import ProjectMembers from '@/components/project/members';
 import { useProjectOutletContext } from '@/routes/project/detail/guard';
@@ -24,7 +10,6 @@ import { useProjectOutletContext } from '@/routes/project/detail/guard';
 const ProjectDetail = () => {
 	const { project, permissions } = useProjectOutletContext();
 	const { t } = useTranslation();
-	const [isEditMode, setEditMode] = useState(false);
 
 	return (
 		<Box>
@@ -41,12 +26,13 @@ const ProjectDetail = () => {
 					{permissions.includes('edit_project') && (
 						<Tooltip label="Archive project" position="bottom">
 							<ActionIcon
-								variant={isEditMode ? 'light' : 'transparent'}
+								component={Link}
+								variant="transparent"
 								color="gray"
 								size="lg"
 								radius="md"
 								aria-label="Settings"
-								onClick={() => setEditMode(!isEditMode)}
+								to="archive"
 							>
 								<IconArchive style={{ width: rem(24), height: rem(24) }} stroke={1.5} />
 							</ActionIcon>
@@ -80,7 +66,7 @@ const ProjectDetail = () => {
 				<Divider />
 				<Flex direction="column">
 					<Text fw={700}>Description:</Text>
-					{isEditMode ? <Textarea defaultValue={project.description} /> : <Text>{project.description}</Text>}
+					<Text>{project.description}</Text>
 				</Flex>
 			</Stack>
 			<ProjectMembers id={project.id} />
