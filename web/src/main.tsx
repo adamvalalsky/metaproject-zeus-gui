@@ -2,9 +2,10 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
+import '@mantine/core/styles.layer.css';
+import '@mantine/notifications/styles.layer.css';
 import 'mantine-datatable/styles.layer.css';
+import '@mantine/dropzone/styles.layer.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 

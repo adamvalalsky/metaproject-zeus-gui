@@ -14,9 +14,10 @@
   "dependencies": {
     "@fontsource/roboto": "^5.0.8",
     "@hookform/resolvers": "^3.3.4",
-    "@mantine/core": "^7.8.1",
-    "@mantine/hooks": "^7.8.1",
-    "@mantine/notifications": "^7.9.2",
+    "@mantine/core": "^7.11",
+    "@mantine/dropzone": "^7.11.0",
+    "@mantine/hooks": "^7.11",
+    "@mantine/notifications": "^7.11",
     "@tabler/icons-react": "^3.3.0",
     "@tanstack/react-query": "^5.36.0",
     "clsx": "^2.1.1",
