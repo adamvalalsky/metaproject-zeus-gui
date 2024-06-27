@@ -13,9 +13,12 @@ import {
 import { Dropzone, type FileWithPath, MIME_TYPES, MS_WORD_MIME_TYPE, PDF_MIME_TYPE } from '@mantine/dropzone';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
+import { useQueryClient } from '@tanstack/react-query';
+import { notifications } from '@mantine/notifications';
 
 import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import { type ArchiveProjectSchema, archiveProjectSchema } from '@/modules/project/form';
+import { useArchiveProjectMutation } from '@/modules/project/mutations';
 
 const getIcon = (type: string) => {
 	const style = { width: rem(64), height: rem(64) };
@@ -34,6 +37,8 @@ const getIcon = (type: string) => {
 const ProjectArchivePage = () => {
 	const { project, permissions } = useProjectOutletContext();
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+	const { mutate, isPending } = useArchiveProjectMutation();
 	const [file, setFile] = useState<FileWithPath | null>(null);
 	const {
 		control,
@@ -51,8 +56,31 @@ const ProjectArchivePage = () => {
 	}, [permissions]);
 
 	const onSubmit = (values: ArchiveProjectSchema) => {
-		console.log(values);
-		console.log(file);
+		mutate(
+			{ justification: values.justification, projectId: project.id, file },
+			{
+				onSuccess: () => {
+					queryClient
+						.invalidateQueries({
+							queryKey: ['project', project.id]
+						})
+						.then(() => {
+							navigate(`/project/${project.id}`);
+							notifications.show({
+								title: 'Project archived',
+								message: 'Project has been successfully archived.'
+							});
+						});
+				},
+				onError: () => {
+					notifications.show({
+						title: 'Failed to archive project',
+						message: 'Please try again later.',
+						color: 'red'
+					});
+				}
+			}
+		);
 	};
 
 	return (
@@ -73,7 +101,7 @@ const ProjectArchivePage = () => {
 			</Text>
 
 			<Box mt={20}>
-				<form onSubmit={handleSubmit(onSubmit)}>
+				<form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
 					<Textarea
 						label="Justification"
 						withAsterisk

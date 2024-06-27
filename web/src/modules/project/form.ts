@@ -20,7 +20,7 @@ export const addMembersSchema = z.object({
 export type AddMembersSchema = z.infer<typeof addMembersSchema>;
 
 export const archiveProjectSchema = z.object({
-	justification: z.string().min(15).max(1000),
+	justification: z.string().min(5),
 	file: z.string().optional()
 });
 

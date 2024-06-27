@@ -7,16 +7,23 @@ import {
 	Method
 } from '@/modules/api/model';
 
-const request = <T>(url: string, init?: RequestInit): ApiRequestPromise<ApiResponse<T>> => {
+const request = <T>(
+	url: string,
+	init?: RequestInit,
+	headersAutoGenerate = false
+): ApiRequestPromise<ApiResponse<T>> => {
 	const abortController = new AbortController();
 	const signal = abortController.signal;
 
 	// TODO get user token correctly, maybe it will be saved somewhere else
 	const userId = getLoggedUserToken();
 
-	const defaultHeaders: Record<string, string> = {
-		'Content-Type': 'application/json'
-	};
+	const defaultHeaders: Record<string, string> = {};
+
+	// force application/json content type
+	if (!headersAutoGenerate) {
+		defaultHeaders['Content-Type'] = 'application/json';
+	}
 
 	if (userId) {
 		defaultHeaders['X-User-Id'] = userId;
@@ -26,7 +33,10 @@ const request = <T>(url: string, init?: RequestInit): ApiRequestPromise<ApiRespo
 		method: Method.GET,
 		signal,
 		...init,
-		headers: defaultHeaders
+		headers: {
+			...defaultHeaders,
+			...getHeaders(init?.headers)
+		}
 	})
 		.then(async (response: Response) => {
 			if (!response.ok) {
@@ -63,6 +73,30 @@ const createApiResponse = async (response: Response): Promise<{ status: number; 
 		status: response.status,
 		data: JSON.parse(data)
 	};
+};
+
+const getHeaders = (headers?: HeadersInit): Record<string, string> => {
+	if (!headers) {
+		return {};
+	}
+
+	if (headers instanceof Headers) {
+		const headersObject: Record<string, string> = {};
+		headers.forEach((value, key) => {
+			headersObject[key] = value;
+		});
+		return headersObject;
+	}
+
+	if (Array.isArray(headers)) {
+		const headersObject: Record<string, string> = {};
+		headers.forEach(header => {
+			headersObject[header[0]] = header[1];
+		});
+		return headersObject;
+	}
+
+	return headers;
 };
 
 export default request;
