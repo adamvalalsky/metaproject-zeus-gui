@@ -46,9 +46,14 @@ const ProjectDetail = () => {
 					Current project, which you are editing is not yet accepted.
 				</Alert>
 			)}
-			{project.status === 'inactive' && (
+			{project.status === 'archived' && (
 				<Alert mt={5} variant="light" color="red" title="Project is archived" icon={<IconInfoCircle />}>
 					Current project is already archived.
+				</Alert>
+			)}
+			{project.status === 'rejected' && (
+				<Alert mt={5} variant="light" color="red" title="Project is rejected" icon={<IconInfoCircle />}>
+					Current project was already rejected.
 				</Alert>
 			)}
 			<Stack mt={15}>

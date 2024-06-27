@@ -38,7 +38,8 @@
     },
     "ProjectDetail": {
       "status": {
-        "inactive": "Inactive",
+        "rejected": "Rejected",
+        "archived": "Archived",
         "active": "Active",
         "new": "New"
       }

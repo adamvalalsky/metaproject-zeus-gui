@@ -61,7 +61,7 @@ const ProjectArchivePage = () => {
 			{
 				onSuccess: () => {
 					queryClient
-						.invalidateQueries({
+						.refetchQueries({
 							queryKey: ['project', project.id]
 						})
 						.then(() => {
@@ -193,7 +193,7 @@ const ProjectArchivePage = () => {
 						)}
 					/>
 					<Group justify="center" mt={10}>
-						<Button type="submit" color="green">
+						<Button type="submit" color="green" loading={isPending}>
 							Submit
 						</Button>
 					</Group>
