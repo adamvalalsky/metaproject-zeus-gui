@@ -1,14 +1,37 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Box, Button, Group, Input, rem, Text, Textarea, Title } from '@mantine/core';
-import { IconFileText, IconInfoCircle, IconUpload, IconX } from '@tabler/icons-react';
-import { Dropzone, MS_WORD_MIME_TYPE, PDF_MIME_TYPE } from '@mantine/dropzone';
+import { Alert, Box, Button, Group, Input, rem, Stack, Text, Textarea, Title } from '@mantine/core';
+import {
+	IconFileText,
+	IconFileTypeDoc,
+	IconFileTypeDocx,
+	IconFileTypePdf,
+	IconInfoCircle,
+	IconUpload,
+	IconX
+} from '@tabler/icons-react';
+import { Dropzone, type FileWithPath, MIME_TYPES, MS_WORD_MIME_TYPE, PDF_MIME_TYPE } from '@mantine/dropzone';
 
 import { useProjectOutletContext } from '@/routes/project/detail/guard';
+
+const getIcon = (type: string) => {
+	const style = { width: rem(64), height: rem(64) };
+
+	if (type === MIME_TYPES.doc) {
+		return <IconFileTypeDoc style={style} stroke={1.5} />;
+	}
+
+	if (type === MIME_TYPES.docx) {
+		return <IconFileTypeDocx style={style} stroke={1.5} />;
+	}
+
+	return <IconFileTypePdf style={style} stroke={1.5} />;
+};
 
 const ProjectArchivePage = () => {
 	const { project, permissions } = useProjectOutletContext();
 	const navigate = useNavigate();
+	const [file, setFile] = useState<FileWithPath | null>(null);
 
 	useEffect(() => {
 		if (!permissions.includes('edit_project')) {
@@ -43,12 +66,19 @@ const ProjectArchivePage = () => {
 						autosize
 						minRows={6}
 					/>
-					<Input.Wrapper label="Final report" description="You can load only one final report" mt={15}>
+					<Input.Wrapper
+						label="Final report"
+						withAsterisk
+						description="You can load only one final report"
+						mt={15}
+					>
 						<Dropzone
 							multiple={false}
 							name="file"
-							onDrop={files => console.log('accepted files', files)}
-							onReject={files => console.log('rejected files', files)}
+							onDrop={files => {
+								console.log(files);
+								setFile(files[0]);
+							}}
 							maxSize={5 * 1024 ** 2}
 							accept={[...PDF_MIME_TYPE, ...MS_WORD_MIME_TYPE]}
 						>
@@ -70,24 +100,41 @@ const ProjectArchivePage = () => {
 									/>
 								</Dropzone.Reject>
 								<Dropzone.Idle>
-									<IconFileText
-										style={{
-											width: rem(52),
-											height: rem(52),
-											color: 'var(--mantine-color-dimmed)'
-										}}
-										stroke={1.5}
-									/>
+									{!file && (
+										<IconFileText
+											style={{
+												width: rem(52),
+												height: rem(52),
+												color: 'var(--mantine-color-dimmed)'
+											}}
+											stroke={1.5}
+										/>
+									)}
 								</Dropzone.Idle>
 
-								<div>
-									<Text size="xl" inline>
-										Drag your report here or click to select file
-									</Text>
-									<Text size="sm" c="dimmed" inline mt={7}>
-										Attach only one PDF or Word document
-									</Text>
-								</div>
+								{!file && (
+									<Box>
+										<Text size="xl" inline>
+											Drag your report here or click to select file
+										</Text>
+										<Text size="sm" c="dimmed" inline mt={7}>
+											Attach only one PDF or Word document
+										</Text>
+									</Box>
+								)}
+								{file && (
+									<Group>
+										{getIcon(file.type)}
+										<Stack gap={1}>
+											<Text size="xl" inline>
+												{file.path}
+											</Text>
+											<Text c="dimmed" size="xs">
+												Click anywhere to replace this file with another.
+											</Text>
+										</Stack>
+									</Group>
+								)}
 							</Group>
 						</Dropzone>
 					</Input.Wrapper>
