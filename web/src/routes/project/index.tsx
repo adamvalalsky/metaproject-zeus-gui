@@ -1,18 +1,13 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Alert, Box, Button, Flex, Group, rem, Skeleton, Tabs, Title } from '@mantine/core';
+import { Alert, Box, Button, Flex, Group, rem, Tabs, Title } from '@mantine/core';
 import { IconActivity, IconClockQuestion, IconPlus } from '@tabler/icons-react';
-import { DataTable } from 'mantine-datatable';
 
-import { type Project } from '@/modules/project/model';
-import { type HeadCell } from '@/components/project/basic-table/types';
 import { useActiveProjectsQuery, useRequestedProjectsQuery } from '@/modules/project/queries';
-
-import classes from './project.module.css';
+import ProjectTable from '@/components/project/project-table';
 
 const Project: React.FC = () => {
-	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const {
 		data: activeProjects,
@@ -26,13 +21,6 @@ const Project: React.FC = () => {
 	} = useRequestedProjectsQuery();
 
 	const iconStyle = { width: rem(12), height: rem(12) };
-
-	const id: HeadCell<Project> = { selector: 'id', displayName: t('routes.Dashboard.table.id') };
-	const name: HeadCell<Project> = { selector: 'title', displayName: t('routes.Dashboard.table.name') };
-	const description: HeadCell<Project> = {
-		selector: 'description',
-		displayName: t('routes.Dashboard.table.description')
-	};
 
 	if (requestedProjectsError || activeProjectsError) {
 		return (
@@ -62,87 +50,19 @@ const Project: React.FC = () => {
 					</Tabs.List>
 
 					<Tabs.Panel value="active">
-						<Box mt={15}>
-							<Title order={4}>{t('routes.Dashboard.activeProjects.title')}</Title>
-							{activeProjectsLoading || !activeProjects?.data ? (
-								<Skeleton w={200} />
-							) : (
-								<Box mt={15}>
-									{activeProjects.data.projects.length === 0 && (
-										<Alert color="blue" variant="light" mt={15}>
-											{t('routes.Dashboard.error.noActiveProjects')}
-										</Alert>
-									)}
-									{activeProjects.data.projects.length > 0 && (
-										<DataTable
-											height={350}
-											className={classes.table}
-											records={activeProjects.data.projects}
-											textSelectionDisabled
-											highlightOnHover
-											onRowClick={({ record }) => navigate(`/project/${record.id}`)}
-											columns={[
-												{
-													accessor: 'id',
-													title: 'ID',
-													width: 70
-												},
-												{
-													accessor: 'title',
-													title: 'Name'
-												},
-												{
-													accessor: 'description',
-													title: 'Description'
-												}
-											]}
-										/>
-									)}
-								</Box>
-							)}
-						</Box>
+						<ProjectTable
+							title={t('routes.Dashboard.activeProjects.title')}
+							isLoading={activeProjectsLoading}
+							projects={activeProjects?.data.projects}
+						/>
 					</Tabs.Panel>
 
 					<Tabs.Panel value="requested">
-						<Box mt={15}>
-							<Title order={4}>{t('routes.Dashboard.requestedProjects.title')}</Title>
-							{requestedProjectsLoading || !requestedProjects?.data ? (
-								<Skeleton w={200} />
-							) : (
-								<Box mt={15}>
-									{requestedProjects.data.projects.length === 0 && (
-										<Alert color="blue" variant="light" mt={15}>
-											{t('routes.Dashboard.error.noActiveProjects')}
-										</Alert>
-									)}
-									{requestedProjects.data.projects.length > 0 && (
-										<DataTable
-											height={350}
-											className={classes.table}
-											records={requestedProjects.data.projects}
-											textSelectionDisabled
-											highlightOnHover
-											onRowClick={({ record }) => navigate(`/project/${record.id}`)}
-											columns={[
-												{
-													accessor: 'id',
-													title: 'ID',
-													width: 70
-												},
-												{
-													accessor: 'title',
-													title: 'Name'
-												},
-												{
-													accessor: 'description',
-													title: 'Description'
-												}
-											]}
-										/>
-									)}
-								</Box>
-							)}
-						</Box>
+						<ProjectTable
+							title={t('routes.Dashboard.requestedProjects.title')}
+							isLoading={requestedProjectsLoading}
+							projects={requestedProjects?.data.projects}
+						/>
 					</Tabs.Panel>
 				</Tabs>
 			</Box>
