@@ -1,5 +1,5 @@
 import { Alert, Box, Skeleton, Title } from '@mantine/core';
-import { DataTable } from 'mantine-datatable';
+import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,8 @@ import classes from '@/routes/project/project.module.css';
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import { type ProjectStatus } from '@/modules/project/constants';
 import { useProjectsQuery } from '@/modules/project/queries';
+import type { Project } from '@/modules/project/model';
+import { getSortQuery } from '@/modules/api/sorting/utils';
 
 type ProjectTableProps = {
 	title: string;
@@ -17,13 +19,21 @@ type ProjectTableProps = {
 const ProjectTable = ({ status, title }: ProjectTableProps) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(PAGE_SIZES[0]);
+	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Project>>({
+		columnAccessor: 'id',
+		direction: 'asc'
+	});
 
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const { data, isPending, isError } = useProjectsQuery(status, {
-		page,
-		limit
-	});
+	const { data, isPending, isError, refetch } = useProjectsQuery(
+		status,
+		{
+			page,
+			limit
+		},
+		getSortQuery(sortStatus.columnAccessor, sortStatus.direction)
+	);
 
 	if (isError) {
 		return (
@@ -36,6 +46,21 @@ const ProjectTable = ({ status, title }: ProjectTableProps) => {
 	if (isPending) {
 		return <Skeleton w={200} />;
 	}
+
+	const onPageChange = async (newPage: number) => {
+		setPage(newPage);
+		await refetch();
+	};
+
+	const onRecordsPerPageChange = async (newRecordsPerPage: number) => {
+		setLimit(newRecordsPerPage);
+		await refetch();
+	};
+
+	const onSortStatusChange = async (sortStatus: DataTableSortStatus<Project>) => {
+		setSortStatus(sortStatus);
+		await refetch();
+	};
 
 	const metadata = data.data.metadata;
 	const projects = data?.data.projects ?? [];
@@ -59,19 +84,23 @@ const ProjectTable = ({ status, title }: ProjectTableProps) => {
 						totalRecords={metadata.totalRecords}
 						recordsPerPage={limit}
 						recordsPerPageOptions={PAGE_SIZES}
-						onPageChange={setPage}
-						onRecordsPerPageChange={setLimit}
+						onPageChange={onPageChange}
+						onRecordsPerPageChange={onRecordsPerPageChange}
 						highlightOnHover
 						onRowClick={({ record }) => navigate(`/project/${record.id}`)}
+						sortStatus={sortStatus}
+						onSortStatusChange={onSortStatusChange}
 						columns={[
 							{
 								accessor: 'id',
 								title: t('routes.Dashboard.table.id'),
-								width: 70
+								width: 70,
+								sortable: true
 							},
 							{
 								accessor: 'title',
-								title: t('routes.Dashboard.table.name')
+								title: t('routes.Dashboard.table.name'),
+								sortable: true
 							},
 							{
 								accessor: 'description',

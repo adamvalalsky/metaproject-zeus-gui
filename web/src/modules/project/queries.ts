@@ -5,12 +5,12 @@ import type { MemberList, MyProjectResponse, ProjectDetailResponse } from '@/mod
 import { type Pagination } from '@/modules/api/pagination/model';
 import { type ProjectStatus } from '@/modules/project/constants';
 
-export const useProjectsQuery = (status: ProjectStatus, pagination: Pagination) =>
+export const useProjectsQuery = (status: ProjectStatus, pagination: Pagination, sortQuery: string) =>
 	useQuery({
-		queryKey: ['project', status.toLowerCase(), pagination.limit, pagination.page],
+		queryKey: ['project', status.toLowerCase(), pagination.limit, pagination.page, sortQuery],
 		queryFn: () =>
 			request<MyProjectResponse>(
-				`/project?status=${status.toLowerCase()}&page=${pagination.page}&limit=${pagination.limit}`
+				`/project?status=${status.toLowerCase()}&page=${pagination.page}&limit=${pagination.limit}&sort=${sortQuery}`
 			)
 	});
 
