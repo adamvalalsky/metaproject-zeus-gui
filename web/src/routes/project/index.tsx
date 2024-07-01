@@ -1,18 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Alert, Box, Button, Divider, Flex, Group, Skeleton, Title } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
+import { DataTable } from 'mantine-datatable';
 
 import { type Project } from '@/modules/project/model';
 import { type HeadCell } from '@/components/project/basic-table/types';
 import { useActiveProjectsQuery, useRequestedProjectsQuery } from '@/modules/project/queries';
 
-import useWindowSize from '../../hooks/useWindowSize';
-import BasicTable from '../../components/project/basic-table';
+import classes from './project.module.css';
 
 const Project: React.FC = () => {
-	const windowSize = useWindowSize();
+	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const {
 		data: activeProjects,
@@ -31,24 +31,6 @@ const Project: React.FC = () => {
 		selector: 'description',
 		displayName: t('routes.Dashboard.table.description')
 	};
-
-	const getHeadNames = (windowSize: number): HeadCell<Project>[] => {
-		if (windowSize < 600) {
-			return [name];
-		}
-
-		if (windowSize < 900) {
-			return [name, description];
-		}
-
-		if (windowSize < 1100) {
-			return [name, description];
-		}
-
-		return [id, name, description];
-	};
-
-	const headCells = getHeadNames(windowSize);
 
 	if (requestedProjectsError || activeProjectsError) {
 		return (
@@ -80,7 +62,29 @@ const Project: React.FC = () => {
 								</Alert>
 							)}
 							{activeProjects.data.projects.length > 0 && (
-								<BasicTable head={headCells} rows={activeProjects.data.projects} isRowClickable />
+								<DataTable
+									height={350}
+									className={classes.table}
+									records={activeProjects.data.projects}
+									textSelectionDisabled
+									highlightOnHover
+									onRowClick={({ record }) => navigate(`/project/${record.id}`)}
+									columns={[
+										{
+											accessor: 'id',
+											title: 'ID',
+											width: 70
+										},
+										{
+											accessor: 'title',
+											title: 'Name'
+										},
+										{
+											accessor: 'description',
+											title: 'Description'
+										}
+									]}
+								/>
 							)}
 						</Box>
 					)}
@@ -97,7 +101,29 @@ const Project: React.FC = () => {
 								</Alert>
 							)}
 							{requestedProjects.data.projects.length > 0 && (
-								<BasicTable head={headCells} rows={requestedProjects.data.projects} isRowClickable />
+								<DataTable
+									height={350}
+									className={classes.table}
+									records={requestedProjects.data.projects}
+									textSelectionDisabled
+									highlightOnHover
+									onRowClick={({ record }) => navigate(`/project/${record.id}`)}
+									columns={[
+										{
+											accessor: 'id',
+											title: 'ID',
+											width: 70
+										},
+										{
+											accessor: 'title',
+											title: 'Name'
+										},
+										{
+											accessor: 'description',
+											title: 'Description'
+										}
+									]}
+								/>
 							)}
 						</Box>
 					)}
