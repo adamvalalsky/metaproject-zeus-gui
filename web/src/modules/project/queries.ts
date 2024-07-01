@@ -3,23 +3,15 @@ import { useQuery } from '@tanstack/react-query';
 import request from '@/modules/api/request';
 import type { MemberList, MyProjectResponse, ProjectDetailResponse } from '@/modules/project/model';
 import { type Pagination } from '@/modules/api/pagination/model';
+import { type ProjectStatus } from '@/modules/project/constants';
 
-export const useActiveProjectsQuery = () =>
+export const useProjectsQuery = (status: ProjectStatus, pagination: Pagination) =>
 	useQuery({
-		queryKey: ['project', 'active'],
-		queryFn: () => request<MyProjectResponse>('/project?status=active')
-	});
-
-export const useRequestedProjectsQuery = () =>
-	useQuery({
-		queryKey: ['project', 'requested'],
-		queryFn: () => request<MyProjectResponse>('/project?status=new')
-	});
-
-export const useArchivedProjectsQuery = () =>
-	useQuery({
-		queryKey: ['project', 'archived'],
-		queryFn: () => request<MyProjectResponse>('/project?status=archived')
+		queryKey: ['project', status.toLowerCase(), pagination.limit, pagination.page],
+		queryFn: () =>
+			request<MyProjectResponse>(
+				`/project?status=${status.toLowerCase()}&page=${pagination.page}&limit=${pagination.limit}`
+			)
 	});
 
 export const useProjectDetailQuery = (id: number) =>

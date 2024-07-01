@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Box, Button, Flex, Group, rem, Tabs, Title } from '@mantine/core';
 import { IconActivity, IconArchive, IconClockQuestion, IconPlus } from '@tabler/icons-react';
 
-import { useActiveProjectsQuery, useArchivedProjectsQuery, useRequestedProjectsQuery } from '@/modules/project/queries';
 import ProjectTable from '@/components/project/project-table';
+import { ProjectStatus } from '@/modules/project/constants';
 
 const Project: React.FC = () => {
 	const { t } = useTranslation();
@@ -37,21 +37,21 @@ const Project: React.FC = () => {
 					<Tabs.Panel value="active">
 						<ProjectTable
 							title={t('routes.Dashboard.activeProjects.title')}
-							useProjectsQuery={() => useActiveProjectsQuery()}
+							status={ProjectStatus.ACTIVE}
 						/>
 					</Tabs.Panel>
 
 					<Tabs.Panel value="requested">
 						<ProjectTable
 							title={t('routes.Dashboard.requestedProjects.title')}
-							useProjectsQuery={() => useRequestedProjectsQuery()}
+							status={ProjectStatus.NEW}
 						/>
 					</Tabs.Panel>
 
 					<Tabs.Panel value="archived">
 						<ProjectTable
 							title={t('routes.Dashboard.archivedProjects.title')}
-							useProjectsQuery={() => useArchivedProjectsQuery()}
+							status={ProjectStatus.ARCHIVED}
 						/>
 					</Tabs.Panel>
 				</Tabs>

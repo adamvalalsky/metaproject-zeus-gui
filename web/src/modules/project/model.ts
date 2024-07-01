@@ -2,6 +2,7 @@ import { type User, type UserInfo } from '@/modules/user/model';
 import { type PaginationMetadata } from '@/modules/api/pagination/model';
 
 export type MyProjectResponse = {
+	metadata: PaginationMetadata;
 	projects: Project[];
 };
 

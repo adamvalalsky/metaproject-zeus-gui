@@ -1,23 +1,29 @@
 import { Alert, Box, Skeleton, Title } from '@mantine/core';
 import { DataTable } from 'mantine-datatable';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { type UseQueryResult } from '@tanstack/react-query';
 
 import classes from '@/routes/project/project.module.css';
-import { type ApiResponse } from '@/modules/api/model';
-import { type MyProjectResponse } from '@/modules/project/model';
+import { PAGE_SIZES } from '@/modules/api/pagination/constants';
+import { type ProjectStatus } from '@/modules/project/constants';
+import { useProjectsQuery } from '@/modules/project/queries';
 
 type ProjectTableProps = {
 	title: string;
-	useProjectsQuery: () => UseQueryResult<ApiResponse<MyProjectResponse>, Error>;
+	status: ProjectStatus;
 };
 
-const ProjectTable = ({ useProjectsQuery, title }: ProjectTableProps) => {
+const ProjectTable = ({ status, title }: ProjectTableProps) => {
+	const [page, setPage] = useState(1);
+	const [limit, setLimit] = useState(PAGE_SIZES[0]);
+
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const { data, isPending, isError } = useProjectsQuery();
+	const { data, isPending, isError } = useProjectsQuery(status, {
+		page,
+		limit
+	});
 
 	if (isError) {
 		return (
@@ -31,6 +37,7 @@ const ProjectTable = ({ useProjectsQuery, title }: ProjectTableProps) => {
 		return <Skeleton w={200} />;
 	}
 
+	const metadata = data.data.metadata;
 	const projects = data?.data.projects ?? [];
 
 	return (
@@ -48,6 +55,12 @@ const ProjectTable = ({ useProjectsQuery, title }: ProjectTableProps) => {
 						className={classes.table}
 						records={projects}
 						textSelectionDisabled
+						page={page}
+						totalRecords={metadata.totalRecords}
+						recordsPerPage={limit}
+						recordsPerPageOptions={PAGE_SIZES}
+						onPageChange={setPage}
+						onRecordsPerPageChange={setLimit}
 						highlightOnHover
 						onRowClick={({ record }) => navigate(`/project/${record.id}`)}
 						columns={[
