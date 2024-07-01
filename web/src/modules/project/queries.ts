@@ -16,6 +16,12 @@ export const useRequestedProjectsQuery = () =>
 		queryFn: () => request<MyProjectResponse>('/project?status=new')
 	});
 
+export const useArchivedProjectsQuery = () =>
+	useQuery({
+		queryKey: ['project', 'archived'],
+		queryFn: () => request<MyProjectResponse>('/project?status=archived')
+	});
+
 export const useProjectDetailQuery = (id: number) =>
 	useQuery({
 		queryKey: ['project', id],

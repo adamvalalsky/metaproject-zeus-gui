@@ -58,6 +58,9 @@
       "requestedProjects": {
         "title": "Requested projects"
       },
+      "archivedProjects": {
+        "title": "Archived projects"
+      },
       "table": {
         "id": "ID",
         "name": "Name",

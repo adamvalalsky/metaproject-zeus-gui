@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Alert, Box, Button, Flex, Group, rem, Tabs, Title } from '@mantine/core';
-import { IconActivity, IconClockQuestion, IconPlus } from '@tabler/icons-react';
+import { IconActivity, IconArchive, IconClockQuestion, IconPlus } from '@tabler/icons-react';
 
-import { useActiveProjectsQuery, useRequestedProjectsQuery } from '@/modules/project/queries';
+import { useActiveProjectsQuery, useArchivedProjectsQuery, useRequestedProjectsQuery } from '@/modules/project/queries';
 import ProjectTable from '@/components/project/project-table';
 
 const Project: React.FC = () => {
@@ -19,10 +19,15 @@ const Project: React.FC = () => {
 		isLoading: requestedProjectsLoading,
 		isError: requestedProjectsError
 	} = useRequestedProjectsQuery();
+	const {
+		data: archivedProjects,
+		isLoading: archivedProjectsLoading,
+		isError: archivedProjectsError
+	} = useArchivedProjectsQuery();
 
 	const iconStyle = { width: rem(12), height: rem(12) };
 
-	if (requestedProjectsError || activeProjectsError) {
+	if (requestedProjectsError || activeProjectsError || archivedProjectsError) {
 		return (
 			<Alert color="red" mt={15} variant="light">
 				{t('routes.Dashboard.error.connection')}
@@ -42,10 +47,13 @@ const Project: React.FC = () => {
 				<Tabs defaultValue="active">
 					<Tabs.List>
 						<Tabs.Tab value="active" leftSection={<IconActivity style={iconStyle} />}>
-							Active projects
+							{t('routes.Dashboard.activeProjects.title')}
 						</Tabs.Tab>
 						<Tabs.Tab value="requested" leftSection={<IconClockQuestion style={iconStyle} />}>
-							Requested projects
+							{t('routes.Dashboard.requestedProjects.title')}
+						</Tabs.Tab>
+						<Tabs.Tab value="archived" leftSection={<IconArchive style={iconStyle} />}>
+							{t('routes.Dashboard.archivedProjects.title')}
 						</Tabs.Tab>
 					</Tabs.List>
 
@@ -62,6 +70,14 @@ const Project: React.FC = () => {
 							title={t('routes.Dashboard.requestedProjects.title')}
 							isLoading={requestedProjectsLoading}
 							projects={requestedProjects?.data.projects}
+						/>
+					</Tabs.Panel>
+
+					<Tabs.Panel value="archived">
+						<ProjectTable
+							title={t('routes.Dashboard.archivedProjects.title')}
+							isLoading={archivedProjectsLoading}
+							projects={archivedProjects?.data.projects}
 						/>
 					</Tabs.Panel>
 				</Tabs>
