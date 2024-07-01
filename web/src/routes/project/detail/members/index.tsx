@@ -10,6 +10,7 @@ import AddMembersSelect from '@/components/project/members/add-members-select';
 import { type UserInfo } from '@/modules/user/model';
 import { useAddProjectMemberMutation } from '@/modules/project/mutations';
 import { addMembersSchema } from '@/modules/project/form';
+import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 
 const ProjectDetailMembers = () => {
 	const { project, permissions } = useProjectOutletContext();
@@ -57,6 +58,13 @@ const ProjectDetailMembers = () => {
 
 	return (
 		<Box>
+			<PageBreadcrumbs
+				links={[
+					{ title: 'Projects', href: '/project' },
+					{ title: project.title, href: `/project/${project.id}` },
+					{ title: 'Add members', href: `/project/${project.id}/members` }
+				]}
+			/>
 			<Title>{project.title}</Title>
 			<Title order={3} mt={20}>
 				Add members

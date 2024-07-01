@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import ProjectMembers from '@/components/project/members';
 import { useProjectOutletContext } from '@/routes/project/detail/guard';
+import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 
 const ProjectDetail = () => {
 	const { project, permissions } = useProjectOutletContext();
@@ -13,6 +14,12 @@ const ProjectDetail = () => {
 
 	return (
 		<Box>
+			<PageBreadcrumbs
+				links={[
+					{ title: 'Projects', href: '/project' },
+					{ title: project.title, href: `/project/${project.id}` }
+				]}
+			/>
 			<Group justify="space-between">
 				<Title>{project.title}</Title>
 				<Group>

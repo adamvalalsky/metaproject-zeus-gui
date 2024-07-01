@@ -19,6 +19,7 @@ import { notifications } from '@mantine/notifications';
 import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import { type ArchiveProjectSchema, archiveProjectSchema } from '@/modules/project/form';
 import { useArchiveProjectMutation } from '@/modules/project/mutations';
+import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 
 const getIcon = (type: string) => {
 	const style = { width: rem(64), height: rem(64) };
@@ -85,6 +86,13 @@ const ProjectArchivePage = () => {
 
 	return (
 		<Box>
+			<PageBreadcrumbs
+				links={[
+					{ title: 'Projects', href: '/project' },
+					{ title: project.title, href: `/project/${project.id}` },
+					{ title: 'Archive project', href: `/project/${project.id}/archive` }
+				]}
+			/>
 			<Title>Project archival</Title>
 			<Title order={3} pb={30} pt={15}>
 				Title: {project.title}

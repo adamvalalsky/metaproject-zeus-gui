@@ -15,6 +15,8 @@ const DrawerList = ({ open }: DrawerListProps) => {
 	const { pathname } = useLocation();
 	const { t } = useTranslation();
 
+	console.log(pathname);
+
 	return (
 		<Box className={classes.sidebar} data-opened={open}>
 			<ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
@@ -26,7 +28,7 @@ const DrawerList = ({ open }: DrawerListProps) => {
 							to={href}
 							component={Link}
 							label={t(title)}
-							active={pathname === href}
+							active={pathname.includes(href)}
 							variant="filled"
 							leftSection={icon}
 						/>
