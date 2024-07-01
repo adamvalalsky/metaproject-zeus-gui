@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Alert, Box, Button, Flex, Group, rem, Tabs, Title } from '@mantine/core';
+import { Box, Button, Flex, Group, rem, Tabs, Title } from '@mantine/core';
 import { IconActivity, IconArchive, IconClockQuestion, IconPlus } from '@tabler/icons-react';
 
 import { useActiveProjectsQuery, useArchivedProjectsQuery, useRequestedProjectsQuery } from '@/modules/project/queries';
@@ -9,31 +9,8 @@ import ProjectTable from '@/components/project/project-table';
 
 const Project: React.FC = () => {
 	const { t } = useTranslation();
-	const {
-		data: activeProjects,
-		isLoading: activeProjectsLoading,
-		isError: activeProjectsError
-	} = useActiveProjectsQuery();
-	const {
-		data: requestedProjects,
-		isLoading: requestedProjectsLoading,
-		isError: requestedProjectsError
-	} = useRequestedProjectsQuery();
-	const {
-		data: archivedProjects,
-		isLoading: archivedProjectsLoading,
-		isError: archivedProjectsError
-	} = useArchivedProjectsQuery();
 
 	const iconStyle = { width: rem(12), height: rem(12) };
-
-	if (requestedProjectsError || activeProjectsError || archivedProjectsError) {
-		return (
-			<Alert color="red" mt={15} variant="light">
-				{t('routes.Dashboard.error.connection')}
-			</Alert>
-		);
-	}
 
 	return (
 		<Flex mt={15} direction="column" align="center">
@@ -60,24 +37,21 @@ const Project: React.FC = () => {
 					<Tabs.Panel value="active">
 						<ProjectTable
 							title={t('routes.Dashboard.activeProjects.title')}
-							isLoading={activeProjectsLoading}
-							projects={activeProjects?.data.projects}
+							useProjectsQuery={() => useActiveProjectsQuery()}
 						/>
 					</Tabs.Panel>
 
 					<Tabs.Panel value="requested">
 						<ProjectTable
 							title={t('routes.Dashboard.requestedProjects.title')}
-							isLoading={requestedProjectsLoading}
-							projects={requestedProjects?.data.projects}
+							useProjectsQuery={() => useRequestedProjectsQuery()}
 						/>
 					</Tabs.Panel>
 
 					<Tabs.Panel value="archived">
 						<ProjectTable
 							title={t('routes.Dashboard.archivedProjects.title')}
-							isLoading={archivedProjectsLoading}
-							projects={archivedProjects?.data.projects}
+							useProjectsQuery={() => useArchivedProjectsQuery()}
 						/>
 					</Tabs.Panel>
 				</Tabs>

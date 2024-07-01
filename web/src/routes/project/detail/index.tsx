@@ -23,7 +23,7 @@ const ProjectDetail = () => {
 					>
 						{t(`routes.ProjectDetail.status.${project.status}`)}
 					</Badge>
-					{permissions.includes('edit_project') && (
+					{permissions.includes('edit_project') && project.status === 'active' && (
 						<Tooltip label="Archive project" position="bottom">
 							<ActionIcon
 								component={Link}
