@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Flex, Textarea, TextInput, Title } from '@mantine/core';
-import { useForm } from 'react-hook-form';
+import { Box, Button, Flex, TextInput, Title } from '@mantine/core';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { notifications } from '@mantine/notifications';
 
@@ -10,17 +10,13 @@ import { useAddProjectMutation } from '@/modules/project/mutations';
 import { ApiClientError } from '@/modules/api/model';
 import { requestProjectSchema, type RequestProjectSchema } from '@/modules/project/form';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
+import TextEditor from '@/components/global/text-editor';
 
 const AddProject: React.FC = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const { mutate, isPending } = useAddProjectMutation();
-	const {
-		handleSubmit,
-		register,
-		setError,
-		formState: { errors }
-	} = useForm<RequestProjectSchema>({
+	const form = useForm<RequestProjectSchema>({
 		resolver: zodResolver(requestProjectSchema)
 	});
 
@@ -70,29 +66,23 @@ const AddProject: React.FC = () => {
 			<Flex mt={100} direction="column" align="center">
 				<Title order={1}>{t('routes.AddProject.title')}</Title>
 				<Box w="80%">
-					<form onSubmit={handleSubmit(onSubmit)}>
-						<TextInput
-							label="Title"
-							withAsterisk
-							placeholder="Project title"
-							error={errors.title?.message}
-							{...register('title')}
-						/>
-						<Textarea
-							autosize
-							label="Description"
-							withAsterisk
-							minRows={4}
-							placeholder="Project description"
-							error={errors.description?.message}
-							{...register('description')}
-						/>
-						<Flex justify="center">
-							<Button loading={isPending} type="submit" variant="filled" color="teal" mt={10} w={200}>
-								{t('routes.AddProject.form.submit')}
-							</Button>
-						</Flex>
-					</form>
+					<FormProvider {...form}>
+						<form onSubmit={form.handleSubmit(onSubmit)}>
+							<TextInput
+								label="Title"
+								withAsterisk
+								placeholder="Project title"
+								error={form.formState.errors.title?.message}
+								{...form.register('title')}
+							/>
+							<TextEditor label="Description" inputHtmlName="description" />
+							<Flex justify="center">
+								<Button loading={isPending} type="submit" variant="filled" color="teal" mt={10} w={200}>
+									{t('routes.AddProject.form.submit')}
+								</Button>
+							</Flex>
+						</form>
+					</FormProvider>
 				</Box>
 			</Flex>
 		</Box>

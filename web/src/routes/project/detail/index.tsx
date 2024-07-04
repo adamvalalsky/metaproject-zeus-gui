@@ -105,7 +105,7 @@ const ProjectDetail = () => {
 				<Divider />
 				<Flex direction="column">
 					<Text fw={700}>Description:</Text>
-					<Text>{project.description}</Text>
+					<Text dangerouslySetInnerHTML={{ __html: project.description }} />
 				</Flex>
 			</Stack>
 

@@ -1,0 +1,3 @@
+.content > div > div {
+    min-height: rem(300);
+}
