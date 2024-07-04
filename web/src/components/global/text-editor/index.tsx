@@ -3,17 +3,16 @@ import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 import { Underline } from '@tiptap/extension-underline';
 import { useFormContext } from 'react-hook-form';
-import { InputWrapper, TextInput } from '@mantine/core';
+import { InputWrapper } from '@mantine/core';
 
 import classes from './text-editor.module.css';
 
 type TextEditorProps = Omit<RichTextEditorProps, 'editor' | 'children'> & {
 	inputHtmlName: string;
-	inputClearTextName?: string;
 	label: string;
 };
 
-const TextEditor = ({ inputHtmlName, inputClearTextName, label, ...inputProps }: TextEditorProps) => {
+const TextEditor = ({ inputHtmlName, label, ...inputProps }: TextEditorProps) => {
 	const form = useFormContext();
 
 	const editor = useEditor({
@@ -21,7 +20,6 @@ const TextEditor = ({ inputHtmlName, inputClearTextName, label, ...inputProps }:
 		content: form?.getValues(inputHtmlName),
 		onUpdate: ({ editor }) => {
 			form.setValue(inputHtmlName, editor.getHTML());
-			form.setValue(inputClearTextName, editor.getText());
 		}
 	});
 
@@ -32,7 +30,6 @@ const TextEditor = ({ inputHtmlName, inputClearTextName, label, ...inputProps }:
 			error={form.formState.errors[inputHtmlName]?.message}
 			{...form.register(inputHtmlName)}
 		>
-			{inputClearTextName && <TextInput display="none" {...form.register(inputClearTextName)} />}
 			<RichTextEditor {...inputProps} editor={editor}>
 				<RichTextEditor.Toolbar sticky stickyOffset={60}>
 					<RichTextEditor.ControlsGroup>

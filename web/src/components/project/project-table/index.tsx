@@ -10,6 +10,7 @@ import { type ProjectStatus } from '@/modules/project/constants';
 import { useProjectsQuery } from '@/modules/project/queries';
 import type { Project } from '@/modules/project/model';
 import { getSortQuery } from '@/modules/api/sorting/utils';
+import { strip } from '@/modules/html/strip';
 
 type ProjectTableProps = {
 	title: string;
@@ -104,7 +105,11 @@ const ProjectTable = ({ status, title }: ProjectTableProps) => {
 							},
 							{
 								accessor: 'description',
-								title: t('routes.Dashboard.table.description')
+								title: t('routes.Dashboard.table.description'),
+								render: project => {
+									const stripped = strip(project.description);
+									return stripped.length > 100 ? `${stripped.slice(0, 100)}...` : stripped;
+								}
 							}
 						]}
 					/>

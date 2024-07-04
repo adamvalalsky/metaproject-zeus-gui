@@ -23,6 +23,7 @@ import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { ProjectStatus } from '@/modules/project/constants';
 import FileView from '@/components/project/file';
+import { sanitize } from '@/modules/html/sanitize';
 
 const ProjectDetail = () => {
 	const { project, permissions, archivalInfo } = useProjectOutletContext();
@@ -93,9 +94,7 @@ const ProjectDetail = () => {
 			<Stack mt={15}>
 				<Group justify="space-between">
 					<Group gap={10}>
-						<Text fw="bold" size="lg">
-							Principal investigator:
-						</Text>
+						<Title order={4}>Principal investigator:</Title>
 						<Text size="lg">{project.user.name}</Text>
 					</Group>
 					<Text c="dimmed" size="sm">
@@ -104,8 +103,8 @@ const ProjectDetail = () => {
 				</Group>
 				<Divider />
 				<Flex direction="column">
-					<Text fw={700}>Description:</Text>
-					<Text dangerouslySetInnerHTML={{ __html: project.description }} />
+					<Title order={4}>Description:</Title>
+					<Text dangerouslySetInnerHTML={{ __html: sanitize(project.description) }} />
 				</Flex>
 			</Stack>
 
