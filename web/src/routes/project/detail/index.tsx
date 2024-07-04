@@ -1,4 +1,18 @@
-import { ActionIcon, Alert, Badge, Box, Divider, Flex, Group, rem, Stack, Text, Title, Tooltip } from '@mantine/core';
+import {
+	ActionIcon,
+	Alert,
+	Badge,
+	Box,
+	Divider,
+	Flex,
+	Group,
+	rem,
+	Stack,
+	Tabs,
+	Text,
+	Title,
+	Tooltip
+} from '@mantine/core';
 import { IconArchive, IconInfoCircle } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
@@ -7,10 +21,17 @@ import { Link } from 'react-router-dom';
 import ProjectMembers from '@/components/project/members';
 import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
+import { ProjectStatus } from '@/modules/project/constants';
+import FileView from '@/components/project/file';
 
 const ProjectDetail = () => {
-	const { project, permissions } = useProjectOutletContext();
+	const { project, permissions, archivalInfo } = useProjectOutletContext();
 	const { t } = useTranslation();
+
+	const iconStyle = { width: rem(16), height: rem(16) };
+
+	const showArchivalInfoTab =
+		project.status === ProjectStatus.ARCHIVED && permissions.includes('view_advanced_details') && !!archivalInfo;
 
 	return (
 		<Box>
@@ -26,7 +47,13 @@ const ProjectDetail = () => {
 					<Badge
 						variant="light"
 						size="lg"
-						color={project.status === 'active' ? 'teal' : project.status === 'new' ? 'orange' : 'red'}
+						color={
+							project.status === ProjectStatus.ACTIVE
+								? 'teal'
+								: project.status === ProjectStatus.NEW
+									? 'orange'
+									: 'red'
+						}
 					>
 						{t(`routes.ProjectDetail.status.${project.status}`)}
 					</Badge>
@@ -48,17 +75,17 @@ const ProjectDetail = () => {
 				</Group>
 			</Group>
 			<Divider my={10} />
-			{project.status === 'new' && (
+			{project.status === ProjectStatus.NEW && (
 				<Alert mt={5} variant="light" color="yellow" title="Project is not active" icon={<IconInfoCircle />}>
 					Current project, which you are editing is not yet accepted.
 				</Alert>
 			)}
-			{project.status === 'archived' && (
+			{project.status === ProjectStatus.ARCHIVED && (
 				<Alert mt={5} variant="light" color="red" title="Project is archived" icon={<IconInfoCircle />}>
 					Current project is already archived.
 				</Alert>
 			)}
-			{project.status === 'rejected' && (
+			{project.status === ProjectStatus.REJECTED && (
 				<Alert mt={5} variant="light" color="red" title="Project is rejected" icon={<IconInfoCircle />}>
 					Current project was already rejected.
 				</Alert>
@@ -81,7 +108,41 @@ const ProjectDetail = () => {
 					<Text>{project.description}</Text>
 				</Flex>
 			</Stack>
-			<ProjectMembers id={project.id} />
+
+			<Tabs mt={20} defaultValue={showArchivalInfoTab ? 'archivalInfo' : 'projectInfo'}>
+				<Tabs.List>
+					{showArchivalInfoTab && (
+						<Tabs.Tab value="archivalInfo" leftSection={<IconArchive style={iconStyle} />}>
+							Archival info
+						</Tabs.Tab>
+					)}
+					<Tabs.Tab value="projectInfo" leftSection={<IconInfoCircle style={iconStyle} />}>
+						Project info
+					</Tabs.Tab>
+				</Tabs.List>
+
+				{showArchivalInfoTab && (
+					<Tabs.Panel value="archivalInfo">
+						<Stack mt={20}>
+							<Box>
+								<Title order={4}>Archival description:</Title>
+								<Text>{archivalInfo.description}</Text>
+							</Box>
+
+							{archivalInfo.file && (
+								<Box mb={40} mt={15}>
+									<Title order={4}>Attached file:</Title>
+									<FileView shouldDownload file={archivalInfo.file} />
+								</Box>
+							)}
+						</Stack>
+					</Tabs.Panel>
+				)}
+
+				<Tabs.Panel value="projectInfo">
+					<ProjectMembers id={project.id} />
+				</Tabs.Panel>
+			</Tabs>
 		</Box>
 	);
 };

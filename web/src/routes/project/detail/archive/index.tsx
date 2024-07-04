@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Alert, Box, Button, Group, Input, rem, Stack, Text, Textarea, Title } from '@mantine/core';
-import {
-	IconFileText,
-	IconFileTypeDoc,
-	IconFileTypeDocx,
-	IconFileTypePdf,
-	IconInfoCircle,
-	IconUpload,
-	IconX
-} from '@tabler/icons-react';
-import { Dropzone, type FileWithPath, MIME_TYPES, MS_WORD_MIME_TYPE, PDF_MIME_TYPE } from '@mantine/dropzone';
+import { IconFileText, IconInfoCircle, IconUpload, IconX } from '@tabler/icons-react';
+import { Dropzone, type FileWithPath, MS_WORD_MIME_TYPE, PDF_MIME_TYPE } from '@mantine/dropzone';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
@@ -20,20 +12,7 @@ import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import { type ArchiveProjectSchema, archiveProjectSchema } from '@/modules/project/form';
 import { useArchiveProjectMutation } from '@/modules/project/mutations';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
-
-const getIcon = (type: string) => {
-	const style = { width: rem(64), height: rem(64) };
-
-	if (type === MIME_TYPES.doc) {
-		return <IconFileTypeDoc style={style} stroke={1.5} />;
-	}
-
-	if (type === MIME_TYPES.docx) {
-		return <IconFileTypeDocx style={style} stroke={1.5} />;
-	}
-
-	return <IconFileTypePdf style={style} stroke={1.5} />;
-};
+import { getIcon } from '@/modules/file/icon';
 
 const ProjectArchivePage = () => {
 	const { project, permissions } = useProjectOutletContext();
@@ -184,7 +163,7 @@ const ProjectArchivePage = () => {
 										)}
 										{file && (
 											<Group>
-												{getIcon(file.type)}
+												{getIcon(file.type, 64)}
 												<Stack gap={1}>
 													<Text size="xl" inline>
 														{file.path}

@@ -4,12 +4,12 @@ import { Outlet } from 'react-router-dom';
 import NotFound from '@/components/global/not-found';
 import { useProjectDetailQuery } from '@/modules/project/queries';
 import MainContentWrapper from '@/components/global/content-wrapper';
-import { type Project } from '@/modules/project/model';
+import { type ArchivalInfo, type Project } from '@/modules/project/model';
 import Loading from '@/components/global/loading';
 import ErrorPage from '@/components/global/error-page';
 import { ApiClientError } from '@/modules/api/model';
 
-type ContextType = { project: Project; permissions: string[] };
+type ContextType = { project: Project; permissions: string[]; archivalInfo: ArchivalInfo };
 
 export const useProjectOutletContext = () => useOutletContext<ContextType>();
 
@@ -36,10 +36,11 @@ const ProjectDetailGuard = () => {
 
 	const project = projectData.data.project;
 	const permissions = projectData.data.permissions;
+	const archivalInfo = projectData.data.archivalInfo;
 
 	return (
 		<MainContentWrapper mt={30}>
-			<Outlet context={{ project, permissions }} />
+			<Outlet context={{ project, permissions, archivalInfo }} />
 		</MainContentWrapper>
 	);
 };
