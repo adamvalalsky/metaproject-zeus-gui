@@ -59,20 +59,33 @@ const request = <T>(
 	return promise;
 };
 
-const createApiResponse = async (response: Response): Promise<{ status: number; data: unknown }> => {
+const createApiResponse = async (
+	response: Response
+): Promise<{ status: number; data: unknown; type: string | null }> => {
+	const type = response.headers.get('Content-type');
 	const data = await response.text();
 
 	if (!data) {
 		return {
 			status: response.status,
-			data: null
+			data: null,
+			type
 		};
 	}
 
-	return {
-		status: response.status,
-		data: JSON.parse(data)
-	};
+	try {
+		return {
+			status: response.status,
+			data: JSON.parse(data),
+			type
+		};
+	} catch (e) {
+		return {
+			status: response.status,
+			data,
+			type
+		};
+	}
 };
 
 const getHeaders = (headers?: HeadersInit): Record<string, string> => {

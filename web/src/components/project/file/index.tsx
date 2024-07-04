@@ -4,10 +4,12 @@ import { IconDatabase } from '@tabler/icons-react';
 import { type FileDetail } from '@/modules/project/model';
 import { getIcon } from '@/modules/file/icon';
 import { sizeToText } from '@/modules/file/size';
+import { downloadFile, type FileDownloadType } from '@/modules/file/download';
+import { useProjectOutletContext } from '@/routes/project/detail/guard';
 
 type FileViewProps = {
 	file: FileDetail;
-	shouldDownload?: boolean;
+	downloadType?: FileDownloadType;
 };
 
 const FileContent = ({ file }: FileViewProps) => (
@@ -29,19 +31,31 @@ const FileContent = ({ file }: FileViewProps) => (
 	</Flex>
 );
 
-const FileView = ({ file, shouldDownload }: FileViewProps) => {
-	const download = () => {
-		if (!shouldDownload) {
+const FileView = ({ file, downloadType }: FileViewProps) => {
+	const { project } = useProjectOutletContext();
+
+	const fileDownload = async () => {
+		if (!project.id || !downloadType) {
 			return;
 		}
 
-		console.log('download');
+		const fileData = await downloadFile(project.id, downloadType);
+		const url = window.URL.createObjectURL(fileData);
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', file.name);
+
+		document.body.appendChild(link);
+
+		link.click();
+
+		link.parentNode?.removeChild(link);
 	};
 
-	if (shouldDownload) {
+	if (downloadType) {
 		return (
 			<Tooltip label="Download">
-				<UnstyledButton onClick={download}>
+				<UnstyledButton onClick={fileDownload}>
 					<FileContent file={file} />
 				</UnstyledButton>
 			</Tooltip>

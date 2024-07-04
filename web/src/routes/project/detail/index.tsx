@@ -132,7 +132,7 @@ const ProjectDetail = () => {
 							{archivalInfo.file && (
 								<Box mb={40} mt={15}>
 									<Title order={4}>Attached file:</Title>
-									<FileView shouldDownload file={archivalInfo.file} />
+									<FileView downloadType="archival" file={archivalInfo.file} />
 								</Box>
 							)}
 						</Stack>
