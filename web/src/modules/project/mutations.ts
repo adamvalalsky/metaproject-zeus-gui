@@ -1,6 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { addProject, addProjectMember, removeProjectMember } from '@/modules/project/api';
+import { addProject } from '@/modules/project/api/add-project';
+import { addProjectMember } from '@/modules/project/api/add-project-member';
+import { removeProjectMember } from '@/modules/project/api/remove-project-member';
+import { archiveProject } from '@/modules/project/api/archive-project';
 
 export const useAddProjectMutation = () =>
 	useMutation({
@@ -15,4 +18,9 @@ export const useAddProjectMemberMutation = () =>
 export const useRemoveProjectMemberMutation = () =>
 	useMutation({
 		mutationFn: removeProjectMember
+	});
+
+export const useArchiveProjectMutation = () =>
+	useMutation({
+		mutationFn: archiveProject
 	});

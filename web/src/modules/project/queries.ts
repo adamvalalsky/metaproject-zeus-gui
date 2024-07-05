@@ -1,19 +1,33 @@
 import { useQuery } from '@tanstack/react-query';
 
 import request from '@/modules/api/request';
-import type { MemberList, MyProjectResponse, ProjectDetailResponse } from '@/modules/project/model';
-import { type Pagination } from '@/modules/api/pagination/model';
+import { type Pagination, type PaginationMetadata } from '@/modules/api/pagination/model';
+import { type ProjectStatus } from '@/modules/project/constants';
+import type { ArchivalInfo, Project, ProjectMember } from '@/modules/project/model';
 
-export const useActiveProjectsQuery = () =>
-	useQuery({
-		queryKey: ['project', 'active'],
-		queryFn: () => request<MyProjectResponse>('/project?status=active')
-	});
+type MyProjectResponse = {
+	metadata: PaginationMetadata;
+	projects: Project[];
+};
 
-export const useRequestedProjectsQuery = () =>
+type ProjectDetailResponse = {
+	project: Project;
+	permissions: string[];
+	archivalInfo?: ArchivalInfo;
+};
+
+type MemberList = {
+	metadata: PaginationMetadata;
+	members: ProjectMember[];
+};
+
+export const useProjectsQuery = (status: ProjectStatus, pagination: Pagination, sortQuery: string) =>
 	useQuery({
-		queryKey: ['project', 'requested'],
-		queryFn: () => request<MyProjectResponse>('/project?status=new')
+		queryKey: ['project', status.toLowerCase(), pagination.limit, pagination.page, sortQuery],
+		queryFn: () =>
+			request<MyProjectResponse>(
+				`/project?status=${status.toLowerCase()}&page=${pagination.page}&limit=${pagination.limit}&sort=${sortQuery}`
+			)
 	});
 
 export const useProjectDetailQuery = (id: number) =>

@@ -26,7 +26,7 @@ const DrawerList = ({ open }: DrawerListProps) => {
 							to={href}
 							component={Link}
 							label={t(title)}
-							active={pathname === href}
+							active={pathname.includes(href)}
 							variant="filled"
 							leftSection={icon}
 						/>

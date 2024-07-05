@@ -7,16 +7,23 @@ import {
 	Method
 } from '@/modules/api/model';
 
-const request = <T>(url: string, init?: RequestInit): ApiRequestPromise<ApiResponse<T>> => {
+const request = <T>(
+	url: string,
+	init?: RequestInit,
+	headersAutoGenerate = false
+): ApiRequestPromise<ApiResponse<T>> => {
 	const abortController = new AbortController();
 	const signal = abortController.signal;
 
 	// TODO get user token correctly, maybe it will be saved somewhere else
 	const userId = getLoggedUserToken();
 
-	const defaultHeaders: Record<string, string> = {
-		'Content-Type': 'application/json'
-	};
+	const defaultHeaders: Record<string, string> = {};
+
+	// force application/json content type
+	if (!headersAutoGenerate) {
+		defaultHeaders['Content-Type'] = 'application/json';
+	}
 
 	if (userId) {
 		defaultHeaders['X-User-Id'] = userId;
@@ -26,7 +33,10 @@ const request = <T>(url: string, init?: RequestInit): ApiRequestPromise<ApiRespo
 		method: Method.GET,
 		signal,
 		...init,
-		headers: defaultHeaders
+		headers: {
+			...defaultHeaders,
+			...getHeaders(init?.headers)
+		}
 	})
 		.then(async (response: Response) => {
 			if (!response.ok) {
@@ -49,20 +59,57 @@ const request = <T>(url: string, init?: RequestInit): ApiRequestPromise<ApiRespo
 	return promise;
 };
 
-const createApiResponse = async (response: Response): Promise<{ status: number; data: unknown }> => {
+const createApiResponse = async (
+	response: Response
+): Promise<{ status: number; data: unknown; type: string | null }> => {
+	const type = response.headers.get('Content-type');
 	const data = await response.text();
 
 	if (!data) {
 		return {
 			status: response.status,
-			data: null
+			data: null,
+			type
 		};
 	}
 
-	return {
-		status: response.status,
-		data: JSON.parse(data)
-	};
+	try {
+		return {
+			status: response.status,
+			data: JSON.parse(data),
+			type
+		};
+	} catch (e) {
+		return {
+			status: response.status,
+			data,
+			type
+		};
+	}
+};
+
+const getHeaders = (headers?: HeadersInit): Record<string, string> => {
+	if (!headers) {
+		return {};
+	}
+
+	if (headers instanceof Headers) {
+		const headersObject: Record<string, string> = {};
+		headers.forEach((value, key) => {
+			headersObject[key] = value;
+		});
+		return headersObject;
+	}
+
+	if (Array.isArray(headers)) {
+		const headersObject: Record<string, string> = {};
+		headers.forEach(header => {
+			headersObject[header[0]] = header[1];
+		});
+		return headersObject;
+	}
+
+	return headers;
 };
 
 export default request;

@@ -1,19 +1,4 @@
 import { type User, type UserInfo } from '@/modules/user/model';
-import { type PaginationMetadata } from '@/modules/api/pagination/model';
-
-export type MyProjectResponse = {
-	projects: Project[];
-};
-
-export type ProjectDetailResponse = {
-	project: Project;
-	permissions: string[];
-};
-
-export type MemberList = {
-	metadata: PaginationMetadata;
-	members: ProjectMember[];
-};
 
 export type Project = {
 	id: number;
@@ -22,6 +7,20 @@ export type Project = {
 	status: string;
 	createdAt: string;
 	user: User;
+};
+
+export type FileDetail = {
+	id: number;
+	name: string;
+	mime: string;
+	size: number;
+	createdAt: string;
+};
+
+export type ArchivalInfo = {
+	description: string;
+	archivedAt: string;
+	file?: FileDetail;
 };
 
 export type ProjectMember = {

@@ -1,5 +1,0 @@
-.table-body {
-    &[data-clickable="true"] {
-        cursor: pointer;
-    }
-}

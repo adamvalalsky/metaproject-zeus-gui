@@ -10,9 +10,10 @@
 
 .sidebar {
     background-color: var(--mantine-color-sky-9);
-    height: 100vh;
     color: white;
+    min-height: calc(100vh - 64px);
     width: 300px;
+    flex-shrink: 0;
     transition: 0.2s ease-in-out;
 
     &[data-opened="false"] {
