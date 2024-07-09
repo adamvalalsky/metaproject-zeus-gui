@@ -1,7 +1,7 @@
-import { type FormEvent, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Flex, Modal, Switch, TextInput, Tooltip } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Box, Switch, Tooltip } from '@mantine/core';
+import { modals } from '@mantine/modals';
 
 import { AdminAccess } from '@/modules/auth/model';
 import { AuthContext } from '@/modules/auth/context';
@@ -20,30 +20,31 @@ const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleP
 		return null;
 	}
 
-	const [isOpen, { open, close }] = useDisclosure(false);
-	const [checked, setChecked] = useState(isAdminLoggedIn(adminAccess));
-
-	const onChange = () => {
+	const openModal = () => {
 		if (checked) {
 			const defaultAccess = removeAdminAccess();
 			setChecked(false);
 			setAdminMenu(defaultAccess);
-		} else {
-			open();
+			return;
 		}
+
+		modals.openConfirmModal({
+			title: t('components.global.administratorToggle.dialog.title'),
+			centered: true,
+			children: 'Do you want to gain administrator access?',
+			labels: { confirm: 'Confirm', cancel: 'Cancel' },
+			onConfirm: () => {
+				// TODO: authorize via backend
+				const key = 'test';
+
+				setAdminAccess(key);
+				setAdminMenu(AdminAccess.LOGGED);
+				setChecked(true);
+			}
+		});
 	};
 
-	const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-
-		// TODO: authorize via backend
-		const key = 'test';
-
-		setAdminAccess(key);
-		setAdminMenu(AdminAccess.LOGGED);
-		setChecked(true);
-		close();
-	};
+	const [checked, setChecked] = useState(isAdminLoggedIn(adminAccess));
 
 	return (
 		<Box>
@@ -55,34 +56,12 @@ const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleP
 				<Switch
 					color="yellow"
 					checked={checked}
-					onChange={onChange}
+					onChange={openModal}
 					size="md"
 					onLabel={t('components.global.administratorToggle.switchLabel')}
 					offLabel={t('components.global.administratorToggle.switchLabel')}
 				/>
 			</Tooltip>
-			<Modal
-				opened={isOpen}
-				onClose={close}
-				centered
-				title={t('components.global.administratorToggle.dialog.title')}
-			>
-				<form method="post" onSubmit={onSubmit}>
-					<TextInput
-						type="password"
-						id="title"
-						name="title"
-						label={t('components.global.administratorToggle.dialog.password')}
-						placeholder={t('components.global.administratorToggle.dialog.password')}
-						withAsterisk
-					/>
-					<Flex mt={10} justify="center">
-						<Button type="submit" variant="contained" color="success">
-							{t('components.global.administratorToggle.dialog.submit')}
-						</Button>
-					</Flex>
-				</form>
-			</Modal>
 		</Box>
 	);
 };

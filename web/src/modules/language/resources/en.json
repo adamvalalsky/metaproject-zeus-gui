@@ -20,7 +20,13 @@
       },
       "drawerList": {
         "links": {
-          "projects": "Projects"
+          "projects": "Projects",
+          "admin": {
+            "title": "Administrator section",
+            "link": {
+              "requests": "Project requests"
+            }
+          }
         }
       }
     }
