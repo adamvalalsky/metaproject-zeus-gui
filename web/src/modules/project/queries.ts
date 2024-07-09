@@ -10,6 +10,11 @@ type MyProjectResponse = {
 	projects: Project[];
 };
 
+type ProjectRequestResponse = {
+	metadata: PaginationMetadata;
+	projects: Project[];
+};
+
 type ProjectDetailResponse = {
 	project: Project;
 	permissions: string[];
@@ -28,6 +33,13 @@ export const useProjectsQuery = (status: ProjectStatus, pagination: Pagination, 
 			request<MyProjectResponse>(
 				`/project?status=${status.toLowerCase()}&page=${pagination.page}&limit=${pagination.limit}&sort=${sortQuery}`
 			)
+	});
+
+export const useProjectRequestsQuery = (pagination: Pagination) =>
+	useQuery({
+		queryKey: ['project', 'requests', pagination.page, pagination.limit],
+		queryFn: () =>
+			request<ProjectRequestResponse>(`/project/requests?page=${pagination.page}&limit=${pagination.limit}`)
 	});
 
 export const useProjectDetailQuery = (id: number) =>

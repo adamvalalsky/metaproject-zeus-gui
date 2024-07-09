@@ -79,6 +79,19 @@
       "buttons": {
         "MUNI": "Sign in with MUNI"
       }
+    },
+    "ProjectRequests": {
+      "title": "Project requests",
+      "error": {
+        "connection": "Could not load project requests, try again later."
+      },
+      "table": {
+        "id": "ID",
+        "name": "Name",
+        "description": "Description",
+        "pi": "PI",
+        "createdAt": "Created at"
+      }
     }
   }
 }
