@@ -92,6 +92,11 @@
         "pi": "PI",
         "createdAt": "Created at"
       }
+    },
+    "ProjectRequestDetail": {
+      "title_prefix": "Request:",
+      "view_project": "View project detail",
+      "view_project_tooltip": "Opens detail page in new tab"
     }
   }
 }

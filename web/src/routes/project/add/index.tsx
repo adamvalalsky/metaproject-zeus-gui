@@ -63,9 +63,9 @@ const AddProject: React.FC = () => {
 					{ title: 'Add project', href: `/project/add` }
 				]}
 			/>
-			<Flex mt={100} direction="column" align="center">
+			<Flex mt={20} direction="column" align="center">
 				<Title order={1}>{t('routes.AddProject.title')}</Title>
-				<Box w="80%">
+				<Box w="80%" py={20}>
 					<FormProvider {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)}>
 							<TextInput
