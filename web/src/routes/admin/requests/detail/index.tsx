@@ -1,18 +1,26 @@
 import { Box, Button, Group, rem, Title, Tooltip } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IconChevronRight } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { FormProvider, useForm } from 'react-hook-form';
+import { notifications } from '@mantine/notifications';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import ProjectInfo from '@/components/project/info';
 import TextEditor from '@/components/global/text-editor';
+import { useApproveProjectMutation } from '@/modules/project/mutations';
 
 const ProjectRequestDetail = () => {
 	const { t } = useTranslation();
 	const { project } = useProjectOutletContext();
+	const navigate = useNavigate();
+
+	const queryClient = useQueryClient();
+
+	const { mutate: approve, isPending } = useApproveProjectMutation();
 
 	const form = useForm();
 
@@ -26,10 +34,32 @@ const ProjectRequestDetail = () => {
 				cancel: t('routes.ProjectRequestDetail.approve_modal.cancel_text')
 			},
 			confirmProps: {
-				color: 'green'
+				color: 'green',
+				loading: isPending
 			},
 			onConfirm: () => {
-				console.log('confirmed');
+				approve(project.id, {
+					onSuccess: () => {
+						notifications.show({
+							title: t('routes.ProjectRequestDetail.approve_notification.title'),
+							message: t('routes.ProjectRequestDetail.approve_notification.message'),
+							color: 'green'
+						});
+						queryClient
+							.refetchQueries({
+								queryKey: ['project']
+							})
+							.then(() => {
+								navigate('/admin/requests');
+							});
+					},
+					onError: () => {
+						notifications.show({
+							message: t('routes.ProjectRequestDetail.approve_notification.error'),
+							color: 'red'
+						});
+					}
+				});
 			}
 		});
 	};

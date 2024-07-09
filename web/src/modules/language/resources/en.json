@@ -113,6 +113,11 @@
           "label": "Reason for rejection:",
           "description": "Please provide a reason for rejecting the project request."
         }
+      },
+      "approve_notification": {
+        "title": "Project request approved",
+        "message": "Project request has been approved.",
+        "error": "Could not approve project request."
       }
     }
   }
