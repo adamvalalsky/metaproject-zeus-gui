@@ -4,7 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { AuthContext } from '@/modules/auth/context';
 import { AdminAccess } from '@/modules/auth/model';
 
-const AdminRoute = () => {
+const AdminRouteGuard = () => {
 	const { isAuthenticated, getAdminAccess } = useContext(AuthContext);
 
 	if (!isAuthenticated() || getAdminAccess() !== AdminAccess.LOGGED) {
@@ -14,4 +14,4 @@ const AdminRoute = () => {
 	return <Outlet />;
 };
 
-export default AdminRoute;
+export default AdminRouteGuard;

@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import { AuthContext } from '@/modules/auth/context';
 
-const PrivateRoute = () => {
+const PrivateRouteGuard = () => {
 	const { isAuthenticated } = useContext(AuthContext);
 
 	if (!isAuthenticated()) {
@@ -13,4 +13,4 @@ const PrivateRoute = () => {
 	return <Outlet />;
 };
 
-export default PrivateRoute;
+export default PrivateRouteGuard;

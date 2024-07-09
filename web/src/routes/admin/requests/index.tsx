@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import { DataTable } from 'mantine-datatable';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import { useProjectRequestsQuery } from '@/modules/project/queries';
@@ -10,6 +11,7 @@ import { strip } from '@/modules/html/strip';
 
 const ProjectRequests = () => {
 	const { t } = useTranslation();
+	const navigate = useNavigate();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(PAGE_SIZES[0]);
 
@@ -65,6 +67,7 @@ const ProjectRequests = () => {
 								await refetch();
 							}}
 							highlightOnHover
+							onRowClick={({ record }) => navigate(`${record.id}`)}
 							columns={[
 								{
 									accessor: 'id',

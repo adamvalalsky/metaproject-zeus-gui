@@ -5,12 +5,12 @@ import { DataTable } from 'mantine-datatable';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
 
-import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import AddMembersSelect from '@/components/project/members/add-members-select';
 import { type UserInfo } from '@/modules/user/model';
 import { useAddProjectMemberMutation } from '@/modules/project/mutations';
 import { addMembersSchema } from '@/modules/project/form';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
+import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 
 const ProjectDetailMembers = () => {
 	const { project, permissions } = useProjectOutletContext();

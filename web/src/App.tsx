@@ -9,16 +9,17 @@ import AddProject from '@/routes/project/add';
 import ProjectDetail from '@/routes/project/detail';
 import NotFound from '@/components/global/not-found';
 import ProjectDetailMembers from '@/routes/project/detail/members';
-import ProjectDetailGuard from '@/routes/project/detail/guard';
 import ProjectArchivePage from '@/routes/project/detail/archive';
-import AdminRoute from '@/routes/admin/admin-route';
 import ProjectRequests from '@/routes/admin/requests';
+import ProjectRequestDetail from '@/routes/admin/requests/detail';
+import PrivateRouteGuard from '@/modules/auth/guards/private-route-guard';
+import AdminRouteGuard from '@/modules/auth/guards/admin-route-guard';
+import ProjectDetailGuard from '@/modules/auth/guards/project-detail-guard';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
 import { AuthContextProvider } from './modules/auth/context';
 import i18next from './modules/language/i18next';
-import PrivateRoute from './components/global/private-route';
 import ErrorPage from './components/global/error-page';
 
 const App = () => {
@@ -47,7 +48,7 @@ const App = () => {
 		createRoutesFromElements(
 			<Route id="root" path="/" element={<Root />} errorElement={<ErrorPage />}>
 				<Route index element={<Index />} />
-				<Route path="/project" element={<PrivateRoute />}>
+				<Route path="/project" element={<PrivateRouteGuard />}>
 					<Route index element={<Project />} />
 					<Route path="add" element={<AddProject />} />
 					<Route path=":id" element={<ProjectDetailGuard />}>
@@ -56,8 +57,11 @@ const App = () => {
 						<Route path="archive" element={<ProjectArchivePage />} />
 					</Route>
 				</Route>
-				<Route path="/admin" element={<AdminRoute />}>
+				<Route path="/admin" element={<AdminRouteGuard />}>
 					<Route path="requests" element={<ProjectRequests />} />
+					<Route path="requests/:id" element={<ProjectDetailGuard />}>
+						<Route index element={<ProjectRequestDetail />} />
+					</Route>
 				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Route>

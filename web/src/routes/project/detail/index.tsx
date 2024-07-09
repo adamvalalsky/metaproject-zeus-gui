@@ -19,11 +19,11 @@ import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
 import ProjectMembers from '@/components/project/members';
-import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { ProjectStatus } from '@/modules/project/constants';
 import FileView from '@/components/project/file';
 import { sanitize } from '@/modules/html/sanitize';
+import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 
 const ProjectDetail = () => {
 	const { project, permissions, archivalInfo } = useProjectOutletContext();
