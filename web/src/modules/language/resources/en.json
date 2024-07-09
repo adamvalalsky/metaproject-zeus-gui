@@ -96,7 +96,24 @@
     "ProjectRequestDetail": {
       "title_prefix": "Request:",
       "view_project": "View project detail",
-      "view_project_tooltip": "Opens detail page in new tab"
+      "view_project_tooltip": "Opens detail page in new tab",
+      "approve_button": "Approve",
+      "reject_button": "Reject",
+      "approve_modal": {
+        "title": "Approve project request",
+        "content": "Are you sure you want to approve this project request?",
+        "confirm_text": "Approve project",
+        "cancel_text": "Cancel"
+      },
+      "reject_modal": {
+        "title": "Reject project request",
+        "confirm_text": "Reject project",
+        "cancel_text": "Cancel",
+        "content": {
+          "label": "Reason for rejection:",
+          "description": "Please provide a reason for rejecting the project request."
+        }
+      }
     }
   }
 }
