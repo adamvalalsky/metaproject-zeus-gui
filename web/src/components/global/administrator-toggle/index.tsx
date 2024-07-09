@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Switch, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { AdminAccess } from '@/modules/auth/model';
 import { AuthContext } from '@/modules/auth/context';
@@ -13,6 +14,8 @@ type AdministratorToggleProps = {
 };
 
 const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleProps) => {
+	const { pathname } = useLocation();
+	const navigate = useNavigate();
 	const { removeAdminAccess, setAdminAccess } = useContext(AuthContext);
 	const { t } = useTranslation();
 
@@ -25,6 +28,10 @@ const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleP
 			const defaultAccess = removeAdminAccess();
 			setChecked(false);
 			setAdminMenu(defaultAccess);
+
+			if (pathname.includes('/admin')) {
+				navigate('/project');
+			}
 			return;
 		}
 

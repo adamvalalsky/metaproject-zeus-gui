@@ -11,6 +11,8 @@ import NotFound from '@/components/global/not-found';
 import ProjectDetailMembers from '@/routes/project/detail/members';
 import ProjectDetailGuard from '@/routes/project/detail/guard';
 import ProjectArchivePage from '@/routes/project/detail/archive';
+import AdminRoute from '@/routes/admin/admin-route';
+import ProjectRequests from '@/routes/admin/requests';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -53,6 +55,9 @@ const App = () => {
 						<Route path="members" element={<ProjectDetailMembers />} />
 						<Route path="archive" element={<ProjectArchivePage />} />
 					</Route>
+				</Route>
+				<Route path="/admin" element={<AdminRoute />}>
+					<Route path="requests" element={<ProjectRequests />} />
 				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Route>
