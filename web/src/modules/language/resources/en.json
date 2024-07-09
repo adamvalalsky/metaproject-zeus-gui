@@ -118,6 +118,11 @@
         "title": "Project request approved",
         "message": "Project request has been approved.",
         "error": "Could not approve project request."
+      },
+      "reject_notification": {
+        "title": "Project request rejected",
+        "message": "Project request has been rejected.",
+        "error": "Could not reject project request."
       }
     }
   }

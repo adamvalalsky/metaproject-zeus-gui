@@ -6,12 +6,14 @@ import { modals } from '@mantine/modals';
 import { FormProvider, useForm } from 'react-hook-form';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import ProjectInfo from '@/components/project/info';
 import TextEditor from '@/components/global/text-editor';
-import { useApproveProjectMutation } from '@/modules/project/mutations';
+import { useApproveProjectMutation, useRejectProjectMutation } from '@/modules/project/mutations';
+import { type RejectProjectSchema, rejectProjectSchema } from '@/modules/project/form';
 
 const ProjectRequestDetail = () => {
 	const { t } = useTranslation();
@@ -20,9 +22,45 @@ const ProjectRequestDetail = () => {
 
 	const queryClient = useQueryClient();
 
-	const { mutate: approve, isPending } = useApproveProjectMutation();
+	const { mutate: approve, isPending: isApprovePending } = useApproveProjectMutation();
+	const { mutate: reject, isPending: isRejectPending } = useRejectProjectMutation();
 
-	const form = useForm();
+	const form = useForm<RejectProjectSchema>({
+		resolver: zodResolver(rejectProjectSchema)
+	});
+
+	const onRejectSubmit = (values: RejectProjectSchema) => {
+		reject(
+			{
+				projectId: project.id,
+				reason: values.reason
+			},
+			{
+				onSuccess: () => {
+					notifications.show({
+						title: t('routes.ProjectRequestDetail.reject_notification.title'),
+						message: t('routes.ProjectRequestDetail.reject_notification.message')
+					});
+					queryClient
+						.refetchQueries({
+							queryKey: ['project']
+						})
+						.then(() => {
+							navigate('/admin/requests');
+						});
+				},
+				onError: () => {
+					notifications.show({
+						message: t('routes.ProjectRequestDetail.reject_notification.error'),
+						color: 'red'
+					});
+				},
+				onSettled: () => {
+					modals.closeAll();
+				}
+			}
+		);
+	};
 
 	const openApproveModal = () => {
 		modals.openConfirmModal({
@@ -35,7 +73,7 @@ const ProjectRequestDetail = () => {
 			},
 			confirmProps: {
 				color: 'green',
-				loading: isPending
+				loading: isApprovePending
 			},
 			onConfirm: () => {
 				approve(project.id, {
@@ -65,31 +103,29 @@ const ProjectRequestDetail = () => {
 	};
 
 	const openRejectModal = () => {
-		modals.openConfirmModal({
+		modals.open({
 			title: t('routes.ProjectRequestDetail.reject_modal.title'),
 			centered: true,
 			size: 'xl',
 			children: (
 				<FormProvider {...form}>
-					<form>
+					<form onSubmit={form.handleSubmit(onRejectSubmit)}>
 						<TextEditor
 							label={t('routes.ProjectRequestDetail.reject_modal.content.label')}
 							description={t('routes.ProjectRequestDetail.reject_modal.content.description')}
-							inputHtmlName="description"
+							inputHtmlName="reason"
 						/>
+						<Group justify="flex-end" mt={10}>
+							<Button variant="outline" color="gray" onClick={() => modals.closeAll()}>
+								{t('routes.ProjectRequestDetail.reject_modal.cancel_text')}
+							</Button>
+							<Button type="submit" color="red.7" loading={isRejectPending}>
+								{t('routes.ProjectRequestDetail.reject_modal.confirm_text')}
+							</Button>
+						</Group>
 					</form>
 				</FormProvider>
-			),
-			labels: {
-				confirm: t('routes.ProjectRequestDetail.reject_modal.confirm_text'),
-				cancel: t('routes.ProjectRequestDetail.reject_modal.cancel_text')
-			},
-			confirmProps: {
-				color: 'red.7'
-			},
-			onConfirm: () => {
-				console.log('confirmed');
-			}
+			)
 		});
 	};
 

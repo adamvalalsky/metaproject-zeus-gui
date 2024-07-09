@@ -25,3 +25,9 @@ export const archiveProjectSchema = z.object({
 });
 
 export type ArchiveProjectSchema = z.infer<typeof archiveProjectSchema>;
+
+export const rejectProjectSchema = z.object({
+	reason: z.string().min(5)
+});
+
+export type RejectProjectSchema = z.infer<typeof rejectProjectSchema>;
