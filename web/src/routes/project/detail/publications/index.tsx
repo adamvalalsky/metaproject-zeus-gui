@@ -3,15 +3,24 @@ import { DataTable } from 'mantine-datatable';
 import { IconClipboardPlus, IconSearch, IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 import { type Publication } from '@/modules/publication/model';
+import { searchByDoiSchema, type SearchByDoiSchema } from '@/modules/publication/form';
+import { searchByDoi } from '@/modules/publication/api/search-by-doi';
+import PublicationCard from '@/components/project/publications/publication-card';
 
 const ProjectPublicationsAddPage = () => {
 	const { t } = useTranslation();
 	const { project } = useProjectOutletContext();
 	const [publications, setPublications] = useState<Publication[]>([]);
+
+	const searchDoiForm = useForm<SearchByDoiSchema>({
+		resolver: zodResolver(searchByDoiSchema)
+	});
 
 	const handleSelect = (pickedPublication: Publication) => {
 		// publication is picked - remove
@@ -22,6 +31,20 @@ const ProjectPublicationsAddPage = () => {
 		} else {
 			setPublications(publications => [...publications, pickedPublication]);
 		}
+	};
+
+	const searchDoiSubmit = async (values: SearchByDoiSchema) => {
+		const publication = await searchByDoi(values.doi);
+
+		if (!publication) {
+			searchDoiForm.setError('doi', {
+				type: 'custom',
+				message: 'Publication not found'
+			});
+			return;
+		}
+
+		handleSelect(publication);
 	};
 
 	return (
@@ -38,9 +61,14 @@ const ProjectPublicationsAddPage = () => {
 				{t('routes.ProjectPublicationsAddPage.title')}
 			</Title>
 			<Stack mt={20}>
-				<form>
+				<form onSubmit={searchDoiForm.handleSubmit(searchDoiSubmit)}>
 					<Stack>
-						<TextInput label="DOI" placeholder="Search by DOI" />
+						<TextInput
+							label="DOI"
+							placeholder="Search by DOI"
+							error={searchDoiForm.formState.errors.doi?.message}
+							{...searchDoiForm.register('doi')}
+						/>
 						<Button fullWidth type="submit" leftSection={<IconSearch />}>
 							Search by DOI
 						</Button>
@@ -52,7 +80,7 @@ const ProjectPublicationsAddPage = () => {
 				</Button>
 			</Stack>
 			{publications.length > 0 && (
-				<Box mt={30}>
+				<Box py={30}>
 					<Title order={4}>{t('routes.ProjectPublicationsAddPage.table.title')}</Title>
 					<DataTable
 						height={500}
@@ -61,9 +89,11 @@ const ProjectPublicationsAddPage = () => {
 						records={publications}
 						columns={[
 							{
-								accessor: 'title',
+								accessor: 'uniqueId',
 								title: t('components.project.publications.index.columns.publication_info'),
-								render: publication => publication.uniqueId
+								render: publication => (
+									<PublicationCard key={publication.uniqueId} publication={publication} />
+								)
 							},
 							{
 								accessor: 'year',
@@ -90,8 +120,8 @@ const ProjectPublicationsAddPage = () => {
 							}
 						]}
 					/>
-					<Button color="teal" fullWidth mt={10} onClick={onClick} loading={isPending}>
-						Add {pickedMembers.length} member{pickedMembers.length > 1 ? 's' : ''}
+					<Button color="teal" fullWidth mt={10}>
+						Add {publications.length} publication{publications.length > 1 ? 's' : ''}
 					</Button>
 				</Box>
 			)}
