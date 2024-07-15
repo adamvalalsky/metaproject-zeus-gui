@@ -79,7 +79,7 @@ const ProjectDetail = () => {
 			)}
 			<ProjectInfo project={project} showFullDescription={false} />
 
-			<Tabs mt={20} defaultValue={showArchivalInfoTab ? 'archivalInfo' : 'projectInfo'}>
+			<Tabs py={20} defaultValue={showArchivalInfoTab ? 'archivalInfo' : 'projectInfo'}>
 				<Tabs.List>
 					{showArchivalInfoTab && (
 						<Tabs.Tab value="archivalInfo" leftSection={<IconArchive style={iconStyle} />}>

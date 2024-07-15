@@ -169,6 +169,12 @@
         "message": "Project request has been rejected.",
         "error": "Could not reject project request."
       }
+    },
+    "ProjectPublicationsAddPage": {
+      "title": "Add publications",
+      "table": {
+        "title": "Picked publications"
+      }
     }
   }
 }

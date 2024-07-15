@@ -15,6 +15,7 @@ import ProjectRequestDetail from '@/routes/admin/requests/detail';
 import PrivateRouteGuard from '@/modules/auth/guards/private-route-guard';
 import AdminRouteGuard from '@/modules/auth/guards/admin-route-guard';
 import ProjectDetailGuard from '@/modules/auth/guards/project-detail-guard';
+import ProjectPublicationsAddPage from '@/routes/project/detail/publications';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -55,6 +56,7 @@ const App = () => {
 						<Route index element={<ProjectDetail />} />
 						<Route path="members" element={<ProjectDetailMembers />} />
 						<Route path="archive" element={<ProjectArchivePage />} />
+						<Route path="publications" element={<ProjectPublicationsAddPage />} />
 					</Route>
 				</Route>
 				<Route path="/admin" element={<AdminRouteGuard />}>
