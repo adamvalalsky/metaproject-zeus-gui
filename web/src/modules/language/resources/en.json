@@ -20,7 +20,13 @@
       },
       "drawerList": {
         "links": {
-          "projects": "Projects"
+          "projects": "Projects",
+          "admin": {
+            "title": "Administrator section",
+            "link": {
+              "requests": "Project requests"
+            }
+          }
         }
       }
     }
@@ -72,6 +78,51 @@
       "title": "Sign in",
       "buttons": {
         "MUNI": "Sign in with MUNI"
+      }
+    },
+    "ProjectRequests": {
+      "title": "Project requests",
+      "error": {
+        "connection": "Could not load project requests, try again later."
+      },
+      "table": {
+        "id": "ID",
+        "name": "Name",
+        "description": "Description",
+        "pi": "PI",
+        "createdAt": "Created at"
+      }
+    },
+    "ProjectRequestDetail": {
+      "title_prefix": "Request:",
+      "view_project": "View project detail",
+      "view_project_tooltip": "Opens detail page in new tab",
+      "approve_button": "Approve",
+      "reject_button": "Reject",
+      "approve_modal": {
+        "title": "Approve project request",
+        "content": "Are you sure you want to approve this project request?",
+        "confirm_text": "Approve project",
+        "cancel_text": "Cancel"
+      },
+      "reject_modal": {
+        "title": "Reject project request",
+        "confirm_text": "Reject project",
+        "cancel_text": "Cancel",
+        "content": {
+          "label": "Reason for rejection:",
+          "description": "Please provide a reason for rejecting the project request."
+        }
+      },
+      "approve_notification": {
+        "title": "Project request approved",
+        "message": "Project request has been approved.",
+        "error": "Could not approve project request."
+      },
+      "reject_notification": {
+        "title": "Project request rejected",
+        "message": "Project request has been rejected.",
+        "error": "Could not reject project request."
       }
     }
   }

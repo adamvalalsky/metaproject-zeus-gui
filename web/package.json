@@ -17,6 +17,7 @@
     "@mantine/core": "^7.11.1",
     "@mantine/dropzone": "^7.11.1",
     "@mantine/hooks": "^7.11.1",
+    "@mantine/modals": "^7.11.1",
     "@mantine/notifications": "^7.11.1",
     "@mantine/tiptap": "^7.11.1",
     "@tabler/icons-react": "^3.3.0",

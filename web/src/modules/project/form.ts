@@ -2,7 +2,7 @@ import z from 'zod';
 
 export const requestProjectSchema = z.object({
 	title: z.string().min(3).max(100),
-	description: z.string().min(15).max(1000)
+	description: z.string().min(15).max(10000)
 });
 
 export type RequestProjectSchema = z.infer<typeof requestProjectSchema>;
@@ -25,3 +25,9 @@ export const archiveProjectSchema = z.object({
 });
 
 export type ArchiveProjectSchema = z.infer<typeof archiveProjectSchema>;
+
+export const rejectProjectSchema = z.object({
+	reason: z.string().min(5)
+});
+
+export type RejectProjectSchema = z.infer<typeof rejectProjectSchema>;

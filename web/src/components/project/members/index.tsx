@@ -8,10 +8,10 @@ import { useProjectMembersQuery } from '@/modules/project/queries';
 import ErrorAlert from '@/components/global/error-alert';
 import AddButton from '@/components/project/members/add-button';
 import { useRemoveProjectMemberMutation } from '@/modules/project/mutations';
-import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import { type ProjectMember } from '@/modules/project/model';
 import { getSortQuery } from '@/modules/api/sorting/utils';
+import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 
 type ProjectMembersProps = {
 	id: number;

@@ -10,9 +10,10 @@ import classes from './text-editor.module.css';
 type TextEditorProps = Omit<RichTextEditorProps, 'editor' | 'children'> & {
 	inputHtmlName: string;
 	label: string;
+	description?: string;
 };
 
-const TextEditor = ({ inputHtmlName, label, ...inputProps }: TextEditorProps) => {
+const TextEditor = ({ inputHtmlName, label, description, ...inputProps }: TextEditorProps) => {
 	const form = useFormContext();
 
 	const editor = useEditor({
@@ -26,11 +27,12 @@ const TextEditor = ({ inputHtmlName, label, ...inputProps }: TextEditorProps) =>
 	return (
 		<InputWrapper
 			label={label}
+			description={description}
 			withAsterisk
 			error={form.formState.errors[inputHtmlName]?.message}
 			{...form.register(inputHtmlName)}
 		>
-			<RichTextEditor {...inputProps} editor={editor}>
+			<RichTextEditor {...inputProps} editor={editor} mt={10}>
 				<RichTextEditor.Toolbar sticky stickyOffset={60}>
 					<RichTextEditor.ControlsGroup>
 						<RichTextEditor.Bold />

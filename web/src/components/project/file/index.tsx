@@ -5,7 +5,7 @@ import { type FileDetail } from '@/modules/project/model';
 import { getIcon } from '@/modules/file/icon';
 import { sizeToText } from '@/modules/file/size';
 import { downloadFile, type FileDownloadType } from '@/modules/file/download';
-import { useProjectOutletContext } from '@/routes/project/detail/guard';
+import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 
 type FileViewProps = {
 	file: FileDetail;

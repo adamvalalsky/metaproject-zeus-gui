@@ -8,11 +8,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { notifications } from '@mantine/notifications';
 
-import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import { type ArchiveProjectSchema, archiveProjectSchema } from '@/modules/project/form';
 import { useArchiveProjectMutation } from '@/modules/project/mutations';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { getIcon } from '@/modules/file/icon';
+import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 
 const ProjectArchivePage = () => {
 	const { project, permissions } = useProjectOutletContext();

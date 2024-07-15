@@ -1,29 +1,14 @@
-import {
-	ActionIcon,
-	Alert,
-	Badge,
-	Box,
-	Divider,
-	Flex,
-	Group,
-	rem,
-	Stack,
-	Tabs,
-	Text,
-	Title,
-	Tooltip
-} from '@mantine/core';
+import { ActionIcon, Alert, Badge, Box, Divider, Group, rem, Stack, Tabs, Text, Title, Tooltip } from '@mantine/core';
 import { IconArchive, IconInfoCircle } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
 import ProjectMembers from '@/components/project/members';
-import { useProjectOutletContext } from '@/routes/project/detail/guard';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { ProjectStatus } from '@/modules/project/constants';
 import FileView from '@/components/project/file';
-import { sanitize } from '@/modules/html/sanitize';
+import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
+import ProjectInfo from '@/components/project/info';
 
 const ProjectDetail = () => {
 	const { project, permissions, archivalInfo } = useProjectOutletContext();
@@ -91,22 +76,7 @@ const ProjectDetail = () => {
 					Current project was already rejected.
 				</Alert>
 			)}
-			<Stack mt={15}>
-				<Group justify="space-between">
-					<Group gap={10}>
-						<Title order={4}>Principal investigator:</Title>
-						<Text size="lg">{project.user.name}</Text>
-					</Group>
-					<Text c="dimmed" size="sm">
-						Created at: {dayjs(project.createdAt).format('DD.MM.YYYY')}
-					</Text>
-				</Group>
-				<Divider />
-				<Flex direction="column">
-					<Title order={4}>Description:</Title>
-					<Text dangerouslySetInnerHTML={{ __html: sanitize(project.description) }} />
-				</Flex>
-			</Stack>
+			<ProjectInfo project={project} showFullDescription={false} />
 
 			<Tabs mt={20} defaultValue={showArchivalInfoTab ? 'archivalInfo' : 'projectInfo'}>
 				<Tabs.List>
