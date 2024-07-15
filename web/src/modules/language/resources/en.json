@@ -31,6 +31,36 @@
       }
     },
     "project": {
+      "members": {
+        "add_button": {
+          "title": "Add members"
+        },
+        "add_members_select": {
+          "info": "Users that are already part of the projects will not be included in search.",
+          "search": {
+            "label": "Search users...",
+            "placeholder": "Start typing to search users",
+            "empty_text": "No users found. You need to type at least 3 characters to start searching",
+            "not_found": "No users found."
+          }
+        },
+        "index": {
+          "title": "Project members",
+          "no_records_text": "No members added yet.",
+          "columns": {
+            "id": "ID",
+            "name": "Full name",
+            "username": "Username",
+            "role": {
+              "title": "Role",
+              "manager": "Manager",
+              "user": "User"
+            },
+            "status": "Status",
+            "actions": "Actions"
+          }
+        }
+      },
       "publications": {
         "index": {
           "title": "Publications",

@@ -1,8 +1,9 @@
 import { ActionIcon, Badge, Box, Group, Text, Title } from '@mantine/core';
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
-import { IconCheck, IconClock, IconForbid, IconTrash, IconUser, IconUserUp } from '@tabler/icons-react';
+import { IconCheck, IconClock, IconForbid, IconTrash, IconUser, IconUsers, IconUserUp } from '@tabler/icons-react';
 import { useState } from 'react';
 import { notifications } from '@mantine/notifications';
+import { useTranslation } from 'react-i18next';
 
 import { useProjectMembersQuery } from '@/modules/project/queries';
 import ErrorAlert from '@/components/global/error-alert';
@@ -18,6 +19,7 @@ type ProjectMembersProps = {
 };
 
 const ProjectMembers = ({ id }: ProjectMembersProps) => {
+	const { t } = useTranslation();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(PAGE_SIZES[0]);
 	const [currentMember, setCurrentMember] = useState<number | null>(null);
@@ -89,9 +91,11 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 		<Box mt={30}>
 			<Group justify="space-between" mb={5}>
 				<Group>
-					<Title order={3}>Project members</Title>
+					<Title order={3}>
+						<IconUsers /> {t('components.project.members.index.title')}
+					</Title>
 					{metadata && (
-						<Badge variant="filled" color="orange">
+						<Badge variant="filled" color="gray">
 							{metadata.totalRecords}
 						</Badge>
 					)}
@@ -107,7 +111,7 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 				totalRecords={metadata?.totalRecords ?? 0}
 				recordsPerPage={limit}
 				records={members}
-				noRecordsText="No members added yet."
+				noRecordsText={t('components.project.members.index.no_records_text')}
 				onPageChange={onPageChange}
 				recordsPerPageOptions={PAGE_SIZES}
 				onRecordsPerPageChange={onRecordsPerPageChange}
@@ -116,45 +120,45 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 				columns={[
 					{
 						accessor: 'id',
-						title: 'ID',
+						title: t('components.project.members.index.columns.id'),
 						width: 150,
 						sortable: true
 					},
 					{
 						accessor: 'name',
-						title: 'Full name',
+						title: t('components.project.members.index.columns.name'),
 						render: member => member.userInfo.name,
 						sortable: true
 					},
 					{
 						accessor: 'username',
-						title: 'Username',
+						title: t('components.project.members.index.columns.username'),
 						render: member => member.userInfo.username,
 						sortable: true
 					},
 					{
 						accessor: 'role',
-						title: 'Role',
+						title: t('components.project.members.index.columns.role.title'),
 						render: member => {
 							if (member.role === 'manager') {
 								return (
 									<Group gap={4}>
 										<IconUserUp size={16} />
-										<Text>Manager</Text>
+										<Text>{t('components.project.members.index.columns.role.manager')}</Text>
 									</Group>
 								);
 							}
 							return (
 								<Group gap={4}>
 									<IconUser size={16} />
-									<Text>User</Text>
+									<Text>{t('components.project.members.index.columns.role.user')}</Text>
 								</Group>
 							);
 						}
 					},
 					{
 						accessor: 'status',
-						title: 'Status',
+						title: t('components.project.members.index.columns.status'),
 						sortable: true,
 						render: member => {
 							if (member.status === 'active') {
@@ -183,7 +187,7 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 					},
 					{
 						accessor: 'actions',
-						title: '',
+						title: t('components.project.members.index.columns.actions'),
 						textAlign: 'center',
 						width: 120,
 						render: member => (

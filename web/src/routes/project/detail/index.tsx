@@ -111,7 +111,7 @@ const ProjectDetail = () => {
 
 				<Tabs.Panel value="projectInfo">
 					<ProjectMembers id={project.id} />
-					<ProjectPublications />
+					<ProjectPublications id={project.id} />
 				</Tabs.Panel>
 			</Tabs>
 		</Box>
