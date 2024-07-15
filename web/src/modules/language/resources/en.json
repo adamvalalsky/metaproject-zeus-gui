@@ -29,6 +29,21 @@
           }
         }
       }
+    },
+    "project": {
+      "publications": {
+        "index": {
+          "title": "Publications",
+          "no_records_text": "No publications added yet.",
+          "columns": {
+            "publication_info": "Title, author and journal",
+            "year": "Year"
+          }
+        },
+        "add_publication": {
+          "title": "Add publications"
+        }
+      }
     }
   },
   "routes": {
