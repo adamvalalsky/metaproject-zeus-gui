@@ -3,5 +3,6 @@ export type Publication = {
 	authors: string;
 	journal: string;
 	year: number;
-	uniqueId: string;
+	uniqueId?: string;
+	source?: 'doi' | 'manual';
 };

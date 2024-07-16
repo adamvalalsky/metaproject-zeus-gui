@@ -1,15 +1,21 @@
-import { ActionIcon, Box, Button, Divider, Group, Stack, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Box, Button, Divider, Group, NumberInput, Stack, TextInput, Title } from '@mantine/core';
 import { DataTable } from 'mantine-datatable';
 import { IconClipboardPlus, IconSearch, IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { modals } from '@mantine/modals';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 import { type Publication } from '@/modules/publication/model';
-import { searchByDoiSchema, type SearchByDoiSchema } from '@/modules/publication/form';
+import {
+	manualPublicationSchema,
+	type ManualPublicationSchema,
+	searchByDoiSchema,
+	type SearchByDoiSchema
+} from '@/modules/publication/form';
 import { searchByDoi } from '@/modules/publication/api/search-by-doi';
 import PublicationCard from '@/components/project/publications/publication-card';
 
@@ -20,6 +26,9 @@ const ProjectPublicationsAddPage = () => {
 
 	const searchDoiForm = useForm<SearchByDoiSchema>({
 		resolver: zodResolver(searchByDoiSchema)
+	});
+	const addPublicationManuallyForm = useForm<ManualPublicationSchema>({
+		resolver: zodResolver(manualPublicationSchema)
 	});
 
 	const handleSelect = (pickedPublication: Publication) => {
@@ -44,7 +53,77 @@ const ProjectPublicationsAddPage = () => {
 			return;
 		}
 
+		handleSelect({
+			...publication,
+			source: 'doi'
+		});
+	};
+
+	const onManualAddSubmit = (values: ManualPublicationSchema) => {
+		console.log('test');
+		const publication: Publication = {
+			title: values.title,
+			year: +values.year,
+			authors: values.authors,
+			journal: values.journal,
+			source: 'manual'
+		};
+
 		handleSelect(publication);
+		addPublicationManuallyForm.reset();
+		modals.closeAll();
+	};
+
+	const openManualPublicationAdd = () => {
+		modals.open({
+			title: t('routes.ProjectPublicationsAddPage.modal.title'),
+			centered: true,
+			size: 'xl',
+			children: (
+				<form onSubmit={addPublicationManuallyForm.handleSubmit(onManualAddSubmit)}>
+					<TextInput
+						label={t('routes.ProjectPublicationsAddPage.modal.form.title')}
+						{...addPublicationManuallyForm.register('title')}
+						error={addPublicationManuallyForm.formState.errors.title?.message}
+						withAsterisk
+						placeholder="Interaction effects in topological superconducting wires supporting Majorana fermions"
+					/>
+					<TextInput
+						label={t('routes.ProjectPublicationsAddPage.modal.form.authors')}
+						withAsterisk
+						{...addPublicationManuallyForm.register('authors')}
+						error={addPublicationManuallyForm.formState.errors.authors?.message}
+						placeholder="E. M. Stoudenmire and Jason Alicea and Oleg A. Starykh and Matthew P.A. Fisher"
+					/>
+					<Controller
+						control={addPublicationManuallyForm.control}
+						name="year"
+						render={({ field }) => (
+							<NumberInput
+								label={t('routes.ProjectPublicationsAddPage.modal.form.year')}
+								placeholder="2011"
+								name={field.name}
+								withAsterisk
+								min={0}
+								max={2200}
+								error={addPublicationManuallyForm.formState.errors.year?.message}
+								onChange={e => field.onChange(+e)}
+							/>
+						)}
+					/>
+					<TextInput
+						label={t('routes.ProjectPublicationsAddPage.modal.form.journal')}
+						placeholder="Physical Review B"
+						withAsterisk
+						{...addPublicationManuallyForm.register('journal')}
+						error={addPublicationManuallyForm.formState.errors.journal?.message}
+					/>
+					<Group mt={15} justify="center">
+						<Button type="submit">{t('routes.ProjectPublicationsAddPage.modal.form.submit')}</Button>
+					</Group>
+				</form>
+			)
+		});
 	};
 
 	return (
@@ -75,7 +154,12 @@ const ProjectPublicationsAddPage = () => {
 					</Stack>
 				</form>
 				<Divider label="or" />
-				<Button variant="outline" color="teal" leftSection={<IconClipboardPlus />}>
+				<Button
+					onClick={openManualPublicationAdd}
+					variant="outline"
+					color="teal"
+					leftSection={<IconClipboardPlus />}
+				>
 					Add publication manually
 				</Button>
 			</Stack>
@@ -89,10 +173,10 @@ const ProjectPublicationsAddPage = () => {
 						records={publications}
 						columns={[
 							{
-								accessor: 'uniqueId',
+								accessor: 'title',
 								title: t('components.project.publications.index.columns.publication_info'),
 								render: publication => (
-									<PublicationCard key={publication.uniqueId} publication={publication} />
+									<PublicationCard key={publication.title} publication={publication} />
 								)
 							},
 							{
