@@ -9,6 +9,7 @@ import { ProjectStatus } from '@/modules/project/constants';
 import FileView from '@/components/project/file';
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 import ProjectInfo from '@/components/project/info';
+import ProjectPublications from '@/components/project/publications';
 
 const ProjectDetail = () => {
 	const { project, permissions, archivalInfo } = useProjectOutletContext();
@@ -78,7 +79,7 @@ const ProjectDetail = () => {
 			)}
 			<ProjectInfo project={project} showFullDescription={false} />
 
-			<Tabs mt={20} defaultValue={showArchivalInfoTab ? 'archivalInfo' : 'projectInfo'}>
+			<Tabs py={20} defaultValue={showArchivalInfoTab ? 'archivalInfo' : 'projectInfo'}>
 				<Tabs.List>
 					{showArchivalInfoTab && (
 						<Tabs.Tab value="archivalInfo" leftSection={<IconArchive style={iconStyle} />}>
@@ -110,6 +111,7 @@ const ProjectDetail = () => {
 
 				<Tabs.Panel value="projectInfo">
 					<ProjectMembers id={project.id} />
+					<ProjectPublications id={project.id} />
 				</Tabs.Panel>
 			</Tabs>
 		</Box>

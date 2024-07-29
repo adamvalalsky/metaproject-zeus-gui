@@ -1,9 +1,9 @@
 import type { AddMembersSchema } from '@/modules/project/form';
-import fetch from '@/modules/api/request';
 import { Method } from '@/modules/api/model';
+import { request } from '@/modules/api/request';
 
 export const addProjectMember = async ({ projectId, members }: AddMembersSchema): Promise<void> => {
-	await fetch(`/project/${projectId}/members`, {
+	await request(`/project/${projectId}/members`, {
 		method: Method.POST,
 		body: JSON.stringify({
 			members

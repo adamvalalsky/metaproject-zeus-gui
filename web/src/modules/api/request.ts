@@ -7,8 +7,30 @@ import {
 	Method
 } from '@/modules/api/model';
 
-const request = <T>(
+export const request = <T>(
 	url: string,
+	init?: RequestInit,
+	headersAutoGenerate = false
+): ApiRequestPromise<ApiResponse<T>> => requestWrapper<T>(url, createApiResponse, init, headersAutoGenerate);
+
+export const download = (url: string, init?: RequestInit) =>
+	requestWrapper<Blob>(
+		url,
+		async response => {
+			const blob = await response.blob();
+
+			return {
+				status: response.status,
+				data: blob
+			};
+		},
+		init,
+		true
+	);
+
+const requestWrapper = <T>(
+	url: string,
+	postRequestAction: (response: Response) => Promise<{ status: number; data: unknown }>,
 	init?: RequestInit,
 	headersAutoGenerate = false
 ): ApiRequestPromise<ApiResponse<T>> => {
@@ -48,7 +70,7 @@ const request = <T>(
 					throw new ApiClientError('Api client error', errorResponse as ApiClientErrorResponse);
 				}
 			}
-			return createApiResponse(response);
+			return postRequestAction(response);
 		})
 		.catch(error => {
 			throw error;
@@ -59,31 +81,18 @@ const request = <T>(
 	return promise;
 };
 
-const createApiResponse = async (
-	response: Response
-): Promise<{ status: number; data: unknown; type: string | null }> => {
-	const type = response.headers.get('Content-type');
+const createApiResponse = async (response: Response): Promise<{ status: number; data: unknown }> => {
 	const data = await response.text();
-
-	if (!data) {
-		return {
-			status: response.status,
-			data: null,
-			type
-		};
-	}
 
 	try {
 		return {
 			status: response.status,
-			data: JSON.parse(data),
-			type
+			data: JSON.parse(data)
 		};
 	} catch (e) {
 		return {
 			status: response.status,
-			data,
-			type
+			data
 		};
 	}
 };
@@ -111,5 +120,3 @@ const getHeaders = (headers?: HeadersInit): Record<string, string> => {
 
 	return headers;
 };
-
-export default request;

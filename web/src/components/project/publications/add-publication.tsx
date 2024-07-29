@@ -7,13 +7,13 @@ type AddButtonProps = {
 	id: number;
 };
 
-const AddButton = ({ id }: AddButtonProps) => {
+const AddPublication = ({ id }: AddButtonProps) => {
 	const { t } = useTranslation();
 	return (
-		<Button component={Link} to={`/project/${id}/members`} color="green" leftSection={<IconPlus size={14} />}>
-			{t('components.project.members.add_button.title')}
+		<Button component={Link} to={`/project/${id}/publications`} color="green" leftSection={<IconPlus size={14} />}>
+			{t('components.project.publications.add_publication.title')}
 		</Button>
 	);
 };
 
-export default AddButton;
+export default AddPublication;

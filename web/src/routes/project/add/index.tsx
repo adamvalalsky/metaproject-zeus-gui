@@ -41,7 +41,7 @@ const AddProject: React.FC = () => {
 							message: 'Please choose a different title.',
 							color: 'red'
 						});
-						setError('title', { type: 'custom', message: 'Project with this title already exists.' });
+						form.setError('title', { type: 'custom', message: 'Project with this title already exists.' });
 						return;
 					}
 				}

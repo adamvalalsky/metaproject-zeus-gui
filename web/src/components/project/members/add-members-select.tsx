@@ -1,8 +1,9 @@
 import { CheckIcon, Combobox, Group, Loader, Stack, Text, TextInput, useCombobox } from '@mantine/core';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { type UserInfo } from '@/modules/user/model';
-import request from '@/modules/api/request';
+import { request } from '@/modules/api/request';
 
 type UserResponse = {
 	users: UserInfo[];
@@ -23,6 +24,7 @@ type AddMembersSelectProps = {
 };
 
 const AddMembersSelect = ({ projectId, pickedMembers, handleSelect }: AddMembersSelectProps) => {
+	const { t } = useTranslation();
 	const combobox = useCombobox({
 		onDropdownClose: () => combobox.resetSelectedOption()
 	});
@@ -88,8 +90,8 @@ const AddMembersSelect = ({ projectId, pickedMembers, handleSelect }: AddMembers
 			>
 				<Combobox.Target>
 					<TextInput
-						label="Search users"
-						placeholder="Start typing for search..."
+						label={t('components.project.members.add_members_select.search.label')}
+						placeholder={t('components.project.members.add_members_select.search.placeholder')}
 						value={query}
 						onChange={event => {
 							const value = event.currentTarget.value;
@@ -113,15 +115,19 @@ const AddMembersSelect = ({ projectId, pickedMembers, handleSelect }: AddMembers
 						{options}
 						{query.length < 3 && (
 							<Combobox.Empty>
-								No users found. You need to type at least 3 characters to start searching
+								{t('components.project.members.add_members_select.search_empty_text')}
 							</Combobox.Empty>
 						)}
-						{empty && query.length >= 3 && <Combobox.Empty>No users found.</Combobox.Empty>}
+						{empty && query.length >= 3 && (
+							<Combobox.Empty>
+								{t('components.project.members.add_members_select.not_found')}
+							</Combobox.Empty>
+						)}
 					</Combobox.Options>
 				</Combobox.Dropdown>
 			</Combobox>
 			<Text c="dimmed" size="sm">
-				Users that are already part of the projects will not be included in search.
+				{t('components.project.members.add_members_select.info')}
 			</Text>
 		</Stack>
 	);

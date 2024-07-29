@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
-import request from '@/modules/api/request';
 import { type Pagination, type PaginationMetadata } from '@/modules/api/pagination/model';
 import { type ProjectStatus } from '@/modules/project/constants';
 import type { ArchivalInfo, Project, ProjectMember } from '@/modules/project/model';
+import { request } from '@/modules/api/request';
 
 type MyProjectResponse = {
 	metadata: PaginationMetadata;

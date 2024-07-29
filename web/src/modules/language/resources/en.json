@@ -29,6 +29,56 @@
           }
         }
       }
+    },
+    "project": {
+      "members": {
+        "add_button": {
+          "title": "Add members"
+        },
+        "add_members_select": {
+          "info": "Users that are already part of the projects will not be included in search.",
+          "search": {
+            "label": "Search users...",
+            "placeholder": "Start typing to search users",
+            "empty_text": "No users found. You need to type at least 3 characters to start searching",
+            "not_found": "No users found."
+          }
+        },
+        "index": {
+          "title": "Project members",
+          "no_records_text": "No members added yet.",
+          "columns": {
+            "id": "ID",
+            "name": "Full name",
+            "username": "Username",
+            "role": {
+              "title": "Role",
+              "manager": "Manager",
+              "user": "User"
+            },
+            "status": "Status",
+            "actions": "Actions"
+          }
+        }
+      },
+      "publications": {
+        "index": {
+          "title": "Publications",
+          "no_records_text": "No publications added yet.",
+          "columns": {
+            "publication_info": "Title, author and journal",
+            "year": "Year",
+            "actions": "Actions"
+          },
+          "notifications": {
+            "publication_removed": "Publication removed successfully",
+            "error": "Could not remove publication"
+          }
+        },
+        "add_publication": {
+          "title": "Add publications"
+        }
+      }
     }
   },
   "routes": {
@@ -123,6 +173,32 @@
         "title": "Project request rejected",
         "message": "Project request has been rejected.",
         "error": "Could not reject project request."
+      }
+    },
+    "ProjectPublicationsAddPage": {
+      "title": "Add publications",
+      "table": {
+        "title": "Picked publications"
+      },
+      "modal": {
+        "title": "Add publication manually",
+        "form": {
+          "title": "Title",
+          "authors": "Authors",
+          "year": "Year",
+          "journal": "Journal",
+          "submit": "Add publication"
+        }
+      },
+      "search_by_doi": "Search by DOI",
+      "add_manually": "Add publication manually",
+      "add_button_one": "Add {{count}} publication",
+      "add_button_other": "Add {{count}} publications",
+      "success": {
+        "message": "Publications added successfully"
+      },
+      "error": {
+        "message": "Publications could not be added."
       }
     }
   }
