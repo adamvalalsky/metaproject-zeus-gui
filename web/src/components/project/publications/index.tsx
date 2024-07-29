@@ -4,9 +4,13 @@ import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
 import { useState } from 'react';
 import { IconLibrary } from '@tabler/icons-react';
 
-import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import AddPublication from '@/components/project/publications/add-publication';
-import type { ProjectMember } from '@/modules/project/model';
+import { useProjectPublicationsQuery } from '@/modules/publication/queries';
+import { getSortQuery } from '@/modules/api/sorting/utils';
+import ErrorAlert from '@/components/global/error-alert';
+import { type Publication } from '@/modules/publication/model';
+import PublicationCard from '@/components/project/publications/publication-card';
+import { PUBLICATION_PAGE_SIZES } from '@/modules/publication/constants';
 
 type ProjectPublicationsType = {
 	id: number;
@@ -14,26 +18,48 @@ type ProjectPublicationsType = {
 
 const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 	const [page, setPage] = useState(1);
-	const [limit, setLimit] = useState(PAGE_SIZES[0]);
-	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<ProjectMember>>({
+	const [limit, setLimit] = useState(PUBLICATION_PAGE_SIZES[0]);
+	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Publication>>({
 		columnAccessor: 'id',
 		direction: 'asc'
 	});
 
-	const metadata = undefined;
-	const publications = [];
+	const {
+		data: response,
+		isPending,
+		isError,
+		refetch
+	} = useProjectPublicationsQuery(
+		id,
+		{
+			page,
+			limit
+		},
+		getSortQuery(sortStatus.columnAccessor, sortStatus.direction)
+	);
+
+	if (isError) {
+		return <ErrorAlert />;
+	}
+
+	const metadata = response?.data?.metadata;
+	const publications = response?.data?.publications ?? [];
+
 	const { t } = useTranslation();
 
 	const onPageChange = async (newPage: number) => {
 		setPage(newPage);
+		await refetch();
 	};
 
 	const onRecordsPerPageChange = async (newRecordsPerPage: number) => {
 		setLimit(newRecordsPerPage);
+		await refetch();
 	};
 
-	const onSortStatusChange = async (sortStatus: DataTableSortStatus<ProjectMember>) => {
+	const onSortStatusChange = async (sortStatus: DataTableSortStatus<Publication>) => {
 		setSortStatus(sortStatus);
+		await refetch();
 	};
 
 	return (
@@ -44,7 +70,7 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 						<IconLibrary /> {t('components.project.publications.index.title')}
 					</Title>
 					<Badge variant="filled" color="gray">
-						0
+						{metadata?.totalRecords ?? 0}
 					</Badge>
 				</Group>
 				<AddPublication id={id} />
@@ -54,19 +80,21 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 				withTableBorder
 				textSelectionDisabled
 				page={page}
-				totalRecords={0}
+				totalRecords={metadata?.totalRecords}
 				recordsPerPage={limit}
+				fetching={isPending}
 				records={publications}
 				noRecordsText={t('components.project.publications.index.no_records_text')}
 				onPageChange={onPageChange}
-				recordsPerPageOptions={PAGE_SIZES}
+				recordsPerPageOptions={PUBLICATION_PAGE_SIZES}
 				onRecordsPerPageChange={onRecordsPerPageChange}
 				sortStatus={sortStatus}
 				onSortStatusChange={onSortStatusChange}
 				columns={[
 					{
 						title: t('components.project.publications.index.columns.publication_info'),
-						render: publication => publication.id
+						accessor: 'title',
+						render: publication => <PublicationCard publication={publication} />
 					},
 					{
 						accessor: 'year',
