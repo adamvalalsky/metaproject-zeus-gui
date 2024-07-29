@@ -188,7 +188,13 @@
       "search_by_doi": "Search by DOI",
       "add_manually": "Add publication manually",
       "add_button_one": "Add {{count}} publication",
-      "add_button_other": "Add {{count}} publications"
+      "add_button_other": "Add {{count}} publications",
+      "success": {
+        "message": "Publications added successfully"
+      },
+      "error": {
+        "message": "Publications could not be added."
+      }
     }
   }
 }

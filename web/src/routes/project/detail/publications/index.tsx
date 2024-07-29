@@ -6,6 +6,9 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
+import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
@@ -18,11 +21,16 @@ import {
 } from '@/modules/publication/form';
 import { searchByDoi } from '@/modules/publication/api/search-by-doi';
 import PublicationCard from '@/components/project/publications/publication-card';
+import { useAddPublicationsMutation } from '@/modules/publication/mutations';
 
 const ProjectPublicationsAddPage = () => {
 	const { t } = useTranslation();
+	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 	const { project } = useProjectOutletContext();
+
 	const [publications, setPublications] = useState<Publication[]>([]);
+	const [isSearching, setIsSearching] = useState(false);
 
 	const searchDoiForm = useForm<SearchByDoiSchema>({
 		resolver: zodResolver(searchByDoiSchema)
@@ -31,7 +39,7 @@ const ProjectPublicationsAddPage = () => {
 		resolver: zodResolver(manualPublicationSchema)
 	});
 
-	const [isSearching, setIsSearching] = useState(false);
+	const { mutate, isPending } = useAddPublicationsMutation();
 
 	const handleSelect = (pickedPublication: Publication) => {
 		// publication is picked - remove
@@ -130,6 +138,35 @@ const ProjectPublicationsAddPage = () => {
 		});
 	};
 
+	const addPublications = () => {
+		mutate(
+			{
+				projectId: project.id,
+				publications
+			},
+			{
+				onSuccess: () => {
+					notifications.show({
+						message: t('routes.ProjectPublicationsAddPage.success.message')
+					});
+					queryClient
+						.refetchQueries({
+							queryKey: ['project', project.id]
+						})
+						.then(() => {
+							navigate(`/project/${project.id}`);
+						});
+				},
+				onError: () => {
+					notifications.show({
+						message: t('routes.ProjectPublicationsAddPage.error.message'),
+						color: 'red'
+					});
+				}
+			}
+		);
+	};
+
 	return (
 		<Box>
 			<PageBreadcrumbs
@@ -208,7 +245,7 @@ const ProjectPublicationsAddPage = () => {
 							}
 						]}
 					/>
-					<Button color="teal" fullWidth mt={10}>
+					<Button onClick={addPublications} color="teal" fullWidth mt={10} loading={isPending}>
 						{t('routes.ProjectPublicationsAddPage.add_button', { count: publications.length })}
 					</Button>
 				</Box>
