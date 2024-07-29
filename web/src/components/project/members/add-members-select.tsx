@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type UserInfo } from '@/modules/user/model';
-import request from '@/modules/api/request';
+import { request } from '@/modules/api/request';
 
 type UserResponse = {
 	users: UserInfo[];

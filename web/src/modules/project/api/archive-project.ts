@@ -1,8 +1,8 @@
 import { type FileWithPath } from '@mantine/dropzone';
 
-import request from '@/modules/api/request';
 import { type ApiResponse, Method } from '@/modules/api/model';
 import type { Project } from '@/modules/project/model';
+import { request } from '@/modules/api/request';
 
 type ArchiveProjectSchema = {
 	projectId: number;

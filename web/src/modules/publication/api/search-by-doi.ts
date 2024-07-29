@@ -1,5 +1,5 @@
-import request from '@/modules/api/request';
 import { type Publication } from '@/modules/publication/model';
+import { request } from '@/modules/api/request';
 
 export const searchByDoi = async (doi: string) => {
 	const response = await request<Publication>(`/publication-search/doi/${encodeURIComponent(doi)}`);

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
 import type { Pagination, PaginationMetadata } from '@/modules/api/pagination/model';
-import request from '@/modules/api/request';
 import { type Publication } from '@/modules/publication/model';
+import { request } from '@/modules/api/request';
 
 type PublicationsList = {
 	metadata: PaginationMetadata;

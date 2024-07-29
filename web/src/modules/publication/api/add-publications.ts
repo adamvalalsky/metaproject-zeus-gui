@@ -1,6 +1,6 @@
-import request from '@/modules/api/request';
 import { Method } from '@/modules/api/model';
 import { type Publication } from '@/modules/publication/model';
+import { request } from '@/modules/api/request';
 
 export type AddPublicationRequest = {
 	projectId: number;

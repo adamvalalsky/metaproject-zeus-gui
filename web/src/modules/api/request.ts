@@ -14,7 +14,7 @@ export const request = <T>(
 ): ApiRequestPromise<ApiResponse<T>> => requestWrapper<T>(url, createApiResponse, init, headersAutoGenerate);
 
 export const download = (url: string, init?: RequestInit) =>
-	requestWrapper(
+	requestWrapper<Blob>(
 		url,
 		async response => {
 			const blob = await response.blob();
@@ -120,5 +120,3 @@ const getHeaders = (headers?: HeadersInit): Record<string, string> => {
 
 	return headers;
 };
-
-export default request;

@@ -29,7 +29,7 @@ const TextEditor = ({ inputHtmlName, label, description, ...inputProps }: TextEd
 			label={label}
 			description={description}
 			withAsterisk
-			error={form.formState.errors[inputHtmlName]?.message}
+			error={form.formState.errors[inputHtmlName]?.message as string}
 			{...form.register(inputHtmlName)}
 		>
 			<RichTextEditor {...inputProps} editor={editor} mt={10}>

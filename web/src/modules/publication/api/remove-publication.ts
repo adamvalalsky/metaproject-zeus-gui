@@ -1,5 +1,5 @@
-import request from '@/modules/api/request';
 import { Method } from '@/modules/api/model';
+import { request } from '@/modules/api/request';
 
 export const removePublication = async (publicationId: number) => {
 	await request(`/publication/${publicationId}`, {

@@ -1,5 +1,5 @@
-import fetch from '@/modules/api/request';
 import { Method } from '@/modules/api/model';
+import { request } from '@/modules/api/request';
 
 type ProjectMemberRemoveSchema = {
 	projectId: number;
@@ -7,7 +7,7 @@ type ProjectMemberRemoveSchema = {
 };
 
 export const removeProjectMember = async ({ projectId, memberId }: ProjectMemberRemoveSchema): Promise<void> => {
-	await fetch(`/project/${projectId}/members/${memberId}`, {
+	await request(`/project/${projectId}/members/${memberId}`, {
 		method: Method.DELETE
 	});
 };
