@@ -31,6 +31,8 @@ const ProjectPublicationsAddPage = () => {
 		resolver: zodResolver(manualPublicationSchema)
 	});
 
+	const [isSearching, setIsSearching] = useState(false);
+
 	const handleSelect = (pickedPublication: Publication) => {
 		// publication is picked - remove
 		if (publications.some(publication => publication.uniqueId === pickedPublication.uniqueId)) {
@@ -43,7 +45,9 @@ const ProjectPublicationsAddPage = () => {
 	};
 
 	const searchDoiSubmit = async (values: SearchByDoiSchema) => {
+		setIsSearching(true);
 		const publication = await searchByDoi(values.doi);
+		setIsSearching(false);
 
 		if (!publication) {
 			searchDoiForm.setError('doi', {
@@ -53,6 +57,7 @@ const ProjectPublicationsAddPage = () => {
 			return;
 		}
 
+		searchDoiForm.reset();
 		handleSelect({
 			...publication,
 			source: 'doi'
@@ -60,7 +65,6 @@ const ProjectPublicationsAddPage = () => {
 	};
 
 	const onManualAddSubmit = (values: ManualPublicationSchema) => {
-		console.log('test');
 		const publication: Publication = {
 			title: values.title,
 			year: +values.year,
@@ -148,8 +152,8 @@ const ProjectPublicationsAddPage = () => {
 							error={searchDoiForm.formState.errors.doi?.message}
 							{...searchDoiForm.register('doi')}
 						/>
-						<Button fullWidth type="submit" leftSection={<IconSearch />}>
-							Search by DOI
+						<Button fullWidth type="submit" leftSection={<IconSearch />} loading={isSearching}>
+							{t('routes.ProjectPublicationsAddPage.search_by_doi')}
 						</Button>
 					</Stack>
 				</form>
@@ -160,7 +164,7 @@ const ProjectPublicationsAddPage = () => {
 					color="teal"
 					leftSection={<IconClipboardPlus />}
 				>
-					Add publication manually
+					{t('routes.ProjectPublicationsAddPage.add_manually')}
 				</Button>
 			</Stack>
 			{publications.length > 0 && (
@@ -205,7 +209,7 @@ const ProjectPublicationsAddPage = () => {
 						]}
 					/>
 					<Button color="teal" fullWidth mt={10}>
-						Add {publications.length} publication{publications.length > 1 ? 's' : ''}
+						{t('routes.ProjectPublicationsAddPage.add_button', { count: publications.length })}
 					</Button>
 				</Box>
 			)}

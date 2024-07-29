@@ -184,7 +184,11 @@
           "journal": "Journal",
           "submit": "Add publication"
         }
-      }
+      },
+      "search_by_doi": "Search by DOI",
+      "add_manually": "Add publication manually",
+      "add_button_one": "Add {{count}} publication",
+      "add_button_other": "Add {{count}} publications"
     }
   }
 }
