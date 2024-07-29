@@ -23,6 +23,12 @@ export type ArchivalInfo = {
 	file?: FileDetail;
 };
 
+export type RejectedComment = {
+	comment: string;
+	author: string;
+	createdAt: string;
+};
+
 export type ProjectMember = {
 	id: number;
 	userInfo: UserInfo;

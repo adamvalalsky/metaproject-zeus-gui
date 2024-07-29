@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { type Pagination, type PaginationMetadata } from '@/modules/api/pagination/model';
 import { type ProjectStatus } from '@/modules/project/constants';
-import type { ArchivalInfo, Project, ProjectMember } from '@/modules/project/model';
+import type { ArchivalInfo, Project, ProjectMember, RejectedComment } from '@/modules/project/model';
 import { request } from '@/modules/api/request';
 
 type MyProjectResponse = {
@@ -19,6 +19,7 @@ type ProjectDetailResponse = {
 	project: Project;
 	permissions: string[];
 	archivalInfo?: ArchivalInfo;
+	rejectedComments?: RejectedComment[];
 };
 
 type MemberList = {
