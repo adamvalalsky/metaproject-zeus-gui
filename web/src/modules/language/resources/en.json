@@ -117,6 +117,9 @@
       "archivedProjects": {
         "title": "Archived projects"
       },
+      "rejectedProjects": {
+        "title": "Rejected projects"
+      },
       "table": {
         "id": "ID",
         "name": "Name",

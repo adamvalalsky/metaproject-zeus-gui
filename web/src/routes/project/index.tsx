@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Flex, Group, Tabs, Title } from '@mantine/core';
-import { IconActivity, IconArchive, IconClockQuestion, IconPlus } from '@tabler/icons-react';
+import { IconActivity, IconArchive, IconBan, IconClockQuestion, IconPlus } from '@tabler/icons-react';
 
 import ProjectTable from '@/components/project/project-table';
 import { ProjectStatus } from '@/modules/project/constants';
@@ -30,6 +30,9 @@ const Project: React.FC = () => {
 						<Tabs.Tab value="archived" leftSection={<IconArchive />}>
 							{t('routes.Dashboard.archivedProjects.title')}
 						</Tabs.Tab>
+						<Tabs.Tab value="rejected" leftSection={<IconBan />}>
+							{t('routes.Dashboard.rejectedProjects.title')}
+						</Tabs.Tab>
 					</Tabs.List>
 
 					<Tabs.Panel value="active">
@@ -50,6 +53,13 @@ const Project: React.FC = () => {
 						<ProjectTable
 							title={t('routes.Dashboard.archivedProjects.title')}
 							status={ProjectStatus.ARCHIVED}
+						/>
+					</Tabs.Panel>
+
+					<Tabs.Panel value="rejected">
+						<ProjectTable
+							title={t('routes.Dashboard.rejectedProjects.title')}
+							status={ProjectStatus.REJECTED}
 						/>
 					</Tabs.Panel>
 				</Tabs>
