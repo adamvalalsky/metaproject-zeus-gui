@@ -1,4 +1,5 @@
 export type Publication = {
+	id?: number;
 	title: string;
 	authors: string;
 	journal: string;

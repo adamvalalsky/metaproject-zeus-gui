@@ -1,8 +1,9 @@
-import { Badge, Box, Group, Title } from '@mantine/core';
+import { ActionIcon, Badge, Box, Group, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
 import { useState } from 'react';
-import { IconLibrary } from '@tabler/icons-react';
+import { IconLibrary, IconTrash } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
 
 import AddPublication from '@/components/project/publications/add-publication';
 import { useProjectPublicationsQuery } from '@/modules/publication/queries';
@@ -11,12 +12,14 @@ import ErrorAlert from '@/components/global/error-alert';
 import { type Publication } from '@/modules/publication/model';
 import PublicationCard from '@/components/project/publications/publication-card';
 import { PUBLICATION_PAGE_SIZES } from '@/modules/publication/constants';
+import { useRemovePublicationMutation } from '@/modules/publication/mutations';
 
 type ProjectPublicationsType = {
 	id: number;
 };
 
 const ProjectPublications = ({ id }: ProjectPublicationsType) => {
+	const [currentPublication, setCurrentPublication] = useState<number | null>(null);
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(PUBLICATION_PAGE_SIZES[0]);
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Publication>>({
@@ -24,6 +27,7 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 		direction: 'asc'
 	});
 
+	const { mutate, isPending: isRemovePending } = useRemovePublicationMutation();
 	const {
 		data: response,
 		isPending,
@@ -62,6 +66,32 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 		await refetch();
 	};
 
+	const removePublication = (publicationId: number | undefined) => {
+		if (publicationId === undefined) {
+			return;
+		}
+
+		setCurrentPublication(publicationId);
+
+		mutate(publicationId, {
+			onSuccess: () => {
+				notifications.show({
+					message: t('components.project.publications.index.notifications.publication_removed')
+				});
+				refetch().then();
+			},
+			onError: () => {
+				notifications.show({
+					message: t('components.project.publications.index.notifications.error'),
+					color: 'red'
+				});
+			},
+			onSettled: () => {
+				setCurrentPublication(null);
+			}
+		});
+	};
+
 	return (
 		<Box mt={30}>
 			<Group justify="space-between" mb={5}>
@@ -93,7 +123,7 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 				columns={[
 					{
 						title: t('components.project.publications.index.columns.publication_info'),
-						accessor: 'title',
+						accessor: 'info',
 						render: publication => <PublicationCard publication={publication} />
 					},
 					{
@@ -101,6 +131,25 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 						title: t('components.project.publications.index.columns.year'),
 						width: 150,
 						sortable: true
+					},
+					{
+						accessor: 'actions',
+						title: t('components.project.publications.index.columns.actions'),
+						textAlign: 'center',
+						width: 120,
+						render: publication => (
+							<Group gap={4} justify="space-between" wrap="nowrap">
+								<ActionIcon
+									size="sm"
+									variant="subtle"
+									color="red"
+									loading={isRemovePending && currentPublication === publication.id}
+									onClick={() => removePublication(publication?.id)}
+								>
+									<IconTrash size={24} />
+								</ActionIcon>
+							</Group>
+						)
 					}
 				]}
 			/>

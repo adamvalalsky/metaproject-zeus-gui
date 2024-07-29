@@ -67,7 +67,12 @@
           "no_records_text": "No publications added yet.",
           "columns": {
             "publication_info": "Title, author and journal",
-            "year": "Year"
+            "year": "Year",
+            "actions": "Actions"
+          },
+          "notifications": {
+            "publication_removed": "Publication removed successfully",
+            "error": "Could not remove publication"
           }
         },
         "add_publication": {
