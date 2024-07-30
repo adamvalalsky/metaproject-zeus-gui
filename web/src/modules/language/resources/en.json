@@ -98,7 +98,19 @@
         "archived": "Archived",
         "active": "Active",
         "new": "New"
+      },
+      "rejectedComments": {
+        "request": "Update information and request review"
       }
+    },
+    "ProjectRequestPage": {
+      "title": "Re-request project",
+      "activity": {
+        "title": "Activity",
+        "show_more": "Show more",
+        "hide": "Hide"
+      },
+      "submit_text": "Request again"
     },
     "Dashboard": {
       "title": "Projects",

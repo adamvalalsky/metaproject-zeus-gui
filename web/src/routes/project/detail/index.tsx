@@ -3,20 +3,19 @@ import {
 	Alert,
 	Badge,
 	Box,
+	Button,
 	Divider,
 	Group,
 	rem,
 	Stack,
 	Tabs,
 	Text,
-	Timeline,
 	Title,
 	Tooltip
 } from '@mantine/core';
-import { IconArchive, IconBan, IconInfoCircle } from '@tabler/icons-react';
+import { IconArchive, IconBan, IconInfoCircle, IconRepeat } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import dayjs from 'dayjs';
 
 import ProjectMembers from '@/components/project/members';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
@@ -25,6 +24,7 @@ import FileView from '@/components/project/file';
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 import ProjectInfo from '@/components/project/info';
 import ProjectPublications from '@/components/project/publications';
+import CommentsTimeline from '@/components/project/comments-timeline';
 
 const ProjectDetail = () => {
 	const { project, permissions, archivalInfo, rejectedComments } = useProjectOutletContext();
@@ -141,24 +141,10 @@ const ProjectDetail = () => {
 
 				{showRejectedInfoTab && (
 					<Tabs.Panel value="rejectedComments">
-						<Timeline bulletSize={10} mt={20} active={rejectedComments.length}>
-							{rejectedComments.map(comment => (
-								<Timeline.Item
-									key={comment.comment}
-									title={
-										<Group gap={5}>
-											<Text>Review by</Text>
-											<Text fw="bold">{comment.author}</Text>
-											<Text c="dimmed">
-												({dayjs(comment.createdAt).format('DD.MM.YYYY HH:mm:ss')})
-											</Text>
-										</Group>
-									}
-								>
-									<Text dangerouslySetInnerHTML={{ __html: comment.comment }} />
-								</Timeline.Item>
-							))}
-						</Timeline>
+						<CommentsTimeline rejectedComments={rejectedComments} />
+						<Button component={Link} to="request" leftSection={<IconRepeat />}>
+							{t('routes.ProjectDetail.rejectedComments.request')}
+						</Button>
 					</Tabs.Panel>
 				)}
 
