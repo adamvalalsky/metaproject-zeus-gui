@@ -110,7 +110,10 @@
         "show_more": "Show more",
         "hide": "Hide"
       },
-      "submit_text": "Request again"
+      "submit_text": "Request again",
+      "success_message": "Project request has been sent successfully.",
+      "conflict_message": "Project with same name already exists.",
+      "error_message": "Could not send project request. Try again later."
     },
     "Dashboard": {
       "title": "Projects",
