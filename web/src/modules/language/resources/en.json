@@ -167,6 +167,7 @@
       "view_project_tooltip": "Opens detail page in new tab",
       "approve_button": "Approve",
       "reject_button": "Reject",
+      "activity_title": "Activity",
       "approve_modal": {
         "title": "Approve project request",
         "content": "Are you sure you want to approve this project request?",
