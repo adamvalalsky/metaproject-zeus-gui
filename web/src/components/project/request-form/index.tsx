@@ -1,7 +1,6 @@
 import { Button, Flex, TextInput } from '@mantine/core';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 import { IconSend } from '@tabler/icons-react';
 
 import TextEditor from '@/components/global/text-editor';
@@ -14,7 +13,6 @@ type RequestFormProps = {
 };
 
 const RequestForm = ({ loading, onSubmit, submitText }: RequestFormProps) => {
-	const { t } = useTranslation();
 	const form = useFormContext<RequestProjectSchema>();
 
 	return (
@@ -25,6 +23,13 @@ const RequestForm = ({ loading, onSubmit, submitText }: RequestFormProps) => {
 				placeholder="Project title"
 				error={form.formState.errors.title?.message as string}
 				{...form.register('title')}
+			/>
+			<TextInput
+				label="Link"
+				placeholder="Link to project"
+				description="Link with information to the project. Used to make review process faster, if project is already approved somewhere else."
+				error={form.formState.errors.link?.message as string}
+				{...form.register('link')}
 			/>
 			<TextEditor label="Description" inputHtmlName="description" />
 			<Flex justify="center">

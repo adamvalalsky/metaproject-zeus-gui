@@ -25,6 +25,7 @@ const ProjectRequestPage = () => {
 		resolver: zodResolver(requestProjectSchema),
 		defaultValues: {
 			title: project.title,
+			link: project.link,
 			description: project.description
 		}
 	});

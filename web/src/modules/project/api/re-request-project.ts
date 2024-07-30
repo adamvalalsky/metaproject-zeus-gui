@@ -11,6 +11,7 @@ export const reRequestProject = async (values: ReRequestProjectInput) => {
 		method: Method.POST,
 		body: JSON.stringify({
 			title: values.title,
+			link: values.link,
 			description: values.description
 		})
 	});

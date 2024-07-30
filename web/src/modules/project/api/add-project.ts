@@ -8,6 +8,7 @@ export const addProject = async (values: RequestProjectSchema) => {
 		method: Method.POST,
 		body: JSON.stringify({
 			title: values.title,
+			link: values.link,
 			description: values.description
 		})
 	})) as ApiResponse<Project>;

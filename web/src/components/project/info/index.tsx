@@ -25,15 +25,23 @@ const ProjectInfo = ({ project, showFullDescription }: ProjectInfoProps) => {
 
 	return (
 		<Stack mt={15}>
-			<Group justify="space-between">
-				<Group gap={10}>
-					<Title order={4}>Principal investigator:</Title>
-					<Text size="lg">{project.user.name}</Text>
+			<Stack gap={2}>
+				<Group justify="space-between">
+					<Group gap={10}>
+						<Title order={4}>Principal investigator:</Title>
+						<Text size="lg">{project.user.name}</Text>
+					</Group>
+					<Text c="dimmed" size="sm">
+						Created at: {dayjs(project.createdAt).format('DD.MM.YYYY')}
+					</Text>
 				</Group>
-				<Text c="dimmed" size="sm">
-					Created at: {dayjs(project.createdAt).format('DD.MM.YYYY')}
-				</Text>
-			</Group>
+				<Group>
+					<Title order={4}>Link:</Title>
+					<Anchor href={project.link} target="_blank">
+						{project.link}
+					</Anchor>
+				</Group>
+			</Stack>
 			<Divider />
 			<Flex direction="column">
 				<Title order={4}>Description:</Title>
