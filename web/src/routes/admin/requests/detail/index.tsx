@@ -1,4 +1,4 @@
-import { Box, Button, Group, rem, Title, Tooltip } from '@mantine/core';
+import { Box, Button, Divider, Group, rem, Title, Tooltip } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { IconChevronRight } from '@tabler/icons-react';
@@ -14,10 +14,11 @@ import ProjectInfo from '@/components/project/info';
 import TextEditor from '@/components/global/text-editor';
 import { useApproveProjectMutation, useRejectProjectMutation } from '@/modules/project/mutations';
 import { type RejectProjectSchema, rejectProjectSchema } from '@/modules/project/form';
+import CommentsTimeline from '@/components/project/comments-timeline';
 
 const ProjectRequestDetail = () => {
 	const { t } = useTranslation();
-	const { project } = useProjectOutletContext();
+	const { project, rejectedComments } = useProjectOutletContext();
 	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();
@@ -154,6 +155,13 @@ const ProjectRequestDetail = () => {
 				</Tooltip>
 			</Group>
 			<ProjectInfo project={project} showFullDescription />
+			<Divider my={20} />
+			{rejectedComments.length > 0 && (
+				<Box>
+					<Title order={4}>{t('routes.ProjectRequestDetail.activity_title')}</Title>
+					<CommentsTimeline rejectedComments={rejectedComments} />
+				</Box>
+			)}
 
 			<Group grow pt={20} pb={70}>
 				<Button color="green" onClick={openApproveModal}>

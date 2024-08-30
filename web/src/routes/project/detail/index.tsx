@@ -1,5 +1,19 @@
-import { ActionIcon, Alert, Badge, Box, Divider, Group, rem, Stack, Tabs, Text, Title, Tooltip } from '@mantine/core';
-import { IconArchive, IconInfoCircle } from '@tabler/icons-react';
+import {
+	ActionIcon,
+	Alert,
+	Badge,
+	Box,
+	Button,
+	Divider,
+	Group,
+	rem,
+	Stack,
+	Tabs,
+	Text,
+	Title,
+	Tooltip
+} from '@mantine/core';
+import { IconArchive, IconBan, IconInfoCircle, IconRepeat } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -10,15 +24,20 @@ import FileView from '@/components/project/file';
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 import ProjectInfo from '@/components/project/info';
 import ProjectPublications from '@/components/project/publications';
+import CommentsTimeline from '@/components/project/comments-timeline';
 
 const ProjectDetail = () => {
-	const { project, permissions, archivalInfo } = useProjectOutletContext();
+	const { project, permissions, archivalInfo, rejectedComments } = useProjectOutletContext();
 	const { t } = useTranslation();
 
 	const iconStyle = { width: rem(16), height: rem(16) };
 
 	const showArchivalInfoTab =
 		project.status === ProjectStatus.ARCHIVED && permissions.includes('view_advanced_details') && !!archivalInfo;
+	const showRejectedInfoTab =
+		project.status === ProjectStatus.REJECTED &&
+		permissions.includes('view_advanced_details') &&
+		!!rejectedComments;
 
 	return (
 		<Box>
@@ -74,16 +93,27 @@ const ProjectDetail = () => {
 			)}
 			{project.status === ProjectStatus.REJECTED && (
 				<Alert mt={5} variant="light" color="red" title="Project is rejected" icon={<IconInfoCircle />}>
-					Current project was already rejected.
+					Current project was already rejected. You can view comments from the reviewer and edit project
+					accordingly.
 				</Alert>
 			)}
 			<ProjectInfo project={project} showFullDescription={false} />
 
-			<Tabs py={20} defaultValue={showArchivalInfoTab ? 'archivalInfo' : 'projectInfo'}>
+			<Tabs
+				py={20}
+				defaultValue={
+					showArchivalInfoTab ? 'archivalInfo' : showRejectedInfoTab ? 'rejectedComments' : 'projectInfo'
+				}
+			>
 				<Tabs.List>
 					{showArchivalInfoTab && (
 						<Tabs.Tab value="archivalInfo" leftSection={<IconArchive style={iconStyle} />}>
 							Archival info
+						</Tabs.Tab>
+					)}
+					{showRejectedInfoTab && (
+						<Tabs.Tab value="rejectedComments" leftSection={<IconBan style={iconStyle} />}>
+							Reasons for rejection
 						</Tabs.Tab>
 					)}
 					<Tabs.Tab value="projectInfo" leftSection={<IconInfoCircle style={iconStyle} />}>
@@ -106,6 +136,15 @@ const ProjectDetail = () => {
 								</Box>
 							)}
 						</Stack>
+					</Tabs.Panel>
+				)}
+
+				{showRejectedInfoTab && (
+					<Tabs.Panel value="rejectedComments">
+						<CommentsTimeline rejectedComments={rejectedComments} />
+						<Button component={Link} to="request" leftSection={<IconRepeat />}>
+							{t('routes.ProjectDetail.rejectedComments.request')}
+						</Button>
 					</Tabs.Panel>
 				)}
 

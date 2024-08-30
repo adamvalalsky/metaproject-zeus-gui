@@ -2,6 +2,7 @@ import z from 'zod';
 
 export const requestProjectSchema = z.object({
 	title: z.string().min(3).max(100),
+	link: z.string().optional(),
 	description: z.string().min(15).max(10000)
 });
 

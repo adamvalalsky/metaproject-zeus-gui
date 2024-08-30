@@ -6,6 +6,7 @@ import { removeProjectMember } from '@/modules/project/api/remove-project-member
 import { archiveProject } from '@/modules/project/api/archive-project';
 import { approveProject } from '@/modules/project/api/approve-project';
 import { rejectProject } from '@/modules/project/api/reject-project';
+import { reRequestProject } from '@/modules/project/api/re-request-project';
 
 export const useAddProjectMutation = () =>
 	useMutation({
@@ -35,4 +36,9 @@ export const useApproveProjectMutation = () =>
 export const useRejectProjectMutation = () =>
 	useMutation({
 		mutationFn: rejectProject
+	});
+
+export const useReRequestProjectMutation = () =>
+	useMutation({
+		mutationFn: reRequestProject
 	});

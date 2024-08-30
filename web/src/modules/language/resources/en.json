@@ -98,7 +98,22 @@
         "archived": "Archived",
         "active": "Active",
         "new": "New"
+      },
+      "rejectedComments": {
+        "request": "Update information and request review"
       }
+    },
+    "ProjectRequestPage": {
+      "title": "Re-request project",
+      "activity": {
+        "title": "Activity",
+        "show_more": "Show more",
+        "hide": "Hide"
+      },
+      "submit_text": "Request again",
+      "success_message": "Project request has been sent successfully.",
+      "conflict_message": "Project with same name already exists.",
+      "error_message": "Could not send project request. Try again later."
     },
     "Dashboard": {
       "title": "Projects",
@@ -116,6 +131,9 @@
       },
       "archivedProjects": {
         "title": "Archived projects"
+      },
+      "rejectedProjects": {
+        "title": "Rejected projects"
       },
       "table": {
         "id": "ID",
@@ -149,6 +167,7 @@
       "view_project_tooltip": "Opens detail page in new tab",
       "approve_button": "Approve",
       "reject_button": "Reject",
+      "activity_title": "Activity",
       "approve_modal": {
         "title": "Approve project request",
         "content": "Are you sure you want to approve this project request?",

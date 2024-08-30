@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Flex, TextInput, Title } from '@mantine/core';
+import { Box, Flex, Title } from '@mantine/core';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { notifications } from '@mantine/notifications';
@@ -10,7 +10,7 @@ import { useAddProjectMutation } from '@/modules/project/mutations';
 import { ApiClientError } from '@/modules/api/model';
 import { requestProjectSchema, type RequestProjectSchema } from '@/modules/project/form';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
-import TextEditor from '@/components/global/text-editor';
+import RequestForm from '@/components/project/request-form';
 
 const AddProject: React.FC = () => {
 	const { t } = useTranslation();
@@ -67,21 +67,11 @@ const AddProject: React.FC = () => {
 				<Title order={1}>{t('routes.AddProject.title')}</Title>
 				<Box w="80%" py={20}>
 					<FormProvider {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)}>
-							<TextInput
-								label="Title"
-								withAsterisk
-								placeholder="Project title"
-								error={form.formState.errors.title?.message}
-								{...form.register('title')}
-							/>
-							<TextEditor label="Description" inputHtmlName="description" />
-							<Flex justify="center">
-								<Button loading={isPending} type="submit" variant="filled" color="teal" mt={10} w={200}>
-									{t('routes.AddProject.form.submit')}
-								</Button>
-							</Flex>
-						</form>
+						<RequestForm
+							onSubmit={onSubmit}
+							loading={isPending}
+							submitText={t('routes.AddProject.form.submit')}
+						/>
 					</FormProvider>
 				</Box>
 			</Flex>
