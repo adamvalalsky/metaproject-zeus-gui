@@ -33,6 +33,7 @@
     "localforage": "^1.10.0",
     "mantine-datatable": "^7.9.1",
     "match-sorter": "^6.3.1",
+    "oidc-client-ts": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.4",
