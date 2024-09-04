@@ -6,8 +6,6 @@ import { IconLock } from '@tabler/icons-react';
 
 import { AuthContext } from '@/modules/auth/context';
 
-import MuniIcon from '../../components/global/icons/muni-icon';
-
 const Index: React.FC = () => {
 	const { signInRedirect, isAuthenticated } = useContext(AuthContext);
 	const { t } = useTranslation();
@@ -19,12 +17,6 @@ const Index: React.FC = () => {
 		}
 	}, []);
 
-	// TODO just temporary real OIDC will be implemented by callbacks
-	const signIn = () => {
-		signInRedirect();
-		navigate('/project', { replace: true });
-	};
-
 	return (
 		<Flex mt={200} direction="column" align="center">
 			<ThemeIcon color="grape" radius="lg" size="lg">
@@ -32,7 +24,7 @@ const Index: React.FC = () => {
 			</ThemeIcon>
 			<Title order={2}>{t('routes.index.title')}</Title>
 			<Box>
-				<Button variant="outline" mt={20} w={300} leftSection={<MuniIcon size={20} />} onClick={signIn}>
+				<Button variant="outline" mt={20} w={300} onClick={signInRedirect}>
 					{t('routes.index.buttons.MUNI')}
 				</Button>
 			</Box>

@@ -17,6 +17,7 @@ import AdminRouteGuard from '@/modules/auth/guards/admin-route-guard';
 import ProjectDetailGuard from '@/modules/auth/guards/project-detail-guard';
 import ProjectPublicationsAddPage from '@/routes/project/detail/publications';
 import ProjectRequestPage from '@/routes/project/detail/request';
+import AuthLogin from '@/routes/auth/login';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -50,6 +51,7 @@ const App = () => {
 		createRoutesFromElements(
 			<Route id="root" path="/" element={<Root />} errorElement={<ErrorPage />}>
 				<Route index element={<Index />} />
+				<Route path="auth/login" element={<AuthLogin />} />
 				<Route path="/project" element={<PrivateRouteGuard />}>
 					<Route index element={<Project />} />
 					<Route path="add" element={<AddProject />} />

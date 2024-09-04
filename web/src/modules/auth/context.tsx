@@ -17,8 +17,7 @@ const getDefaultContext = (): AuthContextValue => ({
 	logout: async () => logout(),
 	signOutRedirectCallback: async () => {},
 	isAuthenticated: () => isAuthenticated(),
-	// TODO momentarily it will be ID 1, because it is in the database, change later to real implementation
-	signInRedirect: async () => signInRedirect(1),
+	signInRedirect: async () => signInRedirect(),
 	signInSilentCallback: async () => {},
 	createSignInRequest: async () => {},
 	getAdminAccess: () => getAdminAccess(),
