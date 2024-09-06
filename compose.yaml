@@ -13,3 +13,7 @@ services:
       - "5137:5137"
     environment:
       - VITE_API_URL
+      - VITE_CLIENT_BASE_URL
+      - VITE_IDENTITY_AUTH_URL
+      - VITE_IDENTITY_ISSUER
+      - VITE_IDENTITY_CLIENT_ID

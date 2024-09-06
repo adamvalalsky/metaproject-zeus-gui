@@ -1,13 +1,14 @@
-import { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from 'react-oidc-context';
 
-import { AuthContext } from '@/modules/auth/context';
+import { useAdminContext } from '@/modules/auth/context';
 import { AdminAccess } from '@/modules/auth/model';
 
 const AdminRouteGuard = () => {
-	const { isAuthenticated, getAdminAccess } = useContext(AuthContext);
+	const { isAuthenticated } = useAuth();
+	const { getAdminAccess } = useAdminContext();
 
-	if (!isAuthenticated() || getAdminAccess() !== AdminAccess.LOGGED) {
+	if (!isAuthenticated || getAdminAccess() !== AdminAccess.LOGGED) {
 		return <Navigate to="/" replace />;
 	}
 

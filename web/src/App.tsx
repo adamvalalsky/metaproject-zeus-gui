@@ -3,6 +3,7 @@ import { I18nextProvider } from 'react-i18next';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ModalsProvider } from '@mantine/modals';
+import { AuthProvider } from 'react-oidc-context';
 
 import Project from '@/routes/project';
 import AddProject from '@/routes/project/add';
@@ -18,10 +19,11 @@ import ProjectDetailGuard from '@/modules/auth/guards/project-detail-guard';
 import ProjectPublicationsAddPage from '@/routes/project/detail/publications';
 import ProjectRequestPage from '@/routes/project/detail/request';
 import AuthLogin from '@/routes/auth/login';
+import { IDENTITY_CONFIG } from '@/modules/auth/config/identity-config';
+import { AdminContextProvider } from '@/modules/auth/context';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
-import { AuthContextProvider } from './modules/auth/context';
 import i18next from './modules/language/i18next';
 import ErrorPage from './components/global/error-page';
 
@@ -80,11 +82,13 @@ const App = () => {
 		<MantineProvider theme={theme}>
 			<QueryClientProvider client={queryClient}>
 				<I18nextProvider i18n={i18next}>
-					<AuthContextProvider>
-						<ModalsProvider>
-							<RouterProvider router={router} />
-						</ModalsProvider>
-					</AuthContextProvider>
+					<AuthProvider {...IDENTITY_CONFIG}>
+						<AdminContextProvider>
+							<ModalsProvider>
+								<RouterProvider router={router} />
+							</ModalsProvider>
+						</AdminContextProvider>
+					</AuthProvider>
 				</I18nextProvider>
 			</QueryClientProvider>
 		</MantineProvider>

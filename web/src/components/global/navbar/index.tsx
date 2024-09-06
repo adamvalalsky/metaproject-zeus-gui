@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { type PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 import { Anchor, Box, Burger, Flex, Group, Tooltip } from '@mantine/core';
 import { Link } from 'react-router-dom';
+import { useAuth } from 'react-oidc-context';
 
-import { AuthContext } from '@/modules/auth/context';
+import { useAdminContext } from '@/modules/auth/context';
 import useWindowSize from '@/hooks/useWindowSize';
 
 import AdministratorToggle from '../administrator-toggle';
@@ -13,16 +14,14 @@ import DrawerList from './drawer-list';
 import UserMenu from './user-menu';
 
 const Navbar = ({ children }: PropsWithChildren) => {
-	const { getAdminAccess } = useContext(AuthContext);
-	const { isAuthenticated } = useContext(AuthContext);
+	const { getAdminAccess } = useAdminContext();
+	const { isAuthenticated } = useAuth();
 	const windowSize = useWindowSize();
 	const [drawerOpened, setDrawerOpened] = useState(windowSize > 1000);
 
 	useEffect(() => {
 		setDrawerOpened(windowSize > 1000);
 	}, [windowSize]);
-
-	const isLoggedIn = useMemo(() => isAuthenticated(), [isAuthenticated]);
 
 	// TODO implement admin access
 	const [adminAccess, setAdminMenu] = useState(getAdminAccess());
@@ -35,7 +34,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 			<Flex justify="space-between" align="center" className={classes.wrapper}>
 				<Box component="header" color="white">
 					<Group h="100%" pl={10}>
-						{isLoggedIn && (
+						{isAuthenticated && (
 							<Group>
 								<Tooltip label="Menu" zIndex={600}>
 									<Burger size="sm" color="white" onClick={toggleDrawer} />
@@ -47,7 +46,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 						</Anchor>
 					</Group>
 				</Box>
-				{isLoggedIn && (
+				{isAuthenticated && (
 					<Group mr={10}>
 						<AdministratorToggle adminAccess={adminAccess} setAdminMenu={setAdminMenu} />
 						<UserMenu />
@@ -55,7 +54,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 				)}
 			</Flex>
 			<Flex>
-				{isLoggedIn && <DrawerList open={drawerOpened} />}
+				{isAuthenticated && <DrawerList open={drawerOpened} />}
 				<Box w="100%">{children}</Box>
 			</Flex>
 		</>

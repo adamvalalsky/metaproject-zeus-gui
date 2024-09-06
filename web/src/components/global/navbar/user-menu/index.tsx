@@ -1,9 +1,8 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Avatar, Group, Menu, MenuDropdown, MenuItem, MenuTarget, rem, Text, UnstyledButton } from '@mantine/core';
 import { IconChevronDown, IconLogout, IconSettings } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-
-import { AuthContext } from '@/modules/auth/context';
+import { useAuth } from 'react-oidc-context';
 
 import classes from './user-menu.module.css';
 
@@ -12,10 +11,8 @@ type UserMenuProps = {
 };
 
 const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
-	const { logout, getLoggedUserInfo } = useContext(AuthContext);
+	const { user } = useAuth();
 	const [userMenuOpened, setUserMenuOpened] = useState(false);
-
-	const user = getLoggedUserInfo();
 
 	if (!user) {
 		return null;
@@ -52,10 +49,7 @@ const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 				>
 					Account settings
 				</MenuItem>
-				<MenuItem
-					onClick={() => logout()}
-					leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
-				>
+				<MenuItem leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}>
 					Logout
 				</MenuItem>
 			</MenuDropdown>
