@@ -1,4 +1,3 @@
-import { getLoggedUserToken } from '@/modules/auth/methods/getLoggedUserToken';
 import {
 	ApiClientError,
 	type ApiClientErrorResponse,
@@ -38,7 +37,7 @@ const requestWrapper = <T>(
 	const signal = abortController.signal;
 
 	// TODO get user token correctly, maybe it will be saved somewhere else
-	const userId = getLoggedUserToken();
+	const userId = null;
 
 	const defaultHeaders: Record<string, string> = {};
 
