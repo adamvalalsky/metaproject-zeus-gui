@@ -1,5 +1,11 @@
-import { type User } from 'oidc-client-ts';
+import { User } from 'oidc-client-ts';
 
-export const onSigninCallback = (_user: User | void): void => {
-	window.history.replaceState({}, document.title, window.location.pathname);
+import { signInUser } from '@/modules/auth/api/sign-in-user';
+
+export const onSigninCallback = async (user: User | void): Promise<void> => {
+	if (user instanceof User) {
+		await signInUser(user.access_token);
+	}
+
+	window.history.replaceState({}, document.title, `${import.meta.env.VITE_CLIENT_BASE_URL}/project`);
 };
