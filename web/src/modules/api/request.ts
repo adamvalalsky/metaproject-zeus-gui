@@ -1,16 +1,8 @@
-import {
-	ApiClientError,
-	type ApiClientErrorResponse,
-	type ApiRequestPromise,
-	type ApiResponse,
-	Method
-} from '@/modules/api/model';
+import { ApiClientError, type ApiClientErrorResponse, type ApiResponse, Method } from '@/modules/api/model';
+import userManager from '@/modules/auth/config/user-manager';
 
-export const request = <T>(
-	url: string,
-	init?: RequestInit,
-	headersAutoGenerate = false
-): ApiRequestPromise<ApiResponse<T>> => requestWrapper<T>(url, createApiResponse, init, headersAutoGenerate);
+export const request = <T>(url: string, init?: RequestInit, headersAutoGenerate = false): Promise<ApiResponse<T>> =>
+	requestWrapper<T>(url, createApiResponse, init, headersAutoGenerate);
 
 export const download = (url: string, init?: RequestInit) =>
 	requestWrapper<Blob>(
@@ -27,17 +19,14 @@ export const download = (url: string, init?: RequestInit) =>
 		true
 	);
 
-const requestWrapper = <T>(
+const requestWrapper = async <T>(
 	url: string,
 	postRequestAction: (response: Response) => Promise<{ status: number; data: unknown }>,
 	init?: RequestInit,
 	headersAutoGenerate = false
-): ApiRequestPromise<ApiResponse<T>> => {
+): Promise<ApiResponse<T>> => {
 	const abortController = new AbortController();
 	const signal = abortController.signal;
-
-	// TODO get user token correctly, maybe it will be saved somewhere else
-	const userId = null;
 
 	const defaultHeaders: Record<string, string> = {};
 
@@ -46,11 +35,13 @@ const requestWrapper = <T>(
 		defaultHeaders['Content-Type'] = 'application/json';
 	}
 
-	if (userId) {
-		defaultHeaders['X-User-Id'] = userId;
+	const user = await userManager.getUser();
+	const accessToken = user?.access_token;
+	if (accessToken) {
+		defaultHeaders.Authorization = `Bearer ${accessToken}`;
 	}
 
-	const promise = fetch(import.meta.env.VITE_API_URL + url, {
+	return fetch(import.meta.env.VITE_API_URL + url, {
 		method: Method.GET,
 		signal,
 		...init,
@@ -73,11 +64,7 @@ const requestWrapper = <T>(
 		})
 		.catch(error => {
 			throw error;
-		}) as ApiRequestPromise<ApiResponse<T>>;
-
-	promise.cancel = () => abortController.abort();
-
-	return promise;
+		}) as Promise<ApiResponse<T>>;
 };
 
 const createApiResponse = async (response: Response): Promise<{ status: number; data: unknown }> => {

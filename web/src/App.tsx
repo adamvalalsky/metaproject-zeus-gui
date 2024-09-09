@@ -19,8 +19,9 @@ import ProjectDetailGuard from '@/modules/auth/guards/project-detail-guard';
 import ProjectPublicationsAddPage from '@/routes/project/detail/publications';
 import ProjectRequestPage from '@/routes/project/detail/request';
 import AuthLogin from '@/routes/auth/login';
-import { IDENTITY_CONFIG } from '@/modules/auth/config/identity-config';
 import { AdminContextProvider } from '@/modules/auth/context';
+import userManager from '@/modules/auth/config/user-manager';
+import { onSigninCallback } from '@/modules/auth/methods/onSigninCallback';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -76,13 +77,24 @@ const App = () => {
 		)
 	);
 
-	const queryClient = new QueryClient();
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				retry: 1
+			}
+		}
+	});
+
+	const oidcConfig = {
+		userManager,
+		onSigninCallback
+	};
 
 	return (
 		<MantineProvider theme={theme}>
 			<QueryClientProvider client={queryClient}>
 				<I18nextProvider i18n={i18next}>
-					<AuthProvider {...IDENTITY_CONFIG}>
+					<AuthProvider {...oidcConfig}>
 						<AdminContextProvider>
 							<ModalsProvider>
 								<RouterProvider router={router} />
