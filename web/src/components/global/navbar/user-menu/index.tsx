@@ -32,9 +32,9 @@ const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 			<MenuTarget>
 				<UnstyledButton className={classes.user} data-opened={userMenuOpened}>
 					<Group gap={7}>
-						<Avatar color="white" variant="filled" size="sm" />
+						<Avatar color="initials" variant="filled" size="sm" name={user.profile.name} />
 						<Text fw={500} size="sm" lh={1} mr={3} flex={1}>
-							{user.name}
+							{user.profile.name}
 						</Text>
 						<IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
 					</Group>
