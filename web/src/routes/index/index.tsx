@@ -5,8 +5,10 @@ import { Box, Button, Flex, ThemeIcon, Title } from '@mantine/core';
 import { IconLock } from '@tabler/icons-react';
 import { useAuth } from 'react-oidc-context';
 
+import Loading from '@/components/global/loading';
+
 const Index: React.FC = () => {
-	const { signinRedirect, isAuthenticated } = useAuth();
+	const { signinRedirect, isAuthenticated, isLoading } = useAuth();
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 
@@ -14,7 +16,11 @@ const Index: React.FC = () => {
 		if (isAuthenticated) {
 			navigate('/project', { replace: true });
 		}
-	}, []);
+	}, [isAuthenticated]);
+
+	if (isLoading) {
+		return <Loading />;
+	}
 
 	return (
 		<Flex mt={200} direction="column" align="center">
