@@ -11,8 +11,13 @@ type UserMenuProps = {
 };
 
 const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
-	const { user } = useAuth();
+	const { user, removeUser, signoutSilent } = useAuth();
 	const [userMenuOpened, setUserMenuOpened] = useState(false);
+
+	const logout = () => {
+		removeUser();
+		signoutSilent();
+	};
 
 	if (!user) {
 		return null;
@@ -49,7 +54,10 @@ const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 				>
 					Account settings
 				</MenuItem>
-				<MenuItem leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}>
+				<MenuItem
+					onClick={() => logout()}
+					leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+				>
 					Logout
 				</MenuItem>
 			</MenuDropdown>
