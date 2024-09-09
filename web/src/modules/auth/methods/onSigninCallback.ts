@@ -4,7 +4,7 @@ import { signInUser } from '@/modules/auth/api/sign-in-user';
 
 export const onSigninCallback = async (user: User | void): Promise<void> => {
 	if (user instanceof User) {
-		await signInUser(user.access_token);
+		await signInUser(user.access_token, user.profile.sub);
 	}
 
 	window.history.replaceState({}, document.title, `${import.meta.env.VITE_CLIENT_BASE_URL}/project`);
