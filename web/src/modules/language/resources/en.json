@@ -11,7 +11,7 @@
         }
       },
       "navbar": {
-        "header": "Resource manager",
+        "header": "MetaProject Zeus",
         "adminWarning": "You are now logged in as Administrator and have all permissions."
       },
       "errorPage": {

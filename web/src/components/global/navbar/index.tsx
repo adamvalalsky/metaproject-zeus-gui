@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { type PropsWithChildren, useEffect, useState } from 'react';
-import { Anchor, Box, Burger, Flex, Group, Tooltip } from '@mantine/core';
+import { Anchor, Box, Burger, Flex, Group, Image, Tooltip } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
 
@@ -41,9 +41,18 @@ const Navbar = ({ children }: PropsWithChildren) => {
 								</Tooltip>
 							</Group>
 						)}
-						<Anchor component={Link} to="/" c="white" underline="never">
-							{t('components.global.navbar.header')}
-						</Anchor>
+						<Group>
+							<Image
+								src="/images/zeus.png"
+								w={30}
+								style={{
+									filter: 'invert(100%)'
+								}}
+							/>
+							<Anchor component={Link} to="/" c="white" underline="never">
+								{t('components.global.navbar.header')}
+							</Anchor>
+						</Group>
 					</Group>
 				</Box>
 				{isAuthenticated && (
