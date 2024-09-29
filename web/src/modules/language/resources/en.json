@@ -111,6 +111,10 @@
       "title": "Request allocation",
       "information": "If you need access to more than one resource, please submit a separate allocation request for each resource.",
       "form": {
+        "step1": {
+          "title": "Resource type",
+          "description": "Choose type of the resource."
+        },
         "buttons": {
           "back": "Back",
           "next": "Next step"

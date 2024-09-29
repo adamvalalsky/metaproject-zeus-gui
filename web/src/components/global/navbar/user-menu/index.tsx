@@ -23,8 +23,6 @@ const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 		return null;
 	}
 
-	console.log(user);
-
 	return (
 		<Menu
 			width={fullWidth ? '96%' : 260}

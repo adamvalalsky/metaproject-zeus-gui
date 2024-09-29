@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
+import ResourceTypeStep from '@/components/project/allocations/request-stepper/resource-type';
 
 const MAX_STEPS = 3;
 
@@ -12,6 +13,7 @@ const AllocationRequest = () => {
 	const { t } = useTranslation();
 
 	const [active, setActive] = useState(0);
+	const [doneSteps, setDoneSteps] = useState<Set<number>>(new Set([]));
 	const nextStep = () => setActive(current => (current < MAX_STEPS ? current + 1 : current));
 	const prevStep = () => setActive(current => (current > 0 ? current - 1 : current));
 
@@ -24,19 +26,19 @@ const AllocationRequest = () => {
 					{ title: 'Request allocation', href: `/project/${project.id}/allocation` }
 				]}
 			/>
-			<Stack align="center" gap={1} justify="center">
+			<Stack align="center" gap={3} justify="center">
 				<Title>{t('routes.AllocationRequest.title')}</Title>
-				<Title order={3} pb={30} pt={15}>
-					Title: {project.title}
-				</Title>
-			</Stack>
-			<Group justify="center">
 				<Text>{t('routes.AllocationRequest.information')}</Text>
-			</Group>
+			</Stack>
 
 			<Box my={20}>
 				<Stepper active={active} onStepClick={setActive} allowNextStepsSelect={false}>
-					<Stepper.Step>Resource type selection</Stepper.Step>
+					<Stepper.Step
+						label={t('routes.AllocationRequest.form.step1.title')}
+						description={t('routes.AllocationRequest.form.step1.description')}
+					>
+						<ResourceTypeStep setComplete={() => setDoneSteps(new Set([...doneSteps, 0]))} />
+					</Stepper.Step>
 					<Stepper.Step>Resource selection</Stepper.Step>
 					<Stepper.Step>Resource options</Stepper.Step>
 					<Stepper.Step>Review</Stepper.Step>
@@ -46,7 +48,9 @@ const AllocationRequest = () => {
 					<Button variant="default" onClick={prevStep}>
 						{t('routes.AllocationRequest.form.buttons.back')}
 					</Button>
-					<Button onClick={nextStep}>{t('routes.AllocationRequest.form.buttons.next')}</Button>
+					<Button disabled={!doneSteps.has(active)} onClick={nextStep}>
+						{t('routes.AllocationRequest.form.buttons.next')}
+					</Button>
 				</Group>
 			</Box>
 		</Box>
