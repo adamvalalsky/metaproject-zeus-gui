@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Flex, Group, Tabs, Title } from '@mantine/core';
@@ -8,7 +8,13 @@ import ProjectTable from '@/components/project/project-table';
 import { ProjectStatus } from '@/modules/project/constants';
 
 const Project: React.FC = () => {
+	const defaultValue = 'active';
 	const { t } = useTranslation();
+
+	// only load other types of project after clicking on tab
+	const [requestedClicked, setRequestedClicked] = useState(false);
+	const [archivedClicked, setArchivedClicked] = useState(false);
+	const [rejectedClicked, setRejectedClicked] = useState(false);
 
 	return (
 		<Flex mt={15} direction="column" align="center">
@@ -19,18 +25,26 @@ const Project: React.FC = () => {
 						{t('routes.Dashboard.requestButton')}
 					</Button>
 				</Group>
-				<Tabs defaultValue="active">
+				<Tabs defaultValue={defaultValue}>
 					<Tabs.List>
 						<Tabs.Tab value="active" leftSection={<IconActivity />}>
 							{t('routes.Dashboard.activeProjects.title')}
 						</Tabs.Tab>
-						<Tabs.Tab value="requested" leftSection={<IconClockQuestion />}>
+						<Tabs.Tab
+							onClick={() => setRequestedClicked(true)}
+							value="requested"
+							leftSection={<IconClockQuestion />}
+						>
 							{t('routes.Dashboard.requestedProjects.title')}
 						</Tabs.Tab>
-						<Tabs.Tab value="archived" leftSection={<IconArchive />}>
+						<Tabs.Tab
+							onClick={() => setArchivedClicked(true)}
+							value="archived"
+							leftSection={<IconArchive />}
+						>
 							{t('routes.Dashboard.archivedProjects.title')}
 						</Tabs.Tab>
-						<Tabs.Tab value="rejected" leftSection={<IconBan />}>
+						<Tabs.Tab onClick={() => setRejectedClicked(true)} value="rejected" leftSection={<IconBan />}>
 							{t('routes.Dashboard.rejectedProjects.title')}
 						</Tabs.Tab>
 					</Tabs.List>
@@ -43,24 +57,30 @@ const Project: React.FC = () => {
 					</Tabs.Panel>
 
 					<Tabs.Panel value="requested">
-						<ProjectTable
-							title={t('routes.Dashboard.requestedProjects.title')}
-							status={ProjectStatus.NEW}
-						/>
+						{requestedClicked && (
+							<ProjectTable
+								title={t('routes.Dashboard.requestedProjects.title')}
+								status={ProjectStatus.NEW}
+							/>
+						)}
 					</Tabs.Panel>
 
 					<Tabs.Panel value="archived">
-						<ProjectTable
-							title={t('routes.Dashboard.archivedProjects.title')}
-							status={ProjectStatus.ARCHIVED}
-						/>
+						{archivedClicked && (
+							<ProjectTable
+								title={t('routes.Dashboard.archivedProjects.title')}
+								status={ProjectStatus.ARCHIVED}
+							/>
+						)}
 					</Tabs.Panel>
 
 					<Tabs.Panel value="rejected">
-						<ProjectTable
-							title={t('routes.Dashboard.rejectedProjects.title')}
-							status={ProjectStatus.REJECTED}
-						/>
+						{rejectedClicked && (
+							<ProjectTable
+								title={t('routes.Dashboard.rejectedProjects.title')}
+								status={ProjectStatus.REJECTED}
+							/>
+						)}
 					</Tabs.Panel>
 				</Tabs>
 			</Box>
