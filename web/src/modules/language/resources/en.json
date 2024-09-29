@@ -31,6 +31,21 @@
       }
     },
     "project": {
+      "allocations": {
+        "index": {
+          "title": "Allocations",
+          "request_allocation": "Request allocation",
+          "no_records_text": "No allocations added yet.",
+          "columns": {
+            "resource_name": "Resource name",
+            "resource_type": "Resource type",
+            "information": "Information",
+            "end_date": "End date",
+            "status": "Status",
+            "actions": "Actions"
+          }
+        }
+      },
       "members": {
         "add_button": {
           "title": "Add members"
@@ -45,7 +60,7 @@
           }
         },
         "index": {
-          "title": "Project members",
+          "title": "Members",
           "no_records_text": "No members added yet.",
           "columns": {
             "id": "ID",
