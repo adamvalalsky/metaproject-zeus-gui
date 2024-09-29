@@ -23,6 +23,8 @@ const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 		return null;
 	}
 
+	console.log(user);
+
 	return (
 		<Menu
 			width={fullWidth ? '96%' : 260}
@@ -37,7 +39,12 @@ const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 			<MenuTarget>
 				<UnstyledButton className={classes.user} data-opened={userMenuOpened}>
 					<Group gap={7}>
-						<Avatar color="initials" variant="filled" size="sm" name={user.profile.name} />
+						<Avatar
+							color="initials"
+							variant="filled"
+							size="sm"
+							name={`${user.profile.given_name} ${user.profile.family_name}`}
+						/>
 						<Text fw={500} size="sm" lh={1} mr={3} flex={1}>
 							{user.profile.name}
 						</Text>
