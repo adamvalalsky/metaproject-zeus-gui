@@ -3,6 +3,7 @@ import { I18nextProvider } from 'react-i18next';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ModalsProvider } from '@mantine/modals';
+import { AuthProvider } from 'react-oidc-context';
 
 import Project from '@/routes/project';
 import AddProject from '@/routes/project/add';
@@ -17,10 +18,13 @@ import AdminRouteGuard from '@/modules/auth/guards/admin-route-guard';
 import ProjectDetailGuard from '@/modules/auth/guards/project-detail-guard';
 import ProjectPublicationsAddPage from '@/routes/project/detail/publications';
 import ProjectRequestPage from '@/routes/project/detail/request';
+import AuthLogin from '@/routes/auth/login';
+import { AdminContextProvider } from '@/modules/auth/context';
+import userManager from '@/modules/auth/config/user-manager';
+import { onSigninCallback } from '@/modules/auth/methods/onSigninCallback';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
-import { AuthContextProvider } from './modules/auth/context';
 import i18next from './modules/language/i18next';
 import ErrorPage from './components/global/error-page';
 
@@ -50,6 +54,7 @@ const App = () => {
 		createRoutesFromElements(
 			<Route id="root" path="/" element={<Root />} errorElement={<ErrorPage />}>
 				<Route index element={<Index />} />
+				<Route path="auth/callback" element={<AuthLogin />} />
 				<Route path="/project" element={<PrivateRouteGuard />}>
 					<Route index element={<Project />} />
 					<Route path="add" element={<AddProject />} />
@@ -72,17 +77,30 @@ const App = () => {
 		)
 	);
 
-	const queryClient = new QueryClient();
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				retry: 1
+			}
+		}
+	});
+
+	const oidcConfig = {
+		userManager,
+		onSigninCallback
+	};
 
 	return (
 		<MantineProvider theme={theme}>
 			<QueryClientProvider client={queryClient}>
 				<I18nextProvider i18n={i18next}>
-					<AuthContextProvider>
-						<ModalsProvider>
-							<RouterProvider router={router} />
-						</ModalsProvider>
-					</AuthContextProvider>
+					<AuthProvider {...oidcConfig}>
+						<AdminContextProvider>
+							<ModalsProvider>
+								<RouterProvider router={router} />
+							</ModalsProvider>
+						</AdminContextProvider>
+					</AuthProvider>
 				</I18nextProvider>
 			</QueryClientProvider>
 		</MantineProvider>

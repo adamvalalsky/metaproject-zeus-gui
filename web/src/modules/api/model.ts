@@ -17,10 +17,6 @@ export type ApiClientErrorResponse = {
 	};
 } & ApiResponse;
 
-export type ApiRequestPromise<T> = {
-	cancel: () => void;
-} & Promise<T>;
-
 export class ApiClientError extends Error {
 	constructor(
 		m: string,

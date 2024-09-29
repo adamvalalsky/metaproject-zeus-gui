@@ -1,9 +1,12 @@
+import { useAuth } from 'react-oidc-context';
+
 import { ADMIN_KEY } from '@/modules/auth/constants';
 import { AdminAccess } from '@/modules/auth/model';
-import { isAuthenticated } from '@/modules/auth/methods/isAuthenticated';
 
 export const getAdminAccess = (): AdminAccess => {
-	if (!isAuthenticated()) {
+	const { isAuthenticated } = useAuth();
+
+	if (!isAuthenticated) {
 		return AdminAccess.NONE;
 	}
 

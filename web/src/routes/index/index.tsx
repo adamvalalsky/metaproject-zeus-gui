@@ -1,29 +1,26 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Flex, ThemeIcon, Title } from '@mantine/core';
 import { IconLock } from '@tabler/icons-react';
+import { useAuth } from 'react-oidc-context';
 
-import { AuthContext } from '@/modules/auth/context';
-
-import MuniIcon from '../../components/global/icons/muni-icon';
+import Loading from '@/components/global/loading';
 
 const Index: React.FC = () => {
-	const { signInRedirect, isAuthenticated } = useContext(AuthContext);
+	const { signinRedirect, isAuthenticated, isLoading } = useAuth();
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (isAuthenticated()) {
+		if (isAuthenticated) {
 			navigate('/project', { replace: true });
 		}
-	}, []);
+	}, [isAuthenticated]);
 
-	// TODO just temporary real OIDC will be implemented by callbacks
-	const signIn = () => {
-		signInRedirect();
-		navigate('/project', { replace: true });
-	};
+	if (isLoading) {
+		return <Loading />;
+	}
 
 	return (
 		<Flex mt={200} direction="column" align="center">
@@ -32,7 +29,7 @@ const Index: React.FC = () => {
 			</ThemeIcon>
 			<Title order={2}>{t('routes.index.title')}</Title>
 			<Box>
-				<Button variant="outline" mt={20} w={300} leftSection={<MuniIcon size={20} />} onClick={signIn}>
+				<Button variant="outline" mt={20} w={300} onClick={() => signinRedirect()}>
 					{t('routes.index.buttons.MUNI')}
 				</Button>
 			</Box>

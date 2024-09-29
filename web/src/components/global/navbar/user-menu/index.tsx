@@ -1,9 +1,8 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Avatar, Group, Menu, MenuDropdown, MenuItem, MenuTarget, rem, Text, UnstyledButton } from '@mantine/core';
 import { IconChevronDown, IconLogout, IconSettings } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-
-import { AuthContext } from '@/modules/auth/context';
+import { useAuth } from 'react-oidc-context';
 
 import classes from './user-menu.module.css';
 
@@ -12,14 +11,19 @@ type UserMenuProps = {
 };
 
 const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
-	const { logout, getLoggedUserInfo } = useContext(AuthContext);
+	const { user, removeUser, signoutSilent } = useAuth();
 	const [userMenuOpened, setUserMenuOpened] = useState(false);
 
-	const user = getLoggedUserInfo();
+	const logout = () => {
+		removeUser();
+		signoutSilent();
+	};
 
 	if (!user) {
 		return null;
 	}
+
+	console.log(user);
 
 	return (
 		<Menu
@@ -35,9 +39,14 @@ const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 			<MenuTarget>
 				<UnstyledButton className={classes.user} data-opened={userMenuOpened}>
 					<Group gap={7}>
-						<Avatar color="white" variant="filled" size="sm" />
+						<Avatar
+							color="initials"
+							variant="filled"
+							size="sm"
+							name={`${user.profile.given_name} ${user.profile.family_name}`}
+						/>
 						<Text fw={500} size="sm" lh={1} mr={3} flex={1}>
-							{user.name}
+							{user.profile.name}
 						</Text>
 						<IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
 					</Group>

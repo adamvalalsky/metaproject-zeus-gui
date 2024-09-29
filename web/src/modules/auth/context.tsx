@@ -1,60 +1,38 @@
-import { createContext, type ReactElement, useState } from 'react';
+import { createContext, type ReactElement, useContext, useState } from 'react';
 
-import { type User } from '@/modules/user/model';
-import { isAuthenticated } from '@/modules/auth/methods/isAuthenticated';
-import { signInRedirect } from '@/modules/auth/methods/signInRedirect';
-import { logout } from '@/modules/auth/methods/logout';
 import { getAdminAccess } from '@/modules/auth/methods/getAdminAccess';
 import { type AdminAccess } from '@/modules/auth/model';
 import { removeAdminAccess } from '@/modules/auth/methods/removeAdminAccess';
 import { setAdminAccess } from '@/modules/auth/methods/setAdminAccess';
-import { getLoggedUserInfo } from '@/modules/auth/methods/getLoggedUserInfo';
 
-const getDefaultContext = (): AuthContextValue => ({
-	signInRedirectCallback: () => {
-		throw new Error('Sign in redirect callback not used');
-	},
-	logout: async () => logout(),
-	signOutRedirectCallback: async () => {},
-	isAuthenticated: () => isAuthenticated(),
-	// TODO momentarily it will be ID 1, because it is in the database, change later to real implementation
-	signInRedirect: async () => signInRedirect(1),
-	signInSilentCallback: async () => {},
-	createSignInRequest: async () => {},
+const getDefaultContext = (): AdminContextValue => ({
 	getAdminAccess: () => getAdminAccess(),
 	removeAdminAccess: () => removeAdminAccess(),
-	setAdminAccess: (key: string) => setAdminAccess(key),
-	getLoggedUserInfo: () => getLoggedUserInfo()
+	setAdminAccess: (key: string) => setAdminAccess(key)
 });
 
-export type AuthContextValue = {
-	signInRedirectCallback: () => void;
-	logout: () => Promise<void>;
-	signOutRedirectCallback: () => Promise<void>;
-	isAuthenticated: () => boolean;
-	signInRedirect: () => Promise<void>;
-	signInSilentCallback: () => Promise<void>;
-	createSignInRequest: () => Promise<void>;
+export type AdminContextValue = {
 	getAdminAccess: () => AdminAccess;
 	removeAdminAccess: () => AdminAccess;
 	setAdminAccess: (key: string) => void;
-	getLoggedUserInfo: () => User | null;
 };
 
-export const AuthContext = createContext<AuthContextValue>({
+export const AdminContext = createContext<AdminContextValue>({
 	...getDefaultContext()
 });
 
-export const AuthDispatchContext = createContext<(context: AuthContextValue) => void>(() => {});
+export const AdminDispatchContext = createContext<(context: AdminContextValue) => void>(() => {});
 
-export const AuthContextProvider = ({ children }: { children: ReactElement }) => {
-	const [context, setContext] = useState<AuthContextValue>({
+export const AdminContextProvider = ({ children }: { children: ReactElement }) => {
+	const [context, setContext] = useState<AdminContextValue>({
 		...getDefaultContext()
 	});
 
 	return (
-		<AuthContext.Provider value={context}>
-			<AuthDispatchContext.Provider value={setContext}>{children}</AuthDispatchContext.Provider>
-		</AuthContext.Provider>
+		<AdminContext.Provider value={context}>
+			<AdminDispatchContext.Provider value={setContext}>{children}</AdminDispatchContext.Provider>
+		</AdminContext.Provider>
 	);
 };
+
+export const useAdminContext = () => useContext(AdminContext);

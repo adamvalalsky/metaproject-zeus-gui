@@ -1,12 +1,16 @@
-import { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from 'react-oidc-context';
 
-import { AuthContext } from '@/modules/auth/context';
+import Loading from '@/components/global/loading';
 
 const PrivateRouteGuard = () => {
-	const { isAuthenticated } = useContext(AuthContext);
+	const { isAuthenticated, isLoading } = useAuth();
 
-	if (!isAuthenticated()) {
+	if (isLoading) {
+		return <Loading />;
+	}
+
+	if (!isAuthenticated) {
 		return <Navigate to="/" replace />;
 	}
 
