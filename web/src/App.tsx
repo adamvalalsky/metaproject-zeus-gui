@@ -22,6 +22,7 @@ import AuthLogin from '@/routes/auth/login';
 import { AdminContextProvider } from '@/modules/auth/context';
 import userManager from '@/modules/auth/config/user-manager';
 import { onSigninCallback } from '@/modules/auth/methods/onSigninCallback';
+import AllocationRequest from '@/routes/project/detail/allocation/request';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -63,6 +64,7 @@ const App = () => {
 						<Route path="members" element={<ProjectDetailMembers />} />
 						<Route path="archive" element={<ProjectArchivePage />} />
 						<Route path="publications" element={<ProjectPublicationsAddPage />} />
+						<Route path="allocation" element={<AllocationRequest />} />
 						<Route path="request" element={<ProjectRequestPage />} />
 					</Route>
 				</Route>

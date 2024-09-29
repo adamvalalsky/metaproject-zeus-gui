@@ -107,6 +107,16 @@
         "submit": "Request"
       }
     },
+    "AllocationRequest": {
+      "title": "Request allocation",
+      "information": "If you need access to more than one resource, please submit a separate allocation request for each resource.",
+      "form": {
+        "buttons": {
+          "back": "Back",
+          "next": "Next step"
+        }
+      }
+    },
     "ProjectDetail": {
       "status": {
         "rejected": "Rejected",

@@ -49,7 +49,7 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 				</Group>
 				<Button
 					component={Link}
-					to={`/project/${id}/members`}
+					to={`/project/${id}/allocation`}
 					color="green"
 					leftSection={<IconPlus size={14} />}
 				>
