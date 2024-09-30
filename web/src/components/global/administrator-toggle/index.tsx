@@ -10,10 +10,9 @@ import { isAdminLoggedIn } from '@/modules/user/utils/admin';
 
 type AdministratorToggleProps = {
 	adminAccess: AdminAccess;
-	setAdminMenu: (adminAccess: AdminAccess) => void;
 };
 
-const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleProps) => {
+const AdministratorToggle = ({ adminAccess }: AdministratorToggleProps) => {
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 	const { removeAdminAccess, setAdminAccess } = useAdminContext();
@@ -25,9 +24,8 @@ const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleP
 
 	const openModal = () => {
 		if (checked) {
-			const defaultAccess = removeAdminAccess();
+			removeAdminAccess();
 			setChecked(false);
-			setAdminMenu(defaultAccess);
 
 			if (pathname.includes('/admin')) {
 				navigate('/project');
@@ -45,7 +43,6 @@ const AdministratorToggle = ({ adminAccess, setAdminMenu }: AdministratorToggleP
 				const key = 'test';
 
 				setAdminAccess(key);
-				setAdminMenu(AdminAccess.LOGGED);
 				setChecked(true);
 			}
 		});
