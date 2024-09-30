@@ -24,7 +24,8 @@
           "admin": {
             "title": "Administrator section",
             "link": {
-              "requests": "Project requests"
+              "requests": "Project requests",
+              "resources": "Resources"
             }
           }
         }
@@ -252,6 +253,13 @@
       "error": {
         "message": "Publications could not be added."
       }
+    },
+    "ResourceList": {
+      "title": "Resources",
+      "add_button": "Add resource"
+    },
+    "ResourceAddPage": {
+      "title": "Add new resource"
     }
   }
 }

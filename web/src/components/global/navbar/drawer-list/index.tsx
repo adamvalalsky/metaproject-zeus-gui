@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, NavLink, rem, ScrollArea } from '@mantine/core';
-import { IconDevicesQuestion, IconReport, IconUserUp } from '@tabler/icons-react';
+import { IconDevices2, IconQuestionMark, IconReport, IconUserUp } from '@tabler/icons-react';
 
 import { getAdminAccess } from '@/modules/auth/methods/getAdminAccess';
 import { AdminAccess } from '@/modules/auth/model';
@@ -55,7 +55,12 @@ const DrawerList = ({ open }: DrawerListProps) => {
 				{
 					title: 'components.global.drawerList.links.admin.link.requests',
 					href: '/admin/requests',
-					icon: <IconDevicesQuestion />
+					icon: <IconQuestionMark />
+				},
+				{
+					title: 'components.global.drawerList.links.admin.link.resources',
+					href: '/admin/resources',
+					icon: <IconDevices2 />
 				}
 			]
 		});
