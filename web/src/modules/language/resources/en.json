@@ -259,7 +259,13 @@
       "add_button": "Add resource"
     },
     "ResourceAddPage": {
-      "title": "Add new resource"
+      "title": "Add new resource",
+      "form": {
+        "type": {
+          "label": "Resource type",
+          "placeholder": "Select resource type"
+        }
+      }
     }
   }
 }
