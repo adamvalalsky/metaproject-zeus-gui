@@ -115,6 +115,10 @@
           "title": "Resource type",
           "description": "Choose type of the resource."
         },
+        "step2": {
+          "title": "Resource",
+          "description": "Choose the concrete resource and its attributes."
+        },
         "buttons": {
           "back": "Back",
           "next": "Next step"

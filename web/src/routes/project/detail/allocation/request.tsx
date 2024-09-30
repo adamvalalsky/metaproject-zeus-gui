@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import ResourceTypeStep from '@/components/project/allocations/request-stepper/resource-type';
+import ResourceStep from '@/components/project/allocations/request-stepper/resource';
 
 const MAX_STEPS = 3;
 
@@ -39,7 +40,12 @@ const AllocationRequest = () => {
 					>
 						<ResourceTypeStep setComplete={() => setDoneSteps(new Set([...doneSteps, 0]))} />
 					</Stepper.Step>
-					<Stepper.Step>Resource selection</Stepper.Step>
+					<Stepper.Step
+						label={t('routes.AllocationRequest.form.step2.title')}
+						description={t('routes.AllocationRequest.form.step2.description')}
+					>
+						<ResourceStep />
+					</Stepper.Step>
 					<Stepper.Step>Resource options</Stepper.Step>
 					<Stepper.Step>Review</Stepper.Step>
 				</Stepper>
