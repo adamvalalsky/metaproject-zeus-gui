@@ -264,6 +264,29 @@
         "type": {
           "label": "Resource type",
           "placeholder": "Select resource type"
+        },
+        "resource": {
+          "label": "Parent resource",
+          "description": "Choose parent resource for this resource. Can leave empty if this is the root resource.",
+          "placeholder": "Choose parent resource"
+        },
+        "is_available": {
+          "label": "Is available",
+          "description": "If the resource is not available, it will not be shown for user in the list of resources."
+        },
+        "allow_quantity": {
+          "label": "Allow user to choose quantity",
+          "description": "If the resource allows user to choose quantity, user will be asked how many units of this resource they want to allocate."
+        },
+        "quantity_label": {
+          "label": "Quantity label",
+          "description": "Question that user will be asked when asking for resource.",
+          "placeholder": "Enter storage in 1TB increments"
+        },
+        "quantity_default": {
+          "label": "Default value",
+          "description": "Default value for quantity field.",
+          "placeholder": "1"
         }
       }
     }

@@ -6,7 +6,7 @@ export const addResourceSchema = z.object({
 	isAvailable: z.boolean(),
 	resourceTypeId: z.number(),
 	parentResourceId: z.number().optional(),
-	attributes: z.record(z.string())
+	attributes: z.record(z.string()).optional()
 });
 
 export type AddResourceSchema = z.infer<typeof addResourceSchema>;
