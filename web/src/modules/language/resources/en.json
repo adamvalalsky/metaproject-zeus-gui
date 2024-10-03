@@ -287,6 +287,15 @@
           "label": "Default value",
           "description": "Default value for quantity field.",
           "placeholder": "1"
+        },
+        "submit": "Add resource"
+      },
+      "notifications": {
+        "success": {
+          "message": "Resource added successfully"
+        },
+        "error": {
+          "message": "Resource could not be added."
         }
       }
     }

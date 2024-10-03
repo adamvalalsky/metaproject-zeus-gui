@@ -6,7 +6,13 @@ export const addResourceSchema = z.object({
 	isAvailable: z.boolean(),
 	resourceTypeId: z.number(),
 	parentResourceId: z.number().optional(),
-	attributes: z.record(z.string()).optional()
+	attributes: z
+		.object({
+			key: z.string().min(2).max(100),
+			value: z.string().max(100)
+		})
+		.array()
+		.optional()
 });
 
 export type AddResourceSchema = z.infer<typeof addResourceSchema>;
