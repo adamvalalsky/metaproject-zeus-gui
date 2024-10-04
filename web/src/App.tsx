@@ -24,6 +24,7 @@ import userManager from '@/modules/auth/config/user-manager';
 import { onSigninCallback } from '@/modules/auth/methods/onSigninCallback';
 import AllocationRequest from '@/routes/project/detail/allocation/request';
 import ResourceAddPage from '@/routes/admin/resources/add';
+import ResourceDetailPage from '@/routes/admin/resources/detail';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -77,6 +78,7 @@ const App = () => {
 					</Route>
 					<Route path="resources" element={<ResourceList />} />
 					<Route path="resources/add" element={<ResourceAddPage />} />
+					<Route path="resources/:id" element={<ResourceDetailPage />} />
 				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Route>

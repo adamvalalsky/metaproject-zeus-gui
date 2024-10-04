@@ -1,4 +1,6 @@
 {
+  "quantity_default_value": "Quantity default value",
+  "quantity_label": "Quantity label for user",
   "components": {
     "global": {
       "administratorToggle": {
@@ -297,6 +299,21 @@
         "error": {
           "message": "Resource could not be added."
         }
+      }
+    },
+    "ResourceDetailPage": {
+      "title": "Resource detail",
+      "info": {
+        "title": "Resource information",
+        "type": "Resource type",
+        "name": "Name",
+        "parent": "Parent resource",
+        "description": "Description",
+        "is_available": "Is available",
+        "parent_none": "-none-"
+      },
+      "attributes": {
+        "title": "Resource attributes"
       }
     }
   }
