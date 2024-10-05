@@ -1,8 +1,9 @@
 import { useParams } from 'react-router';
-import { Anchor, Badge, Box, Group, Stack, Text, Title } from '@mantine/core';
+import { Anchor, Badge, Box, Button, Group, Stack, Text, Title } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { IconPencil } from '@tabler/icons-react';
 
 import { useResourceDetailQuery } from '@/modules/allocation/queries';
 import NotFound from '@/components/global/not-found';
@@ -36,8 +37,13 @@ const ResourceDetailPage = () => {
 					{ title: data.name, href: `/admin/resources/${id}` }
 				]}
 			/>
-			<Stack justify="space-between" gap={1}>
-				<Title>{t('routes.ResourceDetailPage.title')}</Title>
+			<Stack gap={1}>
+				<Group justify="space-between">
+					<Title>{t('routes.ResourceDetailPage.title')}</Title>
+					<Button variant="light" leftSection={<IconPencil size={16} />}>
+						{t('routes.ResourceDetailPage.edit_button')}
+					</Button>
+				</Group>
 				<Badge color={data?.isAvailable ? 'green' : 'red'}>
 					{data?.isAvailable
 						? t('routes.ResourceDetailPage.info.available')

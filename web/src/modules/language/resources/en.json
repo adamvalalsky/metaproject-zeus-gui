@@ -308,6 +308,7 @@
     },
     "ResourceDetailPage": {
       "title": "Resource detail",
+      "edit_button": "Edit",
       "info": {
         "title": "Resource information",
         "type": "Resource type",
