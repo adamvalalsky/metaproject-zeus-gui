@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { Anchor, Box, Group, Stack, Text, Title } from '@mantine/core';
+import { Anchor, Badge, Box, Group, Stack, Text, Title } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -36,11 +36,20 @@ const ResourceDetailPage = () => {
 					{ title: data.name, href: `/admin/resources/${id}` }
 				]}
 			/>
-			<Title>{t('routes.ResourceDetailPage.title')}</Title>
+			<Stack justify="space-between" gap={1}>
+				<Title>{t('routes.ResourceDetailPage.title')}</Title>
+				<Badge color={data?.isAvailable ? 'green' : 'red'}>
+					{data?.isAvailable
+						? t('routes.ResourceDetailPage.info.available')
+						: t('routes.ResourceDetailPage.info.not_available')}
+				</Badge>
+			</Stack>
 
 			<Stack my={20}>
 				<Stack>
-					<Title order={3}>{t('routes.ResourceDetailPage.info.title')}</Title>
+					<Group justify="space-between">
+						<Title order={3}>{t('routes.ResourceDetailPage.info.title')}</Title>
+					</Group>
 					<Group>
 						<Text fw={500}>{t('routes.ResourceDetailPage.info.name')}:</Text>
 						<Text>{data.name}</Text>

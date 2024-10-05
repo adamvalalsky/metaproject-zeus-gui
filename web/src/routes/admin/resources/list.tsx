@@ -4,16 +4,17 @@ import {
 	Button,
 	Group,
 	type RenderTreeNodePayload,
+	Stack,
 	Text,
 	Title,
 	Tree,
 	type TreeNodeData,
 	useTree
 } from '@mantine/core';
-import { IconChevronDown, IconLink, IconPlus } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronRight, IconLink, IconPlus } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { useResourceListQuery } from '@/modules/allocation/queries';
@@ -27,24 +28,37 @@ const getDataTree = (data: Resource[], parentResourceId: number | null): TreeNod
 		.map(item => ({
 			value: item.id.toString(),
 			label: (
-				<Group gap={10}>
-					<Text fw={400}>{item.name}</Text>
-					<Text c="dimmed">({item.resourceType.name})</Text>
+				<Stack gap={1}>
+					<Group gap={10}>
+						<Text fw={400}>{item.name}</Text>
+						<Text c="dimmed">({item.resourceType.name})</Text>
+					</Group>
 					<Group align="center">
-						<Anchor component={Link} to={`${item.id}`}>
+						{item.isAvailable && (
+							<Text size="sm" c="green">
+								Available
+							</Text>
+						)}
+						{!item.isAvailable && (
+							<Text size="sm" c="green">
+								Not available
+							</Text>
+						)}
+						<Anchor size="sm" component={Link} to={`${item.id}`}>
 							Detail <IconLink size={13} />
 						</Anchor>
 					</Group>
-				</Group>
+				</Stack>
 			),
 			children: getDataTree(data, item.id)
 		}));
 
 const Leaf = ({ node, expanded, hasChildren, elementProps }: RenderTreeNodePayload) => (
-	<Group py={5} {...elementProps}>
+	<Group py={5} align="center" {...elementProps}>
 		{hasChildren && (
 			<IconChevronDown size={20} style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)' }} />
 		)}
+		{!hasChildren && <IconChevronRight size={20} style={{ visibility: 'hidden' }} />}
 		{node.label}
 	</Group>
 );
@@ -53,12 +67,6 @@ const ResourceList = () => {
 	const { t } = useTranslation();
 	const { data, isPending, isError } = useResourceListQuery();
 	const tree = useTree();
-
-	useEffect(() => {
-		if (data) {
-			tree.expandAllNodes();
-		}
-	}, [data]);
 
 	if (isPending) {
 		return <Loading />;

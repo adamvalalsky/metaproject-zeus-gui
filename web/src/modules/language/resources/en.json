@@ -311,6 +311,8 @@
       "info": {
         "title": "Resource information",
         "type": "Resource type",
+        "available": "Available",
+        "not_available": "Not available",
         "name": "Name",
         "parent": "Parent resource",
         "description": "Description",
