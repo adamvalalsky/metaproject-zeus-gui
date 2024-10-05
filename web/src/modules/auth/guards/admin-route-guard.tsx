@@ -5,10 +5,15 @@ import { Box, Flex } from '@mantine/core';
 
 import { useAdminContext } from '@/modules/auth/context';
 import { AdminAccess } from '@/modules/auth/model';
+import Loading from '@/components/global/loading';
 
 const AdminRouteGuard = () => {
-	const { isAuthenticated } = useAuth();
+	const { isAuthenticated, isLoading } = useAuth();
 	const { getAdminAccess } = useAdminContext();
+
+	if (isLoading) {
+		return <Loading />;
+	}
 
 	if (!isAuthenticated || getAdminAccess() !== AdminAccess.LOGGED) {
 		return <Navigate to="/" replace />;
