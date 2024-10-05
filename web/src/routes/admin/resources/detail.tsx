@@ -40,7 +40,7 @@ const ResourceDetailPage = () => {
 			<Stack gap={1}>
 				<Group justify="space-between">
 					<Title>{t('routes.ResourceDetailPage.title')}</Title>
-					<Button variant="light" leftSection={<IconPencil size={16} />}>
+					<Button component={Link} to="edit" variant="light" leftSection={<IconPencil size={16} />}>
 						{t('routes.ResourceDetailPage.edit_button')}
 					</Button>
 				</Group>
