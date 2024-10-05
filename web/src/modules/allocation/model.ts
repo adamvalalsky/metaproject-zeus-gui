@@ -34,3 +34,14 @@ export type ResourceDetail = {
 		value: string;
 	}[];
 };
+
+export type ResourceAttribute = {
+	id: number;
+	name: string;
+	isPublic: boolean;
+	isRequired: boolean;
+	attributeType: {
+		id: number;
+		name: string;
+	};
+};

@@ -54,6 +54,12 @@ const ResourceList = () => {
 	const { data, isPending, isError } = useResourceListQuery();
 	const tree = useTree();
 
+	useEffect(() => {
+		if (data) {
+			tree.expandAllNodes();
+		}
+	}, [data]);
+
 	if (isPending) {
 		return <Loading />;
 	}
@@ -61,10 +67,6 @@ const ResourceList = () => {
 	if (isError) {
 		return <ErrorAlert />;
 	}
-
-	useEffect(() => {
-		tree.expandAllNodes();
-	}, []);
 
 	return (
 		<Box>

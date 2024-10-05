@@ -290,6 +290,11 @@
           "description": "Default value for quantity field.",
           "placeholder": "1"
         },
+        "custom_attributes": {
+          "title": "Custom attributes",
+          "description":"Attributes with empty keys or values will be ignored",
+          "button": "Add optional custom attribute"
+        },
         "submit": "Add resource"
       },
       "notifications": {
