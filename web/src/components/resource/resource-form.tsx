@@ -1,10 +1,10 @@
 import { Box, Button, Checkbox, Group, NumberInput, Select, Textarea, TextInput } from '@mantine/core';
 import { Controller, useFormContext } from 'react-hook-form';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import CustomAttributes from '@/components/resource/attributes/custom-attributes';
-import type { Resource } from '@/modules/allocation/model';
+import type { Resource, ResourceDetail } from '@/modules/allocation/model';
 import { type Attribute } from '@/modules/attribute/model';
 import { useResourceAttributesQuery, useResourceListQuery, useResourceTypesQuery } from '@/modules/allocation/queries';
 import Loading from '@/components/global/loading';
@@ -12,18 +12,25 @@ import ErrorAlert from '@/components/global/error-alert';
 import { type AddResourceSchema } from '@/modules/allocation/form';
 
 type ResourceFormProps = {
+	defaultValues?: ResourceDetail;
 	isPending: boolean;
 	attributes: Attribute[];
 	setAttributes: (attributes: Attribute[]) => void;
 	onSubmit: (data: AddResourceSchema) => void;
 };
 
-const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: ResourceFormProps) => {
+const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit, defaultValues }: ResourceFormProps) => {
 	const { t } = useTranslation();
 	const [parentResources, setParentResources] = useState<Resource[]>([]);
-	const [quantitySelect, setQuantitySelect] = useState(false);
-	const [quantityLabel, setQuantityLabel] = useState<string | null>(null);
-	const [quantityDefaultValue, setQuantityDefaultValue] = useState<string | null>(null);
+	const [quantitySelect, setQuantitySelect] = useState(
+		!!defaultValues?.attributes.find(a => a.key.startsWith('quantity_'))
+	);
+	const [quantityLabel, setQuantityLabel] = useState<string | undefined>(
+		defaultValues?.attributes.find(a => a.key === 'quantity_label')?.value
+	);
+	const [quantityDefaultValue, setQuantityDefaultValue] = useState<string | undefined>(
+		defaultValues?.attributes.find(a => a.key === 'quantity_default_value')?.value
+	);
 
 	const {
 		handleSubmit,
@@ -33,6 +40,7 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: Resour
 	} = useFormContext<AddResourceSchema>();
 
 	const beforeSubmit = (data: AddResourceSchema) => {
+		console.log(data);
 		const chosenAttributes = [...attributes];
 
 		if (quantitySelect && quantityLabel && quantityDefaultValue) {
@@ -64,6 +72,14 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: Resour
 		isError: isAttributesError
 	} = useResourceAttributesQuery();
 
+	useEffect(() => {
+		if (defaultValues?.resourceType.id && resources) {
+			setParentResources(
+				resources?.filter(resource => resource.resourceType.id === defaultValues.resourceType.id) ?? []
+			);
+		}
+	}, [resources]);
+
 	if (isResourceTypePending || isResourcesPending || isAttributesPending) {
 		return <Loading />;
 	}
@@ -75,6 +91,7 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: Resour
 	return (
 		<form onSubmit={handleSubmit(beforeSubmit)}>
 			<TextInput
+				defaultValue={defaultValues?.name}
 				my={10}
 				label="Name"
 				withAsterisk
@@ -83,6 +100,7 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: Resour
 				error={errors.name?.message as string}
 			/>
 			<Textarea
+				defaultValue={defaultValues?.description}
 				label="Description"
 				withAsterisk
 				placeholder="Resource description"
@@ -92,8 +110,10 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: Resour
 			<Controller
 				control={control}
 				name="resourceTypeId"
+				defaultValue={defaultValues?.resourceType.id}
 				render={({ field }) => (
 					<Select
+						value={field.value.toString()}
 						my={10}
 						name={field.name}
 						withAsterisk
@@ -120,8 +140,10 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: Resour
 				<Controller
 					control={control}
 					name="parentResourceId"
+					defaultValue={defaultValues?.parentResource?.id}
 					render={({ field }) => (
 						<Select
+							value={field.value?.toString()}
 							my={10}
 							name={field.name}
 							label={t('routes.ResourceAddPage.form.resource.label')}
@@ -159,6 +181,7 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: Resour
 				{quantitySelect && (
 					<Group grow my={10}>
 						<TextInput
+							value={quantityLabel}
 							label={t('routes.ResourceAddPage.form.quantity_label.label')}
 							description={t('routes.ResourceAddPage.form.quantity_label.description')}
 							withAsterisk
@@ -166,6 +189,7 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: Resour
 							onChange={e => setQuantityLabel(e.currentTarget.value)}
 						/>
 						<NumberInput
+							value={quantityDefaultValue}
 							label={t('routes.ResourceAddPage.form.quantity_default.label')}
 							description={t('routes.ResourceAddPage.form.quantity_default.description')}
 							withAsterisk
@@ -178,7 +202,11 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit }: Resour
 					</Group>
 				)}
 			</Box>
-			<CustomAttributes attributes={resourceAttributes} setAttributes={attributes => setAttributes(attributes)} />
+			<CustomAttributes
+				defaultAttributes={defaultValues?.attributes}
+				attributes={resourceAttributes}
+				setAttributes={attributes => setAttributes(attributes)}
+			/>
 			<Button loading={isPending} type="submit">
 				{t('routes.ResourceAddPage.form.submit')}
 			</Button>

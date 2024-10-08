@@ -1,18 +1,19 @@
 import { NumberInput, TextInput } from '@mantine/core';
 
 type AttributeInputProps = {
+	value?: string;
 	label: string;
 	type: string;
 	onChange: (value: string) => void;
 };
 
-const AttributeInput = ({ label, type, onChange }: AttributeInputProps) => {
+const AttributeInput = ({ label, type, onChange, value }: AttributeInputProps) => {
 	if (type === 'Text') {
-		return <TextInput onChange={event => onChange(event.currentTarget.value)} label={label} />;
+		return <TextInput value={value} onChange={event => onChange(event.currentTarget.value)} label={label} />;
 	}
 
 	if (type === 'Int') {
-		return <NumberInput onChange={value => onChange(value.toString())} label={label} />;
+		return <NumberInput value={value} onChange={value => onChange(value.toString())} label={label} />;
 	}
 
 	return (

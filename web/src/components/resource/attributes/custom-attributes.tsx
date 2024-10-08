@@ -4,21 +4,44 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AttributeInput from '@/components/resource/attributes/attribute-input';
-import { type ResourceAttribute } from '@/modules/allocation/model';
+import { type ResourceAttribute, type ResourceDetailAttribute } from '@/modules/allocation/model';
 import { type Attribute } from '@/modules/attribute/model';
 
 type AttributesProps = {
+	defaultAttributes?: ResourceDetailAttribute[];
 	attributes: ResourceAttribute[];
 	setAttributes: (attributes: Attribute[]) => void;
 };
 
-const CustomAttributes = ({ attributes, setAttributes }: AttributesProps) => {
+const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: AttributesProps) => {
 	const { t } = useTranslation();
-	const [optionalAttributes, setOptionalAttributes] = useState<Attribute[]>([]);
+	const [optionalAttributes, setOptionalAttributes] = useState<Attribute[]>(
+		defaultAttributes
+			?.filter(a => !a.key.startsWith('quantity_'))
+			?.map((a, index) => ({
+				key: a.key,
+				value: a.value,
+				index,
+				type: a.type,
+				isPublic: a.isPublic
+			})) ?? []
+	);
 
-	if (!attributes) {
+	if (!attributes && !optionalAttributes) {
 		return null;
 	}
+
+	console.log(
+		defaultAttributes
+			?.filter(a => !a.key.startsWith('quantity_'))
+			?.map((a, index) => ({
+				key: a.key,
+				value: a.value,
+				index,
+				type: a.type,
+				isPublic: a.isPublic
+			})) ?? []
+	);
 
 	const addOptionalAttribute = (key: string, value: string, index: number) => {
 		const resourceAttribute = attributes.find(a => a.name === key);
@@ -103,6 +126,7 @@ const CustomAttributes = ({ attributes, setAttributes }: AttributesProps) => {
 							/>
 							{attribute.key && attribute.type && (
 								<AttributeInput
+									value={attribute.value}
 									label=""
 									type={attribute.type}
 									onChange={value => {

@@ -16,6 +16,13 @@ export type Resource = {
 	};
 };
 
+export type ResourceDetailAttribute = {
+	key: string;
+	isPublic: boolean;
+	value: string;
+	type: string;
+};
+
 export type ResourceDetail = {
 	id: number;
 	name: string;
@@ -29,10 +36,7 @@ export type ResourceDetail = {
 		id: number;
 		name: string;
 	};
-	attributes: {
-		key: string;
-		value: string;
-	}[];
+	attributes: ResourceDetailAttribute[];
 };
 
 export type ResourceAttribute = {
