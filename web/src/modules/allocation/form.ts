@@ -16,3 +16,4 @@ export const addResourceSchema = z.object({
 });
 
 export type AddResourceSchema = z.infer<typeof addResourceSchema>;
+export type EditResourceSchema = { id: number } & AddResourceSchema;

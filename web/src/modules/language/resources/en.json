@@ -323,6 +323,13 @@
       "attributes": {
         "title": "Resource attributes"
       }
+    },
+    "ResourceEditPage": {
+      "title": "Edit resource",
+      "notifications": {
+        "success": "Resource updated successfully",
+        "error": "Resource could not be updated."
+      }
     }
   }
 }

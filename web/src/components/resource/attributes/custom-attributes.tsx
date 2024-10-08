@@ -1,6 +1,6 @@
 import { ActionIcon, Anchor, Box, Group, Select, Stack, Text, Title, Tooltip } from '@mantine/core';
 import { IconEyeCheck, IconEyeClosed, IconPlus, IconTrash } from '@tabler/icons-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AttributeInput from '@/components/resource/attributes/attribute-input';
@@ -15,33 +15,25 @@ type AttributesProps = {
 
 const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: AttributesProps) => {
 	const { t } = useTranslation();
-	const [optionalAttributes, setOptionalAttributes] = useState<Attribute[]>(
-		defaultAttributes
-			?.filter(a => !a.key.startsWith('quantity_'))
-			?.map((a, index) => ({
-				key: a.key,
-				value: a.value,
-				index,
-				type: a.type,
-				isPublic: a.isPublic
-			})) ?? []
-	);
+	const [optionalAttributes, setOptionalAttributes] = useState<Attribute[]>([]);
+
+	useEffect(() => {
+		if (!defaultAttributes) {
+			return;
+		}
+
+		const customAttributes = defaultAttributes.filter(a => !a.key.startsWith('quantity_'));
+		if (customAttributes) {
+			for (let i = 0; i < customAttributes.length; i++) {
+				const attribute = customAttributes[i];
+				addOptionalAttribute(attribute.key, attribute.value, i);
+			}
+		}
+	}, [!!defaultAttributes]);
 
 	if (!attributes && !optionalAttributes) {
 		return null;
 	}
-
-	console.log(
-		defaultAttributes
-			?.filter(a => !a.key.startsWith('quantity_'))
-			?.map((a, index) => ({
-				key: a.key,
-				value: a.value,
-				index,
-				type: a.type,
-				isPublic: a.isPublic
-			})) ?? []
-	);
 
 	const addOptionalAttribute = (key: string, value: string, index: number) => {
 		const resourceAttribute = attributes.find(a => a.name === key);
@@ -109,6 +101,10 @@ const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: Attr
 								data={attributes
 									.filter(a => !a.isRequired)
 									.filter(a => {
+										if (a.name.startsWith('quantity_')) {
+											return false;
+										}
+
 										if (attribute.index === undefined) {
 											return true;
 										}
