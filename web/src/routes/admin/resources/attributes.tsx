@@ -1,25 +1,120 @@
-import { Anchor, Badge, Box, Button, Group, Stack, Text, Title } from '@mantine/core';
+import { Anchor, Badge, Box, Button, Checkbox, Group, Select, Stack, Text, TextInput, Title } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { IconPencil, IconPlus } from '@tabler/icons-react';
+import { modals } from '@mantine/modals';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { notifications } from '@mantine/notifications';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
-import { useResourceAttributesQuery } from '@/modules/attribute/queries';
+import { useAttributeTypesQuery, useResourceAttributesQuery } from '@/modules/attribute/queries';
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
+import { type AddAttributeSchema, addAttributeSchema } from '@/modules/attribute/form';
+import { useCreateAttributeTypeMutation } from '@/modules/attribute/mutations';
 
 const ResourceAttributesPage = () => {
 	const { t } = useTranslation();
-	const { data, isPending, isError } = useResourceAttributesQuery();
 
-	if (isPending) {
+	const { data, isPending, isError, refetch } = useResourceAttributesQuery();
+	const {
+		data: attributeTypes,
+		isPending: isAttributeTypesPending,
+		isError: isAttributeTypesError
+	} = useAttributeTypesQuery();
+
+	const { mutate: addAttributeType, isPending: isAddAttributeTypePending } = useCreateAttributeTypeMutation();
+
+	const {
+		handleSubmit,
+		control,
+		register,
+		formState: { errors },
+		reset
+	} = useForm<AddAttributeSchema>({
+		resolver: zodResolver(addAttributeSchema)
+	});
+
+	if (isPending || isAttributeTypesPending) {
 		return <Loading />;
 	}
 
-	if (isError) {
+	if (isError || isAttributeTypesError) {
 		return <ErrorAlert />;
 	}
+
+	const addAttribute = (data: AddAttributeSchema) => {
+		addAttributeType(data, {
+			onSuccess: () => {
+				refetch().then(() => {
+					modals.closeAll();
+					reset();
+					notifications.show({
+						color: 'green',
+						message: t('routes.ResourceAttributesPage.add_modal.success')
+					});
+				});
+			}
+		});
+	};
+
+	const openAddModal = () => {
+		modals.open({
+			title: t('routes.ResourceAttributesPage.add_modal.title'),
+			centered: true,
+			size: 'xl',
+			children: (
+				<form onSubmit={handleSubmit(addAttribute)}>
+					<Stack>
+						<TextInput
+							label={t('routes.ResourceAttributesPage.add_modal.name_input')}
+							withAsterisk
+							placeholder="Custom attribute"
+							{...register('name')}
+							error={errors.name?.message}
+						/>
+						<Controller
+							name="attributeTypeId"
+							control={control}
+							render={({ field }) => (
+								<Select
+									name={field.name}
+									value={field.value?.toString() ?? null}
+									label={t('routes.ResourceAttributesPage.add_modal.type_label')}
+									placeholder="Select attribute type"
+									withAsterisk
+									data={
+										attributeTypes?.map(item => ({
+											value: item.id.toString(),
+											label: item.name
+										})) ?? []
+									}
+									onChange={value => {
+										if (value) {
+											field.onChange(+value);
+										}
+									}}
+								/>
+							)}
+						/>
+						<Checkbox
+							label={t('routes.ResourceAttributesPage.add_modal.is_public_label')}
+							description={t('routes.ResourceAttributesPage.add_modal.is_public_description')}
+							{...register('isPublic')}
+						/>
+						<Checkbox
+							label={t('routes.ResourceAttributesPage.add_modal.is_required_label')}
+							description={t('routes.ResourceAttributesPage.add_modal.is_required_description')}
+							{...register('isRequired')}
+						/>
+						<Button type="submit">{t('routes.ResourceAttributesPage.add_modal.submit')}</Button>
+					</Stack>
+				</form>
+			)
+		});
+	};
 
 	const valuesToShow = data?.filter(item => !item.name.startsWith('quantity_'));
 
@@ -28,13 +123,14 @@ const ResourceAttributesPage = () => {
 			<PageBreadcrumbs
 				links={[
 					{ title: t('components.global.drawerList.links.admin.title'), href: '/admin' },
-					{ title: t('components.global.drawerList.links.admin.link.resources'), href: '/admin/resources' }
+					{ title: t('components.global.drawerList.links.admin.link.resources'), href: '/admin/resources' },
+					{ title: t('routes.ResourceAttributesPage.title'), href: '/admin/resources/attributes' }
 				]}
 			/>
 			<Group justify="space-between">
 				<Title order={2}>{t('routes.ResourceAttributesPage.title')}</Title>
 				<Group>
-					<Button component={Link} to="add" leftSection={<IconPlus />}>
+					<Button onClick={openAddModal} leftSection={<IconPlus />}>
 						{t('routes.ResourceAttributesPage.add_button')}
 					</Button>
 				</Group>

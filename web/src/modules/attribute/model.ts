@@ -5,3 +5,8 @@ export type Attribute = {
 	type?: string;
 	index?: number;
 };
+
+export type AttributeType = {
+	id: number;
+	name: string;
+};

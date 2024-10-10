@@ -334,7 +334,18 @@
     },
     "ResourceAttributesPage": {
       "title": "Custom attributes",
-      "add_button": "Add custom attribute"
+      "add_button": "Add custom attribute",
+      "add_modal": {
+        "title": "Add custom attribute",
+        "name_input": "Name",
+        "type_label": "Attribute type",
+        "is_public_label": "Is public",
+        "is_public_description": "If the attribute is public, it will be shown to users.",
+        "is_required_label": "Is required",
+        "is_required_description": "If the attribute is required, user will have to fill it in.",
+        "submit": "Add attribute",
+        "success": "Attribute added successfully"
+      }
     }
   }
 }
