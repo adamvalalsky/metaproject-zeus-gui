@@ -345,7 +345,8 @@
         "is_required_description": "If the attribute is required, user will have to fill it in.",
         "submit": "Add attribute",
         "success": "Attribute added successfully"
-      }
+      },
+      "delete_success": "Attribute deleted successfully"
     }
   }
 }

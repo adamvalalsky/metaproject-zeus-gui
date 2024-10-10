@@ -48,4 +48,5 @@ export type ResourceAttribute = {
 		id: number;
 		name: string;
 	};
+	hasResources: boolean;
 };

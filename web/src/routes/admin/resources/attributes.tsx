@@ -1,8 +1,7 @@
 import { Anchor, Badge, Box, Button, Checkbox, Group, Select, Stack, Text, TextInput, Title } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import { IconPencil, IconPlus } from '@tabler/icons-react';
+import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +12,7 @@ import { useAttributeTypesQuery, useResourceAttributesQuery } from '@/modules/at
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { type AddAttributeSchema, addAttributeSchema } from '@/modules/attribute/form';
-import { useCreateAttributeTypeMutation } from '@/modules/attribute/mutations';
+import { useCreateAttributeTypeMutation, useDeleteAttributeTypeMutation } from '@/modules/attribute/mutations';
 
 const ResourceAttributesPage = () => {
 	const { t } = useTranslation();
@@ -26,6 +25,7 @@ const ResourceAttributesPage = () => {
 	} = useAttributeTypesQuery();
 
 	const { mutate: addAttributeType, isPending: isAddAttributeTypePending } = useCreateAttributeTypeMutation();
+	const { mutate: deleteAttributeType } = useDeleteAttributeTypeMutation();
 
 	const {
 		handleSubmit,
@@ -44,6 +44,25 @@ const ResourceAttributesPage = () => {
 	if (isError || isAttributeTypesError) {
 		return <ErrorAlert />;
 	}
+
+	const removeAttribute = (id: number) => {
+		deleteAttributeType(id, {
+			onSuccess: () => {
+				refetch().then(() => {
+					notifications.show({
+						color: 'green',
+						message: t('routes.ResourceAttributesPage.delete_success')
+					});
+				});
+			},
+			onError: error => {
+				notifications.show({
+					color: 'red',
+					message: error?.response.data.message
+				});
+			}
+		});
+	};
 
 	const addAttribute = (data: AddAttributeSchema) => {
 		addAttributeType(data, {
@@ -109,7 +128,9 @@ const ResourceAttributesPage = () => {
 							description={t('routes.ResourceAttributesPage.add_modal.is_required_description')}
 							{...register('isRequired')}
 						/>
-						<Button type="submit">{t('routes.ResourceAttributesPage.add_modal.submit')}</Button>
+						<Button loading={isAddAttributeTypePending} type="submit">
+							{t('routes.ResourceAttributesPage.add_modal.submit')}
+						</Button>
 					</Stack>
 				</form>
 			)
@@ -155,9 +176,11 @@ const ResourceAttributesPage = () => {
 							<Text size="sm" c="dimmed">
 								Type: {item.attributeType.name}
 							</Text>
-							<Anchor size="sm" component={Link} to={`${item.id}`}>
-								Edit <IconPencil size={13} />
-							</Anchor>
+							{!item.hasResources && (
+								<Anchor size="sm" c="red" onClick={() => removeAttribute(item.id)}>
+									Delete <IconTrash size={13} />
+								</Anchor>
+							)}
 						</Group>
 					</Stack>
 				))}
