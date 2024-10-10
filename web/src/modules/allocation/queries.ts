@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import { resourceTypes } from '@/modules/allocation/api/resource-types';
 import { resourceDetail } from '@/modules/allocation/api/resource-detail';
-import { resourceAttributes } from '@/modules/allocation/api/resource-attributes';
 
 import { resources } from './api/resources';
 
@@ -22,10 +21,4 @@ export const useResourceDetailQuery = (id: number) =>
 	useQuery({
 		queryKey: ['resource', id],
 		queryFn: () => resourceDetail(id)
-	});
-
-export const useResourceAttributesQuery = () =>
-	useQuery({
-		queryKey: ['resource-attributes'],
-		queryFn: () => resourceAttributes()
 	});

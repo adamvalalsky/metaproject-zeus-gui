@@ -32,6 +32,7 @@ import Root from './routes/root';
 import i18next from './modules/language/i18next';
 import ErrorPage from './components/global/error-page';
 import ResourceList from './routes/admin/resources/list';
+import ResourceAttributesPage from './routes/admin/resources/attributes';
 
 const App = () => {
 	const theme = createTheme({
@@ -79,6 +80,7 @@ const App = () => {
 					</Route>
 					<Route path="resources" element={<ResourceList />} />
 					<Route path="resources/add" element={<ResourceAddPage />} />
+					<Route path="resources/attributes" element={<ResourceAttributesPage />} />
 					<Route path="resources/:id" element={<ResourceDetailPage />} />
 					<Route path="resources/:id/edit" element={<ResourceEditPage />} />
 				</Route>

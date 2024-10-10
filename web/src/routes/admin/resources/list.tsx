@@ -11,7 +11,7 @@ import {
 	type TreeNodeData,
 	useTree
 } from '@mantine/core';
-import { IconChevronDown, IconChevronRight, IconLink, IconPlus } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronRight, IconLink, IconPlus, IconSettings } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import React from 'react';
@@ -81,14 +81,19 @@ const ResourceList = () => {
 			<PageBreadcrumbs
 				links={[
 					{ title: t('components.global.drawerList.links.admin.title'), href: '/admin' },
-					{ title: t('components.global.drawerList.links.admin.link.resources'), href: '/admin/requests' }
+					{ title: t('components.global.drawerList.links.admin.link.resources'), href: '/admin/resources' }
 				]}
 			/>
 			<Group justify="space-between">
 				<Title order={2}>{t('routes.ResourceList.title')}</Title>
-				<Button component={Link} to="add" leftSection={<IconPlus />}>
-					{t('routes.ResourceList.add_button')}
-				</Button>
+				<Group>
+					<Button component={Link} to="attributes" variant="light" leftSection={<IconSettings />}>
+						{t('routes.ResourceList.attributes_button')}
+					</Button>
+					<Button component={Link} to="add" leftSection={<IconPlus />}>
+						{t('routes.ResourceList.add_button')}
+					</Button>
+				</Group>
 			</Group>
 			<Box my={20}>
 				<Tree tree={tree} data={getDataTree(data, null)} renderNode={payload => <Leaf {...payload} />} />

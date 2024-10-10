@@ -258,6 +258,7 @@
     },
     "ResourceList": {
       "title": "Resources",
+      "attributes_button": "Custom attributes",
       "add_button": "Add resource"
     },
     "ResourceAddPage": {
@@ -330,6 +331,10 @@
         "success": "Resource updated successfully",
         "error": "Resource could not be updated."
       }
+    },
+    "ResourceAttributesPage": {
+      "title": "Custom attributes",
+      "add_button": "Add custom attribute"
     }
   }
 }

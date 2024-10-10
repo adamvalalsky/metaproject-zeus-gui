@@ -6,10 +6,11 @@ import { useTranslation } from 'react-i18next';
 import CustomAttributes from '@/components/resource/attributes/custom-attributes';
 import type { Resource, ResourceDetail } from '@/modules/allocation/model';
 import { type Attribute } from '@/modules/attribute/model';
-import { useResourceAttributesQuery, useResourceListQuery, useResourceTypesQuery } from '@/modules/allocation/queries';
+import { useResourceListQuery, useResourceTypesQuery } from '@/modules/allocation/queries';
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { type AddResourceSchema } from '@/modules/allocation/form';
+import { useResourceAttributesQuery } from '@/modules/attribute/queries';
 
 type ResourceFormProps = {
 	defaultValues?: ResourceDetail;
@@ -40,7 +41,6 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit, defaultV
 	} = useFormContext<AddResourceSchema>();
 
 	const beforeSubmit = (data: AddResourceSchema) => {
-		console.log(data);
 		const chosenAttributes = [...attributes];
 
 		if (quantitySelect && quantityLabel && quantityDefaultValue) {
