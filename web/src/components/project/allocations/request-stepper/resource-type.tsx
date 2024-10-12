@@ -1,5 +1,4 @@
 import { Group, rem } from '@mantine/core';
-import { useState } from 'react';
 import {
 	IconCloud,
 	IconComponents,
@@ -49,11 +48,12 @@ const getResourceTypeIcon = (name: string) => {
 };
 
 type ResourceTypeStepProps = {
+	resourceTypeId: number | null;
+	setResourceType: (id: number) => void;
 	setComplete: () => void;
 };
 
-const ResourceTypeStep = ({ setComplete }: ResourceTypeStepProps) => {
-	const [selected, setSelected] = useState<number | null>(null);
+const ResourceTypeStep = ({ setComplete, resourceTypeId, setResourceType }: ResourceTypeStepProps) => {
 	const { data, isError, isPending } = useResourceTypesQuery();
 
 	if (isPending) {
@@ -65,16 +65,18 @@ const ResourceTypeStep = ({ setComplete }: ResourceTypeStepProps) => {
 	}
 
 	const onClick = (id: number) => {
-		setSelected(id);
+		setResourceType(id);
 		setComplete();
 	};
 
+	const resourceTypes = data?.filter(resourceType => resourceType.hasResources) ?? [];
+
 	return (
 		<Group justify="center">
-			{data.map(resourceType => (
+			{resourceTypes.map(resourceType => (
 				<SelectCard
 					key={resourceType.id}
-					selected={selected === resourceType.id}
+					selected={resourceTypeId === resourceType.id}
 					onClick={() => onClick(resourceType.id)}
 					size={200}
 					icon={getResourceTypeIcon(resourceType.name)}

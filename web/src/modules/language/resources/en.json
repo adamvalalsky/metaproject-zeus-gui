@@ -97,6 +97,17 @@
           "title": "Add publications"
         }
       }
+    },
+    "resourceStepper": {
+      "resource": {
+        "resource": {
+          "label": "Resource"
+        },
+        "justification": {
+          "label": "Justification",
+          "description": "Please provide a justification for the allocation request."
+        }
+      }
     }
   },
   "routes": {
@@ -126,6 +137,10 @@
           "back": "Back",
           "next": "Next step"
         }
+      },
+      "notifications": {
+        "success": "Allocation request created successfully. Wait for approval.",
+        "error": "Could not send allocation request"
       }
     },
     "ProjectDetail": {

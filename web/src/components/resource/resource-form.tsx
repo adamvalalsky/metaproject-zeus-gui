@@ -11,6 +11,7 @@ import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { type AddResourceSchema } from '@/modules/allocation/form';
 import { useResourceAttributesQuery } from '@/modules/attribute/queries';
+import { QUANTITY_DEFAULT_VALUE, QUANTITY_LABEL } from '@/modules/attribute/constant';
 
 type ResourceFormProps = {
 	defaultValues?: ResourceDetail;
@@ -27,10 +28,10 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit, defaultV
 		!!defaultValues?.attributes.find(a => a.key.startsWith('quantity_'))
 	);
 	const [quantityLabel, setQuantityLabel] = useState<string | undefined>(
-		defaultValues?.attributes.find(a => a.key === 'quantity_label')?.value
+		defaultValues?.attributes.find(a => a.key === QUANTITY_LABEL)?.value
 	);
 	const [quantityDefaultValue, setQuantityDefaultValue] = useState<string | undefined>(
-		defaultValues?.attributes.find(a => a.key === 'quantity_default_value')?.value
+		defaultValues?.attributes.find(a => a.key === QUANTITY_DEFAULT_VALUE)?.value
 	);
 
 	const {

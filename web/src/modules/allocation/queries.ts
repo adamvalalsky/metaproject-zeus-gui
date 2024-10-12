@@ -17,8 +17,9 @@ export const useResourceListQuery = () =>
 		queryFn: () => resources()
 	});
 
-export const useResourceDetailQuery = (id: number) =>
+export const useResourceDetailQuery = (id: number | null) =>
 	useQuery({
 		queryKey: ['resource', id],
-		queryFn: () => resourceDetail(id)
+		queryFn: () => resourceDetail(id),
+		enabled: !!id
 	});
