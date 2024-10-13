@@ -2,12 +2,15 @@ import { Badge, Box, Button, Group, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
-import { IconCheck, IconClock, IconCpu, IconForbid, IconPlus } from '@tabler/icons-react';
+import { IconCheck, IconClock, IconCpu, IconNews, IconPlus } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
-import type { ProjectMember } from '@/modules/project/model';
-import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
+import { getSortQuery } from '@/modules/api/sorting/utils';
+import { useProjectAllocationsQuery } from '@/modules/allocation/queries';
+import Loading from '@/components/global/loading';
+import ErrorAlert from '@/components/global/error-alert';
+import { type Allocation } from '@/modules/allocation/model';
 
 type ProjectAllocationTableProps = {
 	id: number;
@@ -17,12 +20,23 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 	const { t } = useTranslation();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(PAGE_SIZES[0]);
-	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<ProjectMember>>({
+	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Allocation>>({
 		columnAccessor: 'id',
 		direction: 'asc'
 	});
 
-	const { permissions } = useProjectOutletContext();
+	const {
+		data: allocations,
+		isPending,
+		isError
+	} = useProjectAllocationsQuery(
+		id,
+		{
+			page,
+			limit
+		},
+		getSortQuery(sortStatus.columnAccessor, sortStatus.direction)
+	);
 
 	const onPageChange = async (newPage: number) => {
 		setPage(newPage);
@@ -32,9 +46,26 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 		setLimit(newRecordsPerPage);
 	};
 
-	const onSortStatusChange = async (sortStatus: DataTableSortStatus<ProjectMember>) => {
+	const onSortStatusChange = async (sortStatus: DataTableSortStatus<Allocation>) => {
 		setSortStatus(sortStatus);
 	};
+
+	if (isPending) {
+		return <Loading />;
+	}
+
+	if (isError) {
+		return <ErrorAlert />;
+	}
+
+	console.log(allocations);
+
+	const metadata = allocations?.data?.metadata;
+	const allocationsData = allocations?.data.allocations ?? [];
+
+	if (!metadata) {
+		return null;
+	}
 
 	return (
 		<Box mt={30}>
@@ -60,10 +91,10 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 				height={300}
 				withTableBorder
 				textSelectionDisabled
-				page={page}
-				totalRecords={0}
-				recordsPerPage={limit}
-				records={[]}
+				page={metadata.page}
+				totalRecords={metadata.totalRecords}
+				recordsPerPage={metadata.recordsPerPage}
+				records={allocationsData}
 				noRecordsText={t('components.project.allocations.index.no_records_text')}
 				onPageChange={onPageChange}
 				recordsPerPageOptions={PAGE_SIZES}
@@ -75,19 +106,20 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 						accessor: 'name',
 						title: t('components.project.allocations.index.columns.resource_name'),
 						width: 200,
+						render: allocation => allocation.resource.name,
 						sortable: true
 					},
 					{
 						accessor: 'type',
 						title: t('components.project.allocations.index.columns.resource_type'),
 						width: 200,
-						render: member => member.userInfo.name,
+						render: allocation => allocation.resource.type,
 						sortable: true
 					},
 					{
 						accessor: 'information',
 						title: t('components.project.allocations.index.columns.information'),
-						render: member => member.userInfo.username,
+						render: allocation => null,
 						sortable: true
 					},
 					{
@@ -95,8 +127,8 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 						title: t('components.project.allocations.index.columns.status'),
 						width: 150,
 						sortable: true,
-						render: member => {
-							if (member.status === 'active') {
+						render: allocation => {
+							if (allocation.status === 'active') {
 								return (
 									<Group gap={4} c="green">
 										<IconCheck size={14} />
@@ -104,7 +136,7 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 									</Group>
 								);
 							}
-							if (member.status === 'pending') {
+							if (allocation.status === 'pending') {
 								return (
 									<Group gap={4} c="orange">
 										<IconClock size={14} />
@@ -112,18 +144,21 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 									</Group>
 								);
 							}
-							return (
-								<Group gap={4} c="red">
-									<IconForbid size={14} />
-									<Text size="sm">Inactive</Text>
-								</Group>
-							);
+							if (allocation.status === 'new') {
+								return (
+									<Group gap={4} c="blue.9">
+										<IconNews size={14} />
+										<Text size="sm">New</Text>
+									</Group>
+								);
+							}
+
+							return <Text size="sm">{allocation.status}</Text>;
 						}
 					},
 					{
-						accessor: 'end_date',
+						accessor: 'endDate',
 						title: t('components.project.allocations.index.columns.end_date'),
-						render: member => member.userInfo.username,
 						width: 150,
 						sortable: true
 					},
