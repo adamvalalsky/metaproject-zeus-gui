@@ -4,27 +4,26 @@ import { Box, Switch, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { AdminAccess } from '@/modules/auth/model';
-import { useAdminContext } from '@/modules/auth/context';
-import { isAdminLoggedIn } from '@/modules/user/utils/admin';
+import { StepUpAccess } from '@/modules/auth/model';
+import { userStepDown } from '@/modules/auth/methods/userStepDown';
+import { userStepUp } from '@/modules/auth/methods/userStepUp';
 
 type AdministratorToggleProps = {
-	adminAccess: AdminAccess;
+	stepUpAccess: StepUpAccess;
 };
 
-const AdministratorToggle = ({ adminAccess }: AdministratorToggleProps) => {
+const AdministratorToggle = ({ stepUpAccess }: AdministratorToggleProps) => {
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
-	const { removeAdminAccess, setAdminAccess } = useAdminContext();
 	const { t } = useTranslation();
 
-	if (adminAccess === AdminAccess.NONE) {
+	if (stepUpAccess === StepUpAccess.NONE) {
 		return null;
 	}
 
 	const openModal = () => {
 		if (checked) {
-			removeAdminAccess();
+			userStepDown();
 			setChecked(false);
 
 			if (pathname.includes('/admin')) {
@@ -39,16 +38,13 @@ const AdministratorToggle = ({ adminAccess }: AdministratorToggleProps) => {
 			children: 'Do you want to gain administrator access?',
 			labels: { confirm: 'Confirm', cancel: 'Cancel' },
 			onConfirm: () => {
-				// TODO: authorize via backend
-				const key = 'test';
-
-				setAdminAccess(key);
+				userStepUp();
 				setChecked(true);
 			}
 		});
 	};
 
-	const [checked, setChecked] = useState(isAdminLoggedIn(adminAccess));
+	const [checked, setChecked] = useState(stepUpAccess === StepUpAccess.LOGGED);
 
 	return (
 		<Box>

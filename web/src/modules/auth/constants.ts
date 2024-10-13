@@ -1,3 +1,3 @@
-export const USER_ID = 'user_id';
+export const IS_USER_STEP_UP = 'is_user_step_up';
 
-export const ADMIN_KEY = 'admin_logged';
+export const MAX_ROLE = 'max_role';

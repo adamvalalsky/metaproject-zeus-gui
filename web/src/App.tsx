@@ -19,7 +19,6 @@ import ProjectDetailGuard from '@/modules/auth/guards/project-detail-guard';
 import ProjectPublicationsAddPage from '@/routes/project/detail/publications';
 import ProjectRequestPage from '@/routes/project/detail/request';
 import AuthLogin from '@/routes/auth/login';
-import { AdminContextProvider } from '@/modules/auth/context';
 import userManager from '@/modules/auth/config/user-manager';
 import { onSigninCallback } from '@/modules/auth/methods/onSigninCallback';
 import AllocationRequest from '@/routes/project/detail/allocation/request';
@@ -107,11 +106,9 @@ const App = () => {
 			<QueryClientProvider client={queryClient}>
 				<I18nextProvider i18n={i18next}>
 					<AuthProvider {...oidcConfig}>
-						<AdminContextProvider>
-							<ModalsProvider>
-								<RouterProvider router={router} />
-							</ModalsProvider>
-						</AdminContextProvider>
+						<ModalsProvider>
+							<RouterProvider router={router} />
+						</ModalsProvider>
 					</AuthProvider>
 				</I18nextProvider>
 			</QueryClientProvider>
