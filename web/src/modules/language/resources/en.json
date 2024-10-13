@@ -1,4 +1,6 @@
 {
+  "quantity_default_value": "Quantity default value",
+  "quantity_label": "Quantity label for user",
   "components": {
     "global": {
       "administratorToggle": {
@@ -11,7 +13,7 @@
         }
       },
       "navbar": {
-        "header": "Resource manager",
+        "header": "MetaProject Zeus",
         "adminWarning": "You are now logged in as Administrator and have all permissions."
       },
       "errorPage": {
@@ -24,13 +26,29 @@
           "admin": {
             "title": "Administrator section",
             "link": {
-              "requests": "Project requests"
+              "requests": "Project requests",
+              "resources": "Resources"
             }
           }
         }
       }
     },
     "project": {
+      "allocations": {
+        "index": {
+          "title": "Allocations",
+          "request_allocation": "Request allocation",
+          "no_records_text": "No allocations added yet.",
+          "columns": {
+            "resource_name": "Resource name",
+            "resource_type": "Resource type",
+            "information": "Information",
+            "end_date": "End date",
+            "status": "Status",
+            "actions": "Actions"
+          }
+        }
+      },
       "members": {
         "add_button": {
           "title": "Add members"
@@ -45,7 +63,7 @@
           }
         },
         "index": {
-          "title": "Project members",
+          "title": "Members",
           "no_records_text": "No members added yet.",
           "columns": {
             "id": "ID",
@@ -79,6 +97,17 @@
           "title": "Add publications"
         }
       }
+    },
+    "resourceStepper": {
+      "resource": {
+        "resource": {
+          "label": "Resource"
+        },
+        "justification": {
+          "label": "Justification",
+          "description": "Please provide a justification for the allocation request."
+        }
+      }
     }
   },
   "routes": {
@@ -90,6 +119,28 @@
       },
       "form": {
         "submit": "Request"
+      }
+    },
+    "AllocationRequest": {
+      "title": "Request allocation",
+      "information": "If you need access to more than one resource, please submit a separate allocation request for each resource.",
+      "form": {
+        "step1": {
+          "title": "Resource type",
+          "description": "Choose type of the resource."
+        },
+        "step2": {
+          "title": "Resource",
+          "description": "Choose the concrete resource and its attributes."
+        },
+        "buttons": {
+          "back": "Back",
+          "next": "Next step"
+        }
+      },
+      "notifications": {
+        "success": "Allocation request created successfully. Wait for approval.",
+        "error": "Could not send allocation request"
       }
     },
     "ProjectDetail": {
@@ -219,6 +270,98 @@
       "error": {
         "message": "Publications could not be added."
       }
+    },
+    "ResourceList": {
+      "title": "Resources",
+      "attributes_button": "Custom attributes",
+      "add_button": "Add resource"
+    },
+    "ResourceAddPage": {
+      "title": "Add new resource",
+      "form": {
+        "type": {
+          "label": "Resource type",
+          "placeholder": "Select resource type"
+        },
+        "resource": {
+          "label": "Parent resource",
+          "description": "Choose parent resource for this resource. Can leave empty if this is the root resource.",
+          "placeholder": "Choose parent resource"
+        },
+        "is_available": {
+          "label": "Is available",
+          "description": "If the resource is not available, it will not be shown for user in the list of resources."
+        },
+        "allow_quantity": {
+          "label": "Allow user to choose quantity",
+          "description": "If the resource allows user to choose quantity, user will be asked how many units of this resource they want to allocate."
+        },
+        "quantity_label": {
+          "label": "Quantity label",
+          "description": "Question that user will be asked when asking for resource.",
+          "placeholder": "Enter storage in 1TB increments"
+        },
+        "quantity_default": {
+          "label": "Default value",
+          "description": "Default value for quantity field.",
+          "placeholder": "1"
+        },
+        "custom_attributes": {
+          "title": "Custom attributes",
+          "description":"Attributes with empty keys or values will be ignored",
+          "button": "Add optional custom attribute"
+        },
+        "submit": "Add resource"
+      },
+      "notifications": {
+        "success": {
+          "message": "Resource added successfully"
+        },
+        "error": {
+          "message": "Resource could not be added."
+        }
+      }
+    },
+    "ResourceDetailPage": {
+      "title": "Resource detail",
+      "edit_button": "Edit",
+      "info": {
+        "title": "Resource information",
+        "type": "Resource type",
+        "available": "Available",
+        "not_available": "Not available",
+        "name": "Name",
+        "parent": "Parent resource",
+        "description": "Description",
+        "is_available": "Is available",
+        "parent_none": "-none-"
+      },
+      "attributes": {
+        "title": "Resource attributes"
+      }
+    },
+    "ResourceEditPage": {
+      "title": "Edit resource",
+      "notifications": {
+        "success": "Resource updated successfully",
+        "error": "Resource could not be updated."
+      }
+    },
+    "ResourceAttributesPage": {
+      "title": "Custom attributes",
+      "add_button": "Add custom attribute",
+      "add_modal": {
+        "title": "Add custom attribute",
+        "name_input": "Name",
+        "type_label": "Attribute type",
+        "is_public_label": "Is public",
+        "is_public_description": "If the attribute is public, it will be shown to users.",
+        "is_required_label": "Is required",
+        "is_required_description": "If the attribute is required, user will have to fill it in.",
+        "submit": "Add attribute",
+        "success": "Attribute added successfully"
+      },
+      "delete_success": "Attribute deleted successfully"
     }
   }
 }

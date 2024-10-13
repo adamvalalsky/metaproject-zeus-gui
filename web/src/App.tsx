@@ -22,11 +22,17 @@ import AuthLogin from '@/routes/auth/login';
 import { AdminContextProvider } from '@/modules/auth/context';
 import userManager from '@/modules/auth/config/user-manager';
 import { onSigninCallback } from '@/modules/auth/methods/onSigninCallback';
+import AllocationRequest from '@/routes/project/detail/allocation/request';
+import ResourceAddPage from '@/routes/admin/resources/add';
+import ResourceDetailPage from '@/routes/admin/resources/detail';
+import ResourceEditPage from '@/routes/admin/resources/edit';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
 import i18next from './modules/language/i18next';
 import ErrorPage from './components/global/error-page';
+import ResourceList from './routes/admin/resources/list';
+import ResourceAttributesPage from './routes/admin/resources/attributes';
 
 const App = () => {
 	const theme = createTheme({
@@ -63,6 +69,7 @@ const App = () => {
 						<Route path="members" element={<ProjectDetailMembers />} />
 						<Route path="archive" element={<ProjectArchivePage />} />
 						<Route path="publications" element={<ProjectPublicationsAddPage />} />
+						<Route path="allocation" element={<AllocationRequest />} />
 						<Route path="request" element={<ProjectRequestPage />} />
 					</Route>
 				</Route>
@@ -71,6 +78,11 @@ const App = () => {
 					<Route path="requests/:id" element={<ProjectDetailGuard />}>
 						<Route index element={<ProjectRequestDetail />} />
 					</Route>
+					<Route path="resources" element={<ResourceList />} />
+					<Route path="resources/add" element={<ResourceAddPage />} />
+					<Route path="resources/attributes" element={<ResourceAttributesPage />} />
+					<Route path="resources/:id" element={<ResourceDetailPage />} />
+					<Route path="resources/:id/edit" element={<ResourceEditPage />} />
 				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Route>

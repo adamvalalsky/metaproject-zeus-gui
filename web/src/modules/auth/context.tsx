@@ -13,7 +13,7 @@ const getDefaultContext = (): AdminContextValue => ({
 
 export type AdminContextValue = {
 	getAdminAccess: () => AdminAccess;
-	removeAdminAccess: () => AdminAccess;
+	removeAdminAccess: () => void;
 	setAdminAccess: (key: string) => void;
 };
 

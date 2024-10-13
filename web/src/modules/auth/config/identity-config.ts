@@ -7,6 +7,6 @@ export const IDENTITY_CONFIG = {
 	automaticSilentRenew: false,
 	loadUserInfo: false,
 	post_logout_redirect_uri: `${import.meta.env.VITE_CLIENT_BASE_URL}/logout`,
-	scope: 'openid profile email',
+	scope: 'openid profile email eduperson_entitlement',
 	stateStore: new WebStorageStateStore({ store: window.sessionStorage })
 };

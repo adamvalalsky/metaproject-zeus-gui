@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { type PropsWithChildren, useEffect, useState } from 'react';
-import { Anchor, Box, Burger, Flex, Group, Tooltip } from '@mantine/core';
+import { Anchor, Box, Burger, Flex, Group, Image, Tooltip } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
 
@@ -14,20 +14,18 @@ import DrawerList from './drawer-list';
 import UserMenu from './user-menu';
 
 const Navbar = ({ children }: PropsWithChildren) => {
+	const { t } = useTranslation();
 	const { getAdminAccess } = useAdminContext();
 	const { isAuthenticated } = useAuth();
 	const windowSize = useWindowSize();
+	const adminAccess = getAdminAccess();
 	const [drawerOpened, setDrawerOpened] = useState(windowSize > 1000);
+
+	const toggleDrawer = () => setDrawerOpened(opened => !opened);
 
 	useEffect(() => {
 		setDrawerOpened(windowSize > 1000);
 	}, [windowSize]);
-
-	// TODO implement admin access
-	const [adminAccess, setAdminMenu] = useState(getAdminAccess());
-	const toggleDrawer = () => setDrawerOpened(opened => !opened);
-
-	const { t } = useTranslation();
 
 	return (
 		<>
@@ -41,14 +39,23 @@ const Navbar = ({ children }: PropsWithChildren) => {
 								</Tooltip>
 							</Group>
 						)}
-						<Anchor component={Link} to="/" c="white" underline="never">
-							{t('components.global.navbar.header')}
-						</Anchor>
+						<Group>
+							<Image
+								src="/images/zeus.png"
+								w={30}
+								style={{
+									filter: 'invert(100%)'
+								}}
+							/>
+							<Anchor component={Link} to="/" c="white" underline="never">
+								{t('components.global.navbar.header')}
+							</Anchor>
+						</Group>
 					</Group>
 				</Box>
 				{isAuthenticated && (
 					<Group mr={10}>
-						<AdministratorToggle adminAccess={adminAccess} setAdminMenu={setAdminMenu} />
+						<AdministratorToggle adminAccess={adminAccess} />
 						<UserMenu />
 					</Group>
 				)}

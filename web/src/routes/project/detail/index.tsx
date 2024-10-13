@@ -25,6 +25,7 @@ import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-gu
 import ProjectInfo from '@/components/project/info';
 import ProjectPublications from '@/components/project/publications';
 import CommentsTimeline from '@/components/project/comments-timeline';
+import ProjectAllocationsTable from '@/components/project/allocations';
 
 const ProjectDetail = () => {
 	const { project, permissions, archivalInfo, rejectedComments } = useProjectOutletContext();
@@ -149,6 +150,7 @@ const ProjectDetail = () => {
 				)}
 
 				<Tabs.Panel value="projectInfo">
+					<ProjectAllocationsTable id={project.id} />
 					<ProjectMembers id={project.id} />
 					<ProjectPublications id={project.id} />
 				</Tabs.Panel>
