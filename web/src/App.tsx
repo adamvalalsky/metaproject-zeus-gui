@@ -25,6 +25,7 @@ import AllocationRequest from '@/routes/project/detail/allocation/request';
 import ResourceAddPage from '@/routes/admin/resources/add';
 import ResourceDetailPage from '@/routes/admin/resources/detail';
 import ResourceEditPage from '@/routes/admin/resources/edit';
+import { AdminContextProvider } from '@/modules/auth/admin-context';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -106,9 +107,11 @@ const App = () => {
 			<QueryClientProvider client={queryClient}>
 				<I18nextProvider i18n={i18next}>
 					<AuthProvider {...oidcConfig}>
-						<ModalsProvider>
-							<RouterProvider router={router} />
-						</ModalsProvider>
+						<AdminContextProvider>
+							<ModalsProvider>
+								<RouterProvider router={router} />
+							</ModalsProvider>
+						</AdminContextProvider>
 					</AuthProvider>
 				</I18nextProvider>
 			</QueryClientProvider>

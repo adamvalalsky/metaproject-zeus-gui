@@ -12,13 +12,13 @@ type UserMenuProps = {
 
 const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 	const navigate = useNavigate();
-	const { user, removeUser } = useAuth();
+	const { user, removeUser, revokeTokens } = useAuth();
 	const [userMenuOpened, setUserMenuOpened] = useState(false);
 
-	const logout = () => {
-		removeUser().then(() => {
-			navigate('/');
-		});
+	const logout = async () => {
+		await removeUser();
+		await revokeTokens();
+		navigate('/');
 	};
 
 	if (!user) {
