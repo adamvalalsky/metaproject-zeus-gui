@@ -3,6 +3,8 @@ import { type KyHeadersInit } from 'ky/distribution/types/options';
 
 import { Method } from '@/modules/api/model';
 import userManager from '@/modules/auth/config/user-manager';
+import { getStepUpAccess } from '@/modules/auth/methods/getStepUpAccess';
+import { StepUpAccess } from '@/modules/auth/model';
 
 export const request = async <T>(url: string, init?: Options): Promise<T> => {
 	const request = await requestWrapper<T>(url, init);
@@ -15,6 +17,7 @@ export const download = async (url: string, init?: RequestInit) => {
 };
 
 const requestWrapper = async <T>(url: string, init?: Options): Promise<KyResponse<T>> => {
+	const stepUpAccess = getStepUpAccess();
 	const abortController = new AbortController();
 	const signal = abortController.signal;
 
@@ -24,6 +27,11 @@ const requestWrapper = async <T>(url: string, init?: Options): Promise<KyRespons
 	const accessToken = user?.access_token;
 	if (accessToken) {
 		defaultHeaders.Authorization = `Bearer ${accessToken}`;
+	}
+
+	// if user has step up access, mark in request
+	if (stepUpAccess === StepUpAccess.LOGGED) {
+		defaultHeaders['X-Step-Up'] = 'true';
 	}
 
 	return ky<T>(import.meta.env.VITE_API_URL + url, {
