@@ -6,8 +6,7 @@ import { useAuth } from 'react-oidc-context';
 
 import useWindowSize from '@/hooks/useWindowSize';
 import { getStepUpAccess } from '@/modules/auth/methods/getStepUpAccess';
-
-import AdministratorToggle from '../administrator-toggle';
+import StepUpToggle from '@/components/global/step-up-toggle';
 
 import classes from './navbar.module.css';
 import DrawerList from './drawer-list';
@@ -54,7 +53,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 				</Box>
 				{isAuthenticated && (
 					<Group mr={10}>
-						<AdministratorToggle stepUpAccess={stepUpAccess} />
+						<StepUpToggle stepUpAccess={stepUpAccess} />
 						<UserMenu />
 					</Group>
 				)}

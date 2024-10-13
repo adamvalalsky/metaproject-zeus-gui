@@ -7,17 +7,20 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { StepUpAccess } from '@/modules/auth/model';
 import { userStepDown } from '@/modules/auth/methods/userStepDown';
 import { userStepUp } from '@/modules/auth/methods/userStepUp';
+import { getMaxRole } from '@/modules/auth/methods/getMaxRole';
+import { Role } from '@/modules/user/role';
 
-type AdministratorToggleProps = {
+type StepUpToggleProps = {
 	stepUpAccess: StepUpAccess;
 };
 
-const AdministratorToggle = ({ stepUpAccess }: AdministratorToggleProps) => {
+const StepUpToggle = ({ stepUpAccess }: StepUpToggleProps) => {
+	const maxRole = getMaxRole();
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 	const { t } = useTranslation();
 
-	if (stepUpAccess === StepUpAccess.NONE) {
+	if (stepUpAccess === StepUpAccess.NONE || maxRole === Role.USER) {
 		return null;
 	}
 
@@ -33,10 +36,13 @@ const AdministratorToggle = ({ stepUpAccess }: AdministratorToggleProps) => {
 		}
 
 		modals.openConfirmModal({
-			title: t('components.global.administratorToggle.dialog.title'),
+			title: t(`components.global.stepUpToggle.${maxRole}.dialog.title`),
 			centered: true,
-			children: 'Do you want to gain administrator access?',
-			labels: { confirm: 'Confirm', cancel: 'Cancel' },
+			children: t(`components.global.stepUpToggle.${maxRole}.dialog.description`),
+			labels: {
+				confirm: t(`components.global.stepUpToggle.${maxRole}.dialog.confirm`),
+				cancel: t(`components.global.stepUpToggle.${maxRole}.dialog.cancel`)
+			},
 			onConfirm: () => {
 				userStepUp();
 				setChecked(true);
@@ -66,4 +72,4 @@ const AdministratorToggle = ({ stepUpAccess }: AdministratorToggleProps) => {
 	);
 };
 
-export default AdministratorToggle;
+export default StepUpToggle;
