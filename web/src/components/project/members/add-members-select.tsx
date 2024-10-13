@@ -14,7 +14,7 @@ const getAsyncData = async (projectId: number, query: string, signal: AbortSigna
 		signal
 	});
 
-	return response.data.users;
+	return response.users;
 };
 
 type AddMembersSelectProps = {

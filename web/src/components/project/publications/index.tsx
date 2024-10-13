@@ -13,12 +13,15 @@ import { type Publication } from '@/modules/publication/model';
 import PublicationCard from '@/components/project/publications/publication-card';
 import { PUBLICATION_PAGE_SIZES } from '@/modules/publication/constants';
 import { useRemovePublicationMutation } from '@/modules/publication/mutations';
+import Loading from '@/components/global/loading';
 
 type ProjectPublicationsType = {
 	id: number;
 };
 
 const ProjectPublications = ({ id }: ProjectPublicationsType) => {
+	const { t } = useTranslation();
+
 	const [currentPublication, setCurrentPublication] = useState<number | null>(null);
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(PUBLICATION_PAGE_SIZES[0]);
@@ -42,14 +45,16 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 		getSortQuery(sortStatus.columnAccessor, sortStatus.direction)
 	);
 
+	if (isPending) {
+		return <Loading />;
+	}
+
 	if (isError) {
 		return <ErrorAlert />;
 	}
 
-	const metadata = response?.data?.metadata;
-	const publications = response?.data?.publications ?? [];
-
-	const { t } = useTranslation();
+	const metadata = response.metadata;
+	const publications = response.publications ?? [];
 
 	const onPageChange = async (newPage: number) => {
 		setPage(newPage);

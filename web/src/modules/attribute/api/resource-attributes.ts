@@ -1,8 +1,10 @@
-import { type ApiResponse } from '@/modules/api/model';
-import { request } from '@/modules/api/request';
-import { type ResourceAttribute } from '@/modules/allocation/model';
+import { useQuery } from '@tanstack/react-query';
 
-export const resourceAttributes = async () => {
-	const response = (await request('/resource/attributes')) as ApiResponse<ResourceAttribute[]>;
-	return response.data;
-};
+import { request } from '@/modules/api/request';
+import { type ResourceAttribute } from '@/modules/resource/model';
+
+export const useResourceAttributesQuery = () =>
+	useQuery({
+		queryKey: ['resource-attributes'],
+		queryFn: () => request<ResourceAttribute[]>('/resource/attributes')
+	});

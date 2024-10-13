@@ -9,9 +9,9 @@ import { notifications } from '@mantine/notifications';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { addResourceSchema, type AddResourceSchema } from '@/modules/allocation/form';
-import { useCreateResourceMutation } from '@/modules/allocation/mutations';
 import { type Attribute } from '@/modules/attribute/model';
 import ResourceForm from '@/components/resource/resource-form';
+import { useCreateResourceMutation } from '@/modules/resource/api/create-resource';
 
 const ResourceAddPage = () => {
 	const { t } = useTranslation();

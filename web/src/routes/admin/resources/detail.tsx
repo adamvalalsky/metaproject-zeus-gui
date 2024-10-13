@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { IconPencil } from '@tabler/icons-react';
 
-import { useResourceDetailQuery } from '@/modules/allocation/queries';
 import NotFound from '@/components/global/not-found';
 import Loading from '@/components/global/loading';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
+import { useResourceDetailQuery } from '@/modules/resource/api/resource-detail';
+import { type ResourceDetailAttribute } from '@/modules/resource/model';
 
 const ResourceDetailPage = () => {
 	const { t } = useTranslation();
@@ -44,8 +45,8 @@ const ResourceDetailPage = () => {
 						{t('routes.ResourceDetailPage.edit_button')}
 					</Button>
 				</Group>
-				<Badge color={data?.isAvailable ? 'green' : 'red'}>
-					{data?.isAvailable
+				<Badge color={data.isAvailable ? 'green' : 'red'}>
+					{data.isAvailable
 						? t('routes.ResourceDetailPage.info.available')
 						: t('routes.ResourceDetailPage.info.not_available')}
 				</Badge>
@@ -71,7 +72,7 @@ const ResourceDetailPage = () => {
 					<Group>
 						<Text fw={500}>{t('routes.ResourceDetailPage.info.parent')}:</Text>
 						<Text>
-							{data?.parentResource ? (
+							{data.parentResource ? (
 								<Anchor component={Link} to={`/admin/resources/${data.parentResource.id}`}>
 									{data.parentResource.name}
 								</Anchor>
@@ -81,10 +82,10 @@ const ResourceDetailPage = () => {
 						</Text>
 					</Group>
 				</Stack>
-				{data?.attributes && (
+				{data.attributes && (
 					<Stack>
 						<Title order={3}>{t('routes.ResourceDetailPage.attributes.title')}</Title>
-						{data.attributes.map(attribute => (
+						{data.attributes.map((attribute: ResourceDetailAttribute) => (
 							<Group key={attribute.key}>
 								<Text fw={500}>{t(attribute.key)}:</Text>
 								<Text>{attribute.value}</Text>

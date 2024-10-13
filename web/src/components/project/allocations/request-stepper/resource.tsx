@@ -3,11 +3,11 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 
-import { type Resource } from '@/modules/allocation/model';
-import { useResourceDetailQuery } from '@/modules/allocation/queries';
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { QUANTITY_DEFAULT_VALUE, QUANTITY_LABEL } from '@/modules/attribute/constant';
+import { type Resource } from '@/modules/resource/model';
+import { useResourceDetailQuery } from '@/modules/resource/api/resource-detail';
 
 type ResourceStepProps = {
 	resources: Resource[];

@@ -9,13 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
 import NotFound from '@/components/global/not-found';
-import { useResourceDetailQuery } from '@/modules/allocation/queries';
 import Loading from '@/components/global/loading';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import ResourceForm from '@/components/resource/resource-form';
 import { addResourceSchema, type AddResourceSchema } from '@/modules/allocation/form';
 import { type Attribute } from '@/modules/attribute/model';
-import { useEditResourceMutation } from '@/modules/allocation/mutations';
+import { useEditResourceMutation } from '@/modules/resource/api/edit-resource';
+import { useResourceDetailQuery } from '@/modules/resource/api/resource-detail';
 
 const ResourceEditPage = () => {
 	const { t } = useTranslation();

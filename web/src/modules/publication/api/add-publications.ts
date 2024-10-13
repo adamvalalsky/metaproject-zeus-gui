@@ -10,8 +10,8 @@ export type AddPublicationRequest = {
 export const addPublications = async ({ projectId, publications }: AddPublicationRequest) => {
 	await request(`/publication/${projectId}`, {
 		method: Method.POST,
-		body: JSON.stringify({
+		json: {
 			publications
-		})
+		}
 	});
 };

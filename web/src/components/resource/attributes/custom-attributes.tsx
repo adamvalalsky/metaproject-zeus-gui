@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AttributeInput from '@/components/resource/attributes/attribute-input';
-import { type ResourceAttribute, type ResourceDetailAttribute } from '@/modules/allocation/model';
 import { type Attribute } from '@/modules/attribute/model';
+import { type ResourceAttribute, type ResourceDetailAttribute } from '@/modules/resource/model';
 
 type AttributesProps = {
 	defaultAttributes?: ResourceDetailAttribute[];

@@ -5,6 +5,6 @@ import { type AddAttributeSchema } from '@/modules/attribute/form';
 export const createAttribute = async (values: AddAttributeSchema) => {
 	await request('/resource-type', {
 		method: Method.POST,
-		body: JSON.stringify(values)
+		json: values
 	});
 };
