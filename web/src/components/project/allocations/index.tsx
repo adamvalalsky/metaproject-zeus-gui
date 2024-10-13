@@ -69,7 +69,7 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 						<IconCpu /> {t('components.project.allocations.index.title')}
 					</Title>
 					<Badge variant="filled" color="gray">
-						0
+						{metadata.totalRecords}
 					</Badge>
 				</Group>
 				<Button
