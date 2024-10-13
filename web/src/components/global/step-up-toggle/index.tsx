@@ -60,7 +60,7 @@ const StepUpToggle = ({ stepUpAccess }: StepUpToggleProps) => {
 				zIndex={600}
 			>
 				<Switch
-					color="yellow"
+					color={maxRole === Role.ADMIN ? 'yellow' : 'lime'}
 					checked={checked}
 					onChange={openModal}
 					size="md"
