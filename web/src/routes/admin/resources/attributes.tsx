@@ -13,6 +13,7 @@ import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { type AddAttributeSchema, addAttributeSchema } from '@/modules/attribute/form';
 import { useCreateAttributeTypeMutation, useDeleteAttributeTypeMutation } from '@/modules/attribute/mutations';
+import { ApiClientError } from '@/modules/api/model';
 
 const ResourceAttributesPage = () => {
 	const { t } = useTranslation();
@@ -56,10 +57,12 @@ const ResourceAttributesPage = () => {
 				});
 			},
 			onError: error => {
-				notifications.show({
-					color: 'red',
-					message: error?.response.data.message
-				});
+				if (error instanceof ApiClientError) {
+					notifications.show({
+						color: 'red',
+						message: error.response.data.message
+					});
+				}
 			}
 		});
 	};

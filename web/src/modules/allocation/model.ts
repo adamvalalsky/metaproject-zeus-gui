@@ -19,6 +19,7 @@ export type Resource = {
 export type ResourceDetailAttribute = {
 	key: string;
 	isPublic: boolean;
+	isRequired: boolean;
 	value: string;
 	type: string;
 };

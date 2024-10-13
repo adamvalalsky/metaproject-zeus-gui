@@ -58,8 +58,6 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 		return <ErrorAlert />;
 	}
 
-	console.log(allocations);
-
 	const metadata = allocations?.data?.metadata;
 	const allocationsData = allocations?.data.allocations ?? [];
 
@@ -119,7 +117,7 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 					{
 						accessor: 'information',
 						title: t('components.project.allocations.index.columns.information'),
-						render: allocation => null,
+						render: _allocation => null,
 						sortable: true
 					},
 					{
@@ -167,7 +165,7 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 						title: t('components.project.allocations.index.columns.actions'),
 						textAlign: 'center',
 						width: 120,
-						render: member => (
+						render: _allocation => (
 							<Group gap={4} justify="space-between" wrap="nowrap">
 								action
 							</Group>

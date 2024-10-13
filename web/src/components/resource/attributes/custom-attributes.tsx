@@ -15,6 +15,7 @@ type AttributesProps = {
 
 const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: AttributesProps) => {
 	const { t } = useTranslation();
+	const [requiredAttributes, setRequiredAttributes] = useState<Attribute[]>([]);
 	const [optionalAttributes, setOptionalAttributes] = useState<Attribute[]>([]);
 
 	useEffect(() => {
@@ -24,16 +25,43 @@ const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: Attr
 
 		const customAttributes = defaultAttributes.filter(a => !a.key.startsWith('quantity_'));
 		if (customAttributes) {
-			for (let i = 0; i < customAttributes.length; i++) {
-				const attribute = customAttributes[i];
-				addOptionalAttribute(attribute.key, attribute.value, i);
+			let optionalAttributeIndex = 0;
+			let requiredAttributeIndex = 0;
+
+			for (const attribute of customAttributes) {
+				if (attribute.isRequired) {
+					addRequiredAttribute(attribute.key, attribute.value, requiredAttributeIndex);
+					requiredAttributeIndex++;
+				} else {
+					addOptionalAttribute(attribute.key, attribute.value, optionalAttributeIndex);
+					optionalAttributeIndex++;
+				}
 			}
 		}
 	}, [!!defaultAttributes]);
 
-	if (!attributes && !optionalAttributes) {
+	if (!attributes && !optionalAttributes && !requiredAttributes) {
 		return null;
 	}
+
+	const addRequiredAttribute = (key: string, value: string, index: number) => {
+		const resourceAttribute = attributes.find(a => a.name === key);
+		if (index >= requiredAttributes.length) {
+			setRequiredAttributes([
+				...requiredAttributes,
+				{ key, value, index, isPublic: resourceAttribute?.isPublic }
+			]);
+		} else {
+			const type = resourceAttribute?.attributeType.name;
+			const newAttributes = requiredAttributes.map(attribute =>
+				attribute.index === index
+					? { key, value, index, type, isPublic: resourceAttribute?.isPublic }
+					: attribute
+			);
+			setRequiredAttributes(newAttributes);
+			setAttributes(newAttributes.map(a => ({ key: a.key, value: a.value })));
+		}
+	};
 
 	const addOptionalAttribute = (key: string, value: string, index: number) => {
 		const resourceAttribute = attributes.find(a => a.name === key);
@@ -71,13 +99,22 @@ const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: Attr
 			<Title order={4}>{t('routes.ResourceAddPage.form.custom_attributes.title')}</Title>
 			<Text c="dimmed">{t('routes.ResourceAddPage.form.custom_attributes.description')}</Text>
 			<Group>
-				{attributes
-					?.filter(a => a.isRequired)
-					.map(a => (
-						<Group key={a.id}>
-							<AttributeInput label={a.name} type={a.attributeType.name} />
-						</Group>
-					))}
+				{requiredAttributes.map(attribute => (
+					<Group key={attribute.index}>
+						{attribute.key && attribute.type && (
+							<AttributeInput
+								value={attribute.value}
+								label={attribute.key}
+								type={attribute.type}
+								onChange={value => {
+									if (value && attribute.index !== undefined) {
+										addRequiredAttribute(value, '', attribute.index);
+									}
+								}}
+							/>
+						)}
+					</Group>
+				))}
 			</Group>
 			<Stack>
 				<Anchor onClick={() => addOptionalAttribute('', '', optionalAttributes.length)}>
