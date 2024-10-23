@@ -1,5 +1,4 @@
 import ky, { type KyResponse, type Options } from 'ky';
-import { type KyHeadersInit } from 'ky/distribution/types/options';
 
 import { Method } from '@/modules/api/model';
 import userManager from '@/modules/auth/config/user-manager';
@@ -45,13 +44,16 @@ const requestWrapper = async <T>(url: string, init?: Options): Promise<KyRespons
 	});
 };
 
-const getHeaders = (headers?: KyHeadersInit): Record<string, string> => {
+const getHeaders = (
+	headers?: NonNullable<RequestInit['headers']> | Record<string, string | undefined>
+): Record<string, string> => {
 	if (!headers) {
 		return {};
 	}
 
+	const headersObject: Record<string, string> = {};
+
 	if (headers instanceof Headers) {
-		const headersObject: Record<string, string> = {};
 		headers.forEach((value, key) => {
 			headersObject[key] = value;
 		});
@@ -59,12 +61,18 @@ const getHeaders = (headers?: KyHeadersInit): Record<string, string> => {
 	}
 
 	if (Array.isArray(headers)) {
-		const headersObject: Record<string, string> = {};
 		headers.forEach(header => {
 			headersObject[header[0]] = header[1];
 		});
 		return headersObject;
 	}
 
-	return headers;
+	for (const key in headers) {
+		const value = headers[key];
+		if (value !== undefined) {
+			headersObject[key] = value;
+		}
+	}
+
+	return headersObject;
 };
