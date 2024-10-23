@@ -9,10 +9,10 @@ import {
 	IconServer
 } from '@tabler/icons-react';
 
-import { useResourceTypesQuery } from '@/modules/allocation/queries';
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import SelectCard from '@/components/global/select-card';
+import { useResourceTypesQuery } from '@/modules/resource/api/resource-types';
 
 // TODO will be type in the future
 const getResourceTypeIcon = (name: string) => {

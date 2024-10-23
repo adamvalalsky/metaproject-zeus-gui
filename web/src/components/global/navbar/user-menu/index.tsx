@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Avatar, Group, Menu, MenuDropdown, MenuItem, MenuTarget, rem, Text, UnstyledButton } from '@mantine/core';
 import { IconChevronDown, IconLogout, IconSettings } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
 
 import classes from './user-menu.module.css';
@@ -11,12 +11,14 @@ type UserMenuProps = {
 };
 
 const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
-	const { user, removeUser, signoutSilent } = useAuth();
+	const navigate = useNavigate();
+	const { user, removeUser, revokeTokens } = useAuth();
 	const [userMenuOpened, setUserMenuOpened] = useState(false);
 
-	const logout = () => {
-		removeUser();
-		signoutSilent();
+	const logout = async () => {
+		await removeUser();
+		await revokeTokens();
+		navigate('/');
 	};
 
 	if (!user) {

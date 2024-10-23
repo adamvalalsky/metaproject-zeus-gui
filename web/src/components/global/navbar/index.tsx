@@ -4,10 +4,9 @@ import { Anchor, Box, Burger, Flex, Group, Image, Tooltip } from '@mantine/core'
 import { Link } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
 
-import { useAdminContext } from '@/modules/auth/context';
 import useWindowSize from '@/hooks/useWindowSize';
-
-import AdministratorToggle from '../administrator-toggle';
+import { getStepUpAccess } from '@/modules/auth/methods/getStepUpAccess';
+import StepUpToggle from '@/components/global/step-up-toggle';
 
 import classes from './navbar.module.css';
 import DrawerList from './drawer-list';
@@ -15,10 +14,9 @@ import UserMenu from './user-menu';
 
 const Navbar = ({ children }: PropsWithChildren) => {
 	const { t } = useTranslation();
-	const { getAdminAccess } = useAdminContext();
 	const { isAuthenticated } = useAuth();
 	const windowSize = useWindowSize();
-	const adminAccess = getAdminAccess();
+	const stepUpAccess = getStepUpAccess();
 	const [drawerOpened, setDrawerOpened] = useState(windowSize > 1000);
 
 	const toggleDrawer = () => setDrawerOpened(opened => !opened);
@@ -55,7 +53,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 				</Box>
 				{isAuthenticated && (
 					<Group mr={10}>
-						<AdministratorToggle adminAccess={adminAccess} />
+						<StepUpToggle stepUpAccess={stepUpAccess} />
 						<UserMenu />
 					</Group>
 				)}

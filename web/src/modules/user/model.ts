@@ -8,7 +8,11 @@ export type User = {
 
 export type UserInfo = {
 	id: number;
+	source: string;
+	externalId: string;
+	locale: string;
 	name: string;
 	email: string;
 	username: string;
+	role?: string;
 };

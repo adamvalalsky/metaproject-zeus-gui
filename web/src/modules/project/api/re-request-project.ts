@@ -9,10 +9,10 @@ type ReRequestProjectInput = RequestProjectSchema & {
 export const reRequestProject = async (values: ReRequestProjectInput) => {
 	await request(`/project/${values.projectId}/request`, {
 		method: Method.POST,
-		body: JSON.stringify({
+		json: {
 			title: values.title,
 			link: values.link,
 			description: values.description
-		})
+		}
 	});
 };

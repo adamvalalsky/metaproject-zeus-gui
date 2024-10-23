@@ -17,10 +17,10 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
-import { useResourceListQuery } from '@/modules/allocation/queries';
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
-import { type Resource } from '@/modules/allocation/model';
+import { type Resource } from '@/modules/resource/model';
+import { useResourceListQuery } from '@/modules/resource/api/resources';
 
 const getDataTree = (data: Resource[], parentResourceId: number | null): TreeNodeData[] =>
 	data

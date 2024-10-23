@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom';
 
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import { getSortQuery } from '@/modules/api/sorting/utils';
-import { useProjectAllocationsQuery } from '@/modules/allocation/queries';
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { type Allocation } from '@/modules/allocation/model';
+import { useProjectAllocationsQuery } from '@/modules/allocation/api/allocations';
 
 type ProjectAllocationTableProps = {
 	id: number;
@@ -25,11 +25,7 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 		direction: 'asc'
 	});
 
-	const {
-		data: allocations,
-		isPending,
-		isError
-	} = useProjectAllocationsQuery(
+	const { data, isPending, isError } = useProjectAllocationsQuery(
 		id,
 		{
 			page,
@@ -58,8 +54,8 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 		return <ErrorAlert />;
 	}
 
-	const metadata = allocations?.data?.metadata;
-	const allocationsData = allocations?.data.allocations ?? [];
+	const metadata = data.metadata;
+	const allocationsData = data.allocations ?? [];
 
 	if (!metadata) {
 		return null;
@@ -73,7 +69,7 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 						<IconCpu /> {t('components.project.allocations.index.title')}
 					</Title>
 					<Badge variant="filled" color="gray">
-						0
+						{metadata.totalRecords}
 					</Badge>
 				</Group>
 				<Button

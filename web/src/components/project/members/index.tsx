@@ -13,6 +13,7 @@ import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import { type ProjectMember } from '@/modules/project/model';
 import { getSortQuery } from '@/modules/api/sorting/utils';
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
+import Loading from '@/components/global/loading';
 
 type ProjectMembersProps = {
 	id: number;
@@ -44,12 +45,16 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 		getSortQuery(sortStatus.columnAccessor, sortStatus.direction)
 	);
 
+	if (isPending) {
+		return <Loading />;
+	}
+
 	if (isError) {
 		return <ErrorAlert />;
 	}
 
-	const metadata = response?.data?.metadata;
-	const members = response?.data?.members ?? [];
+	const metadata = response.metadata;
+	const members = response.members ?? [];
 
 	const onPageChange = async (newPage: number) => {
 		setPage(newPage);

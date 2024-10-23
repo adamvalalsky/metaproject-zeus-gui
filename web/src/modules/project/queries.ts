@@ -43,11 +43,12 @@ export const useProjectRequestsQuery = (pagination: Pagination) =>
 			request<ProjectRequestResponse>(`/project/requests?page=${pagination.page}&limit=${pagination.limit}`)
 	});
 
-export const useProjectDetailQuery = (id: number) =>
+export const useProjectDetailQuery = (id?: string) =>
 	useQuery({
 		queryKey: ['project', id],
 		queryFn: () => request<ProjectDetailResponse>(`/project/${id}`),
-		retry: false
+		retry: false,
+		enabled: !!id && !isNaN(+id)
 	});
 
 export const useProjectMembersQuery = (id: number, pagination: Pagination, sortSelector: string) =>

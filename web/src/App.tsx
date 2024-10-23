@@ -19,13 +19,13 @@ import ProjectDetailGuard from '@/modules/auth/guards/project-detail-guard';
 import ProjectPublicationsAddPage from '@/routes/project/detail/publications';
 import ProjectRequestPage from '@/routes/project/detail/request';
 import AuthLogin from '@/routes/auth/login';
-import { AdminContextProvider } from '@/modules/auth/context';
 import userManager from '@/modules/auth/config/user-manager';
 import { onSigninCallback } from '@/modules/auth/methods/onSigninCallback';
 import AllocationRequest from '@/routes/project/detail/allocation/request';
 import ResourceAddPage from '@/routes/admin/resources/add';
 import ResourceDetailPage from '@/routes/admin/resources/detail';
 import ResourceEditPage from '@/routes/admin/resources/edit';
+import { AdminContextProvider } from '@/modules/auth/admin-context';
 
 import Index from './routes/index/index';
 import Root from './routes/root';

@@ -1,6 +1,6 @@
 import { type FileWithPath } from '@mantine/dropzone';
 
-import { type ApiResponse, Method } from '@/modules/api/model';
+import { Method } from '@/modules/api/model';
 import type { Project } from '@/modules/project/model';
 import { request } from '@/modules/api/request';
 
@@ -17,14 +17,8 @@ export const archiveProject = async ({ projectId, justification, file }: Archive
 		formData.append('file', file, file.name);
 	}
 
-	const response = (await request(
-		`/project/${projectId}/archive`,
-		{
-			method: Method.POST,
-			body: formData
-		},
-		true
-	)) as ApiResponse<Project>;
-
-	return response.data;
+	return request<Project>(`/project/${projectId}/archive`, {
+		method: Method.POST,
+		body: formData
+	});
 };

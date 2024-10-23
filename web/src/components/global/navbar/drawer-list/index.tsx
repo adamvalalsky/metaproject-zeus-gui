@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Box, NavLink, rem, ScrollArea } from '@mantine/core';
 import { IconDevices2, IconQuestionMark, IconReport, IconUserUp } from '@tabler/icons-react';
 
-import { getAdminAccess } from '@/modules/auth/methods/getAdminAccess';
-import { AdminAccess } from '@/modules/auth/model';
+import { useAdminContext } from '@/modules/auth/admin-context';
+import { Role } from '@/modules/user/role';
 
 import classes from '../navbar.module.css';
 
@@ -44,9 +44,9 @@ const DrawerList = ({ open }: DrawerListProps) => {
 
 	const { pathname } = useLocation();
 	const { t } = useTranslation();
-	const adminAccess = getAdminAccess();
+	const { currentRole } = useAdminContext();
 
-	if (adminAccess === AdminAccess.LOGGED) {
+	if (currentRole === Role.ADMIN) {
 		LINKS.push({
 			title: 'components.global.drawerList.links.admin.title',
 			href: '/admin',

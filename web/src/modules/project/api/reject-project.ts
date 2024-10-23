@@ -1,4 +1,4 @@
-import { type ApiResponse, Method } from '@/modules/api/model';
+import { Method } from '@/modules/api/model';
 import type { Project } from '@/modules/project/model';
 import { request } from '@/modules/api/request';
 
@@ -8,10 +8,10 @@ type RejectProjectParams = {
 };
 
 export const rejectProject = async (body: RejectProjectParams) => {
-	const response = (await request('/project/approval/reject', {
+	const response = await request<Project>('/project/approval/reject', {
 		method: Method.POST,
-		body: JSON.stringify(body)
-	})) as ApiResponse<Project>;
+		json: body
+	});
 
-	return response.data?.id;
+	return response.id;
 };

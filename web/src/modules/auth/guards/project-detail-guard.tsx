@@ -21,11 +21,11 @@ export const useProjectOutletContext = () => useOutletContext<ContextType>();
 const ProjectDetailGuard = () => {
 	const { id } = useParams();
 
+	const { data: projectData, error, isPending } = useProjectDetailQuery(id);
+
 	if (!id || isNaN(+id)) {
 		return <NotFound />;
 	}
-
-	const { data: projectData, error, isPending } = useProjectDetailQuery(+id);
 
 	if (error) {
 		if (error instanceof ApiClientError && error.response.data.code === 10002) {
@@ -39,10 +39,10 @@ const ProjectDetailGuard = () => {
 		return <Loading text="Loading project..." />;
 	}
 
-	const project = projectData.data.project;
-	const permissions = projectData.data.permissions;
-	const archivalInfo = projectData.data.archivalInfo;
-	const rejectedComments = projectData.data.rejectedComments;
+	const project = projectData.project;
+	const permissions = projectData.permissions;
+	const archivalInfo = projectData.archivalInfo;
+	const rejectedComments = projectData.rejectedComments;
 
 	return (
 		<MainContentWrapper mt={30}>

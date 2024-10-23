@@ -32,6 +32,7 @@
     "dayjs": "^1.11.11",
     "i18next": "^23.10.1",
     "js-cookie": "^3.0.5",
+    "ky": "^1.7.2",
     "localforage": "^1.10.0",
     "mantine-datatable": "^7.9.1",
     "match-sorter": "^6.3.1",

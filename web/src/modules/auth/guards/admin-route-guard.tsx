@@ -3,19 +3,19 @@ import { useAuth } from 'react-oidc-context';
 import React from 'react';
 import { Box, Flex } from '@mantine/core';
 
-import { useAdminContext } from '@/modules/auth/context';
-import { AdminAccess } from '@/modules/auth/model';
 import Loading from '@/components/global/loading';
+import { getStepUpAccess } from '@/modules/auth/methods/getStepUpAccess';
+import { StepUpAccess } from '@/modules/auth/model';
 
 const AdminRouteGuard = () => {
 	const { isAuthenticated, isLoading } = useAuth();
-	const { getAdminAccess } = useAdminContext();
+	const stepUpAccess = getStepUpAccess();
 
 	if (isLoading) {
 		return <Loading />;
 	}
 
-	if (!isAuthenticated || getAdminAccess() !== AdminAccess.LOGGED) {
+	if (!isAuthenticated || stepUpAccess !== StepUpAccess.LOGGED) {
 		return <Navigate to="/" replace />;
 	}
 

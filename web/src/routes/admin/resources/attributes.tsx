@@ -6,14 +6,15 @@ import { modals } from '@mantine/modals';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { notifications } from '@mantine/notifications';
+import { HTTPError } from 'ky';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
-import { useAttributeTypesQuery, useResourceAttributesQuery } from '@/modules/attribute/queries';
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { type AddAttributeSchema, addAttributeSchema } from '@/modules/attribute/form';
 import { useCreateAttributeTypeMutation, useDeleteAttributeTypeMutation } from '@/modules/attribute/mutations';
-import { ApiClientError } from '@/modules/api/model';
+import { useAttributeTypesQuery } from '@/modules/attribute/api/attribute-types';
+import { useResourceAttributesQuery } from '@/modules/attribute/api/resource-attributes';
 
 const ResourceAttributesPage = () => {
 	const { t } = useTranslation();
@@ -56,11 +57,12 @@ const ResourceAttributesPage = () => {
 					});
 				});
 			},
-			onError: error => {
-				if (error instanceof ApiClientError) {
+			onError: async error => {
+				if (error instanceof HTTPError) {
+					const errorData = await error.response.json();
 					notifications.show({
 						color: 'red',
-						message: error.response.data.message
+						message: errorData.message
 					});
 				}
 			}

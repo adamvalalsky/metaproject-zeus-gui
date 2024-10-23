@@ -63,8 +63,8 @@ const ProjectTable = ({ status, title }: ProjectTableProps) => {
 		await refetch();
 	};
 
-	const metadata = data.data.metadata;
-	const projects = data?.data.projects ?? [];
+	const metadata = data.metadata;
+	const projects = data.projects ?? [];
 
 	return (
 		<Box mt={15}>

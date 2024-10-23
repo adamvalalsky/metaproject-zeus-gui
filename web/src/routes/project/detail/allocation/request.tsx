@@ -11,11 +11,11 @@ import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-gu
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import ResourceTypeStep from '@/components/project/allocations/request-stepper/resource-type';
 import ResourceStep from '@/components/project/allocations/request-stepper/resource';
-import { useResourceListQuery } from '@/modules/allocation/queries';
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { addAllocationSchema, type AddAllocationSchema } from '@/modules/allocation/form';
-import { useRequestAllocationMutation } from '@/modules/allocation/mutations';
+import { useRequestAllocationMutation } from '@/modules/allocation/api/request-allocation';
+import { useResourceListQuery } from '@/modules/resource/api/resources';
 
 const MAX_STEPS = 2;
 
@@ -68,7 +68,8 @@ const AllocationRequest = () => {
 							navigate(`/project/${project.id}`);
 						});
 				},
-				onError: () => {
+				onError: error => {
+					console.log(error);
 					notifications.show({
 						color: 'red',
 						message: t('routes.AllocationRequest.notifications.error')

@@ -1,39 +1,26 @@
-import { ApiClientError, type ApiClientErrorResponse, type ApiResponse, Method } from '@/modules/api/model';
+import ky, { type KyResponse, type Options } from 'ky';
+
+import { Method } from '@/modules/api/model';
 import userManager from '@/modules/auth/config/user-manager';
+import { getStepUpAccess } from '@/modules/auth/methods/getStepUpAccess';
+import { StepUpAccess } from '@/modules/auth/model';
 
-export const request = <T>(url: string, init?: RequestInit, headersAutoGenerate = false): Promise<ApiResponse<T>> =>
-	requestWrapper<T>(url, createApiResponse, init, headersAutoGenerate);
+export const request = async <T>(url: string, init?: Options): Promise<T> => {
+	const request = await requestWrapper<T>(url, init);
+	return request.json();
+};
 
-export const download = (url: string, init?: RequestInit) =>
-	requestWrapper<Blob>(
-		url,
-		async response => {
-			const blob = await response.blob();
+export const download = async (url: string, init?: RequestInit) => {
+	const request = await requestWrapper<Blob>(url, init);
+	return request.blob();
+};
 
-			return {
-				status: response.status,
-				data: blob
-			};
-		},
-		init,
-		true
-	);
-
-const requestWrapper = async <T>(
-	url: string,
-	postRequestAction: (response: Response) => Promise<{ status: number; data: unknown }>,
-	init?: RequestInit,
-	headersAutoGenerate = false
-): Promise<ApiResponse<T>> => {
+const requestWrapper = async <T>(url: string, init?: Options): Promise<KyResponse<T>> => {
+	const stepUpAccess = getStepUpAccess();
 	const abortController = new AbortController();
 	const signal = abortController.signal;
 
 	const defaultHeaders: Record<string, string> = {};
-
-	// force application/json content type
-	if (!headersAutoGenerate) {
-		defaultHeaders['Content-Type'] = 'application/json';
-	}
 
 	const user = await userManager.getUser();
 	const accessToken = user?.access_token;
@@ -41,7 +28,12 @@ const requestWrapper = async <T>(
 		defaultHeaders.Authorization = `Bearer ${accessToken}`;
 	}
 
-	return fetch(import.meta.env.VITE_API_URL + url, {
+	// if user has step up access, mark in request
+	if (stepUpAccess === StepUpAccess.LOGGED) {
+		defaultHeaders['X-Step-Up'] = 'true';
+	}
+
+	return ky<T>(import.meta.env.VITE_API_URL + url, {
 		method: Method.GET,
 		signal,
 		...init,
@@ -49,47 +41,19 @@ const requestWrapper = async <T>(
 			...defaultHeaders,
 			...getHeaders(init?.headers)
 		}
-	})
-		.then(async (response: Response) => {
-			if (!response.ok) {
-				const errorResponse = await createApiResponse(response);
-
-				const isApiError =
-					errorResponse.data && typeof errorResponse.data === 'object' && 'message' in errorResponse.data;
-				if (isApiError) {
-					throw new ApiClientError('Api client error', errorResponse as ApiClientErrorResponse);
-				}
-			}
-			return postRequestAction(response);
-		})
-		.catch(error => {
-			throw error;
-		}) as Promise<ApiResponse<T>>;
+	});
 };
 
-const createApiResponse = async (response: Response): Promise<{ status: number; data: unknown }> => {
-	const data = await response.text();
-
-	try {
-		return {
-			status: response.status,
-			data: JSON.parse(data)
-		};
-	} catch (e) {
-		return {
-			status: response.status,
-			data
-		};
-	}
-};
-
-const getHeaders = (headers?: HeadersInit): Record<string, string> => {
+const getHeaders = (
+	headers?: NonNullable<RequestInit['headers']> | Record<string, string | undefined>
+): Record<string, string> => {
 	if (!headers) {
 		return {};
 	}
 
+	const headersObject: Record<string, string> = {};
+
 	if (headers instanceof Headers) {
-		const headersObject: Record<string, string> = {};
 		headers.forEach((value, key) => {
 			headersObject[key] = value;
 		});
@@ -97,12 +61,18 @@ const getHeaders = (headers?: HeadersInit): Record<string, string> => {
 	}
 
 	if (Array.isArray(headers)) {
-		const headersObject: Record<string, string> = {};
 		headers.forEach(header => {
 			headersObject[header[0]] = header[1];
 		});
 		return headersObject;
 	}
 
-	return headers;
+	for (const key in headers) {
+		const value = headers[key];
+		if (value !== undefined) {
+			headersObject[key] = value;
+		}
+	}
+
+	return headersObject;
 };

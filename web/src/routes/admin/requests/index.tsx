@@ -38,8 +38,8 @@ const ProjectRequests = () => {
 		return <Skeleton w={200} />;
 	}
 
-	const metadata = response.data.metadata;
-	const requests = response.data.projects ?? [];
+	const metadata = response.metadata;
+	const requests = response.projects ?? [];
 
 	return (
 		<Box>

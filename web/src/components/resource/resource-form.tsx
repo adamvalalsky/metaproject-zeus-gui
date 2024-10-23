@@ -4,14 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import CustomAttributes from '@/components/resource/attributes/custom-attributes';
-import type { Resource, ResourceDetail } from '@/modules/allocation/model';
 import { type Attribute } from '@/modules/attribute/model';
-import { useResourceListQuery, useResourceTypesQuery } from '@/modules/allocation/queries';
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { type AddResourceSchema } from '@/modules/allocation/form';
-import { useResourceAttributesQuery } from '@/modules/attribute/queries';
 import { QUANTITY_DEFAULT_VALUE, QUANTITY_LABEL } from '@/modules/attribute/constant';
+import { type Resource, type ResourceDetail } from '@/modules/resource/model';
+import { useResourceTypesQuery } from '@/modules/resource/api/resource-types';
+import { useResourceListQuery } from '@/modules/resource/api/resources';
+import { useResourceAttributesQuery } from '@/modules/attribute/api/resource-attributes';
 
 type ResourceFormProps = {
 	defaultValues?: ResourceDetail;

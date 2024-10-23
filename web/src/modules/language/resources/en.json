@@ -3,13 +3,26 @@
   "quantity_label": "Quantity label for user",
   "components": {
     "global": {
-      "administratorToggle": {
-        "switchLabel": "Admin",
-        "switchDescription": "Toggle administrator mode",
-        "dialog": {
-          "title": "Use administrator account",
-          "password": "Administrator password",
-          "submit": "Sign in as administrator"
+      "stepUpToggle": {
+        "admin": {
+          "switchLabel": "Admin",
+          "switchDescription": "Toggle administrator mode",
+          "dialog": {
+            "title": "Use administrator account",
+            "description": "Do you want to gain administrator access?",
+            "confirm": "Yes",
+            "cancel": "No"
+          }
+        },
+        "director": {
+          "switchLabel": "Director",
+          "switchDescription": "Toggle director mode",
+          "dialog": {
+            "title": "Use director account",
+            "description": "Do you want to gain director access?",
+            "confirm": "Yes",
+            "cancel": "No"
+          }
         }
       },
       "navbar": {
@@ -308,7 +321,7 @@
         },
         "custom_attributes": {
           "title": "Custom attributes",
-          "description":"Attributes with empty keys or values will be ignored",
+          "description": "Attributes with empty keys or values will be ignored",
           "button": "Add optional custom attribute"
         },
         "submit": "Add resource"
