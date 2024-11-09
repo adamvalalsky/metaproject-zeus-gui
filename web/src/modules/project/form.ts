@@ -12,13 +12,19 @@ export const addMembersSchema = z.object({
 	projectId: z.number(),
 	members: z.array(
 		z.object({
-			id: z.number(),
+			email: z.string(),
 			role: z.string().min(3).max(100)
 		})
 	)
 });
 
 export type AddMembersSchema = z.infer<typeof addMembersSchema>;
+
+export const addSingleMemberSchema = z.object({
+	email: z.string()
+});
+
+export type AddSingleMemberSchema = z.infer<typeof addSingleMemberSchema>;
 
 export const archiveProjectSchema = z.object({
 	justification: z.string().min(5),

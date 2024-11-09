@@ -82,7 +82,7 @@
           "columns": {
             "id": "ID",
             "name": "Full name",
-            "username": "Username",
+            "email": "Email",
             "role": {
               "title": "Role",
               "manager": "Manager",

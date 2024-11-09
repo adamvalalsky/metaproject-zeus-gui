@@ -1,28 +1,41 @@
-import { ActionIcon, Box, Button, Group, Select, Title } from '@mantine/core';
+import { ActionIcon, Box, Button, Group, Select, Stack, TextInput, Title } from '@mantine/core';
 import { useState } from 'react';
 import { IconTrash } from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import AddMembersSelect from '@/components/project/members/add-members-select';
-import { type UserInfo } from '@/modules/user/model';
 import { useAddProjectMemberMutation } from '@/modules/project/mutations';
-import { addMembersSchema } from '@/modules/project/form';
+import { addMembersSchema, addSingleMemberSchema, type AddSingleMemberSchema } from '@/modules/project/form';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
+
+type PickedUser = {
+	email: string;
+	role?: string;
+};
 
 const ProjectDetailMembers = () => {
 	const { project, permissions } = useProjectOutletContext();
 	const navigate = useNavigate();
 	const { mutate, isPending } = useAddProjectMemberMutation();
-	const [pickedMembers, setPickedMembers] = useState<UserInfo[]>([]);
-	const [roles, setRoles] = useState<Record<number, string>>({});
+	const [pickedMembers, setPickedMembers] = useState<PickedUser[]>([]);
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset
+	} = useForm<AddSingleMemberSchema>({
+		resolver: zodResolver(addSingleMemberSchema)
+	});
 
 	const onClick = () => {
 		const members = pickedMembers.map(member => ({
-			id: member.id,
-			role: roles[member.id]
+			email: member.email,
+			role: member.role ?? 'user'
 		}));
 
 		const body = addMembersSchema.parse({
@@ -45,16 +58,29 @@ const ProjectDetailMembers = () => {
 		});
 	};
 
-	const handleSelect = (member: UserInfo) => {
-		// user is picked - remove
-		if (pickedMembers.some(pickedMember => pickedMember.id === member.id)) {
-			setPickedMembers(pickedMembers.filter(pickedMember => pickedMember.id !== member.id));
-			setRoles({ ...roles, [member.id]: 'user' });
-		} else {
-			setPickedMembers([...pickedMembers, member]);
-			setRoles({ ...roles, [member.id]: 'user' });
-		}
+	const addUser = (data: AddSingleMemberSchema) => {
+		setPickedMembers([...pickedMembers, { email: data.email }]);
+		reset();
 	};
+
+	const removeUser = (email: string) => {
+		setPickedMembers(pickedMembers => pickedMembers.filter(m => m.email !== email));
+	};
+
+	const changeUserRole = (email: string, role: string | null) => {
+		setPickedMembers(pickedMembers =>
+			pickedMembers.map(m => {
+				if (m.email !== email) {
+					return m;
+				}
+
+				m.role = role ?? undefined;
+				return m;
+			})
+		);
+	};
+
+	const getUserRole = (email: string) => pickedMembers.find(m => m.email === email)?.role ?? 'user';
 
 	return (
 		<Box>
@@ -68,7 +94,20 @@ const ProjectDetailMembers = () => {
 			<Title>{project.title}</Title>
 			<Title order={3} mt={20}>
 				Add members
-				<AddMembersSelect projectId={project.id} pickedMembers={pickedMembers} handleSelect={handleSelect} />
+				<form onSubmit={handleSubmit(addUser)}>
+					<Stack align="center">
+						<TextInput
+							w="100%"
+							label="User email"
+							placeholder="1234@mail.muni.cz"
+							{...register('email')}
+							error={errors.email?.message}
+						/>
+						<Button type="submit" fullWidth>
+							Submit
+						</Button>
+					</Stack>
+				</form>
 			</Title>
 			{pickedMembers.length > 0 && (
 				<Box mt={30}>
@@ -79,21 +118,6 @@ const ProjectDetailMembers = () => {
 						striped
 						records={pickedMembers}
 						columns={[
-							{
-								accessor: 'id',
-								title: 'ID',
-								width: 150
-							},
-							{
-								accessor: 'Name',
-								title: 'Name',
-								render: userInfo => userInfo.name
-							},
-							{
-								accessor: 'username',
-								title: 'Username',
-								render: userInfo => userInfo.username
-							},
 							{
 								accessor: 'email',
 								title: 'E-mail',
@@ -108,11 +132,9 @@ const ProjectDetailMembers = () => {
 										return (
 											<Select
 												allowDeselect={false}
-												value={roles[userInfo.id] || 'user'}
+												value={getUserRole(userInfo.email)}
 												onChange={value => {
-													if (value) {
-														setRoles({ ...roles, [userInfo.id]: value });
-													}
+													changeUserRole(userInfo.email, value);
 												}}
 												data={[
 													{ value: 'user', label: 'User' },
@@ -136,7 +158,7 @@ const ProjectDetailMembers = () => {
 											size="sm"
 											variant="subtle"
 											color="red"
-											onClick={() => handleSelect(userInfo)}
+											onClick={() => removeUser(userInfo.email)}
 										>
 											<IconTrash size={24} />
 										</ActionIcon>

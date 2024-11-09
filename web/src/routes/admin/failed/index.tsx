@@ -47,6 +47,7 @@ const FailedProjects = () => {
 						if (!isRunning) {
 							setLoadingProject(null);
 							clearInterval(interval);
+							refetch();
 						}
 					}, 5000);
 				},

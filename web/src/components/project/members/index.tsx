@@ -136,9 +136,9 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 						sortable: true
 					},
 					{
-						accessor: 'username',
-						title: t('components.project.members.index.columns.username'),
-						render: member => member.userInfo.username,
+						accessor: 'email',
+						title: t('components.project.members.index.columns.email'),
+						render: member => member.userInfo.email,
 						sortable: true
 					},
 					{
