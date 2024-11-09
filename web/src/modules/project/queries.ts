@@ -2,7 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 
 import { type Pagination, type PaginationMetadata } from '@/modules/api/pagination/model';
 import { type ProjectStatus } from '@/modules/project/constants';
-import type { ArchivalInfo, Project, ProjectMember, RejectedComment } from '@/modules/project/model';
+import type {
+	ArchivalInfo,
+	Project,
+	ProjectFailedStage,
+	ProjectMember,
+	RejectedComment
+} from '@/modules/project/model';
 import { request } from '@/modules/api/request';
 
 type MyProjectResponse = {
@@ -58,4 +64,10 @@ export const useProjectMembersQuery = (id: number, pagination: Pagination, sortS
 			request<MemberList>(
 				`/project/${id}/members?page=${pagination.page}&limit=${pagination.limit}&sort=${sortSelector}`
 			)
+	});
+
+export const useProjectFailedStagesQuery = () =>
+	useQuery({
+		queryKey: ['stages'],
+		queryFn: () => request<ProjectFailedStage[]>('/project/failed-stages')
 	});

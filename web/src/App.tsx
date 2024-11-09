@@ -26,6 +26,7 @@ import ResourceAddPage from '@/routes/admin/resources/add';
 import ResourceDetailPage from '@/routes/admin/resources/detail';
 import ResourceEditPage from '@/routes/admin/resources/edit';
 import { AdminContextProvider } from '@/modules/auth/admin-context';
+import FailedProjects from '@/routes/admin/failed';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -83,6 +84,7 @@ const App = () => {
 					<Route path="resources/attributes" element={<ResourceAttributesPage />} />
 					<Route path="resources/:id" element={<ResourceDetailPage />} />
 					<Route path="resources/:id/edit" element={<ResourceEditPage />} />
+					<Route path="stages" element={<FailedProjects />} />
 				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Route>

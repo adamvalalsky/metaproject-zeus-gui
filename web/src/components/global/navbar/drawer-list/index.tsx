@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, NavLink, rem, ScrollArea } from '@mantine/core';
-import { IconDevices2, IconQuestionMark, IconReport, IconUserUp } from '@tabler/icons-react';
+import { IconDevices2, IconPodium, IconQuestionMark, IconReport, IconUserUp } from '@tabler/icons-react';
 
 import { useAdminContext } from '@/modules/auth/admin-context';
 import { Role } from '@/modules/user/role';
@@ -61,6 +61,11 @@ const DrawerList = ({ open }: DrawerListProps) => {
 					title: 'components.global.drawerList.links.admin.link.resources',
 					href: '/admin/resources',
 					icon: <IconDevices2 />
+				},
+				{
+					title: 'components.global.drawerList.links.admin.link.stages',
+					href: '/admin/stages',
+					icon: <IconPodium />
 				}
 			]
 		});
