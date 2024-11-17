@@ -14,6 +14,7 @@ import PublicationCard from '@/components/project/publications/publication-card'
 import { PUBLICATION_PAGE_SIZES } from '@/modules/publication/constants';
 import { useRemovePublicationMutation } from '@/modules/publication/mutations';
 import Loading from '@/components/global/loading';
+import { useProjectOutletContext } from '@/modules/auth/guards/project-detail-guard';
 
 type ProjectPublicationsType = {
 	id: number;
@@ -22,6 +23,7 @@ type ProjectPublicationsType = {
 const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 	const { t } = useTranslation();
 
+	const { permissions } = useProjectOutletContext();
 	const [currentPublication, setCurrentPublication] = useState<number | null>(null);
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(PUBLICATION_PAGE_SIZES[0]);
@@ -108,7 +110,7 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 						{metadata?.totalRecords ?? 0}
 					</Badge>
 				</Group>
-				<AddPublication id={id} />
+				{permissions.includes('edit_publications') && <AddPublication id={id} />}
 			</Group>
 			<DataTable
 				height={300}

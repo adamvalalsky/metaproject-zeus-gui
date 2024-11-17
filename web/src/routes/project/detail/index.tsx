@@ -84,7 +84,8 @@ const ProjectDetail = () => {
 			<Divider my={10} />
 			{project.status === ProjectStatus.NEW && (
 				<Alert mt={5} variant="light" color="yellow" title="Project is not active" icon={<IconInfoCircle />}>
-					Current project, which you are editing is not yet accepted.
+					Current project, which you are editing is not yet accepted. You can only request allocations,
+					changes to publications and members will be possible only when project is active.
 				</Alert>
 			)}
 			{project.status === ProjectStatus.ARCHIVED && (
@@ -151,8 +152,12 @@ const ProjectDetail = () => {
 
 				<Tabs.Panel value="projectInfo">
 					<ProjectAllocationsTable id={project.id} />
-					<ProjectMembers id={project.id} />
-					<ProjectPublications id={project.id} />
+					{project.status === ProjectStatus.ACTIVE && (
+						<>
+							<ProjectMembers id={project.id} />
+							<ProjectPublications id={project.id} />
+						</>
+					)}
 				</Tabs.Panel>
 			</Tabs>
 		</Box>
