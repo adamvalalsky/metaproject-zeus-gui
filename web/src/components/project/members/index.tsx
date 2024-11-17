@@ -54,7 +54,7 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 	}
 
 	const metadata = response.metadata;
-	const members = response.members ?? [];
+	const members = response.data ?? [];
 
 	const onPageChange = async (newPage: number) => {
 		setPage(newPage);

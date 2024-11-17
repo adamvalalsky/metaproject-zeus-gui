@@ -25,7 +25,11 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 		direction: 'asc'
 	});
 
-	const { data, isPending, isError } = useProjectAllocationsQuery(
+	const {
+		data: allocations,
+		isPending,
+		isError
+	} = useProjectAllocationsQuery(
 		id,
 		{
 			page,
@@ -54,8 +58,8 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 		return <ErrorAlert />;
 	}
 
-	const metadata = data.metadata;
-	const allocationsData = data.allocations ?? [];
+	const metadata = allocations.metadata;
+	const allocationsData = allocations.data ?? [];
 
 	if (!metadata) {
 		return null;

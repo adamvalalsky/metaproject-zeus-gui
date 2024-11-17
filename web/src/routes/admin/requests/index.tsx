@@ -39,7 +39,7 @@ const ProjectRequests = () => {
 	}
 
 	const metadata = response.metadata;
-	const requests = response.projects ?? [];
+	const requests = response.data ?? [];
 
 	return (
 		<Box>

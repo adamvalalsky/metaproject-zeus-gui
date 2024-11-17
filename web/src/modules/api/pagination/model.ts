@@ -8,3 +8,8 @@ export type PaginationMetadata = {
 	page: number;
 	recordsPerPage: number;
 };
+
+export type PaginationResponse<T> = {
+	metadata: PaginationMetadata;
+	data: T[];
+};

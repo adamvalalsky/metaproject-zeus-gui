@@ -56,7 +56,7 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 	}
 
 	const metadata = response.metadata;
-	const publications = response.publications ?? [];
+	const publications = response.data ?? [];
 
 	const onPageChange = async (newPage: number) => {
 		setPage(newPage);
