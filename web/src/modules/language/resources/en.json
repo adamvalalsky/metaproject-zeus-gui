@@ -40,7 +40,8 @@
             "title": "Administrator section",
             "link": {
               "requests": "Project requests",
-              "resources": "Resources"
+              "resources": "Resources",
+              "stages": "Failed stages"
             }
           }
         }
@@ -81,7 +82,7 @@
           "columns": {
             "id": "ID",
             "name": "Full name",
-            "username": "Username",
+            "email": "Email",
             "role": {
               "title": "Role",
               "manager": "Manager",
@@ -223,6 +224,19 @@
         "description": "Description",
         "pi": "PI",
         "createdAt": "Created at"
+      }
+    },
+    "FailedStages": {
+      "title": "Failed stages",
+      "error": {
+        "noFailedStages": "No projects with failed stages."
+      },
+      "table": {
+        "id": "Project ID",
+        "name": "Project title",
+        "lastStage": "Last stage",
+        "updatedAt": "Last update",
+        "update": "Synchronize again"
       }
     },
     "ProjectRequestDetail": {

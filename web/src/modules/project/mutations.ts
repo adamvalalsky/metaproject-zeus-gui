@@ -7,6 +7,7 @@ import { archiveProject } from '@/modules/project/api/archive-project';
 import { approveProject } from '@/modules/project/api/approve-project';
 import { rejectProject } from '@/modules/project/api/reject-project';
 import { reRequestProject } from '@/modules/project/api/re-request-project';
+import { synchronizeProject } from '@/modules/project/api/synchronize-project';
 
 export const useAddProjectMutation = () =>
 	useMutation({
@@ -41,4 +42,9 @@ export const useRejectProjectMutation = () =>
 export const useReRequestProjectMutation = () =>
 	useMutation({
 		mutationFn: reRequestProject
+	});
+
+export const useSynchronizeProjectMutation = () =>
+	useMutation({
+		mutationFn: synchronizeProject
 	});

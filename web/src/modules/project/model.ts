@@ -36,3 +36,14 @@ export type ProjectMember = {
 	role: string;
 	status: string;
 };
+
+export type ProjectFailedStage = {
+	projectId: number;
+	title: string;
+	lastStage: string;
+	updatedAt: string;
+};
+
+export type ProjectJobStatus = {
+	isRunning: boolean;
+};

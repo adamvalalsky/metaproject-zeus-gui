@@ -7,7 +7,13 @@ import { StepUpAccess } from '@/modules/auth/model';
 
 export const request = async <T>(url: string, init?: Options): Promise<T> => {
 	const request = await requestWrapper<T>(url, init);
-	return request.json();
+	const responseText = await request.text();
+
+	if (!responseText) {
+		return {} as T;
+	}
+
+	return JSON.parse(responseText);
 };
 
 export const download = async (url: string, init?: RequestInit) => {
