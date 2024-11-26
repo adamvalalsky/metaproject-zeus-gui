@@ -27,6 +27,7 @@ import ResourceDetailPage from '@/routes/admin/resources/detail';
 import ResourceEditPage from '@/routes/admin/resources/edit';
 import { AdminContextProvider } from '@/modules/auth/admin-context';
 import FailedProjects from '@/routes/admin/failed';
+import AllocationDetail from '@/routes/project/detail/allocation/detail';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -71,6 +72,7 @@ const App = () => {
 						<Route path="archive" element={<ProjectArchivePage />} />
 						<Route path="publications" element={<ProjectPublicationsAddPage />} />
 						<Route path="allocation" element={<AllocationRequest />} />
+						<Route path="allocation/:allocationId" element={<AllocationDetail />} />
 						<Route path="request" element={<ProjectRequestPage />} />
 					</Route>
 				</Route>

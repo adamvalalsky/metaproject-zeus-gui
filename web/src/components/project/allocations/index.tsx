@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
 import { IconCheck, IconClock, IconCpu, IconNews, IconPlus } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import { getSortQuery } from '@/modules/api/sorting/utils';
@@ -18,6 +18,8 @@ type ProjectAllocationTableProps = {
 
 const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 	const { t } = useTranslation();
+	const navigate = useNavigate();
+
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(PAGE_SIZES[0]);
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Allocation>>({
@@ -89,6 +91,8 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 				height={300}
 				withTableBorder
 				textSelectionDisabled
+				highlightOnHover
+				onRowClick={({ record }) => navigate(`allocation/${record.id}`)}
 				page={metadata.page}
 				totalRecords={metadata.totalRecords}
 				recordsPerPage={metadata.recordsPerPage}
@@ -159,17 +163,6 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 						title: t('components.project.allocations.index.columns.end_date'),
 						width: 150,
 						sortable: true
-					},
-					{
-						accessor: 'actions',
-						title: t('components.project.allocations.index.columns.actions'),
-						textAlign: 'center',
-						width: 120,
-						render: _allocation => (
-							<Group gap={4} justify="space-between" wrap="nowrap">
-								action
-							</Group>
-						)
 					}
 				]}
 			/>

@@ -157,6 +157,9 @@
         "error": "Could not send allocation request"
       }
     },
+    "AllocationDetail": {
+      "title": "Allocation detail"
+    },
     "ProjectDetail": {
       "status": {
         "rejected": "Rejected",
