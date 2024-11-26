@@ -25,3 +25,11 @@ export const addAllocationSchema = z.object({
 });
 
 export type AddAllocationSchema = z.infer<typeof addAllocationSchema>;
+
+export const approveAllocationSchema = z.object({
+	startDate: z.date().optional(),
+	endDate: z.date(),
+	description: z.string().optional()
+});
+
+export type ApproveAllocationSchema = z.infer<typeof approveAllocationSchema>;
