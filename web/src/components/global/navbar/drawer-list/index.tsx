@@ -1,7 +1,18 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, NavLink, rem, ScrollArea } from '@mantine/core';
-import { IconDevices2, IconPodium, IconQuestionMark, IconReport, IconUserUp } from '@tabler/icons-react';
+import {
+	IconActivity,
+	IconArchive,
+	IconBan,
+	IconClockQuestion,
+	IconDevices2,
+	IconPodium,
+	IconQuestionMark,
+	IconReport,
+	IconUserUp
+} from '@tabler/icons-react';
+import React from 'react';
 
 import { useAdminContext } from '@/modules/auth/admin-context';
 import { Role } from '@/modules/user/role';
@@ -39,7 +50,33 @@ const DrawerList = ({ open }: DrawerListProps) => {
 	};
 
 	const LINKS: LinkNode[] = [
-		{ title: 'components.global.drawerList.links.projects', href: '/project', icon: <IconReport /> }
+		{
+			title: 'components.global.drawerList.links.projects.title',
+			href: '/project',
+			icon: <IconReport />,
+			links: [
+				{
+					title: 'components.global.drawerList.links.projects.active',
+					href: '/project?status=active',
+					icon: <IconActivity />
+				},
+				{
+					title: 'components.global.drawerList.links.projects.requested',
+					href: '/project?status=requested',
+					icon: <IconClockQuestion />
+				},
+				{
+					title: 'components.global.drawerList.links.projects.archived',
+					href: '/project?status=archived',
+					icon: <IconArchive />
+				},
+				{
+					title: 'components.global.drawerList.links.projects.rejected',
+					href: '/project?status=rejected',
+					icon: <IconBan />
+				}
+			]
+		}
 	];
 
 	const { pathname } = useLocation();

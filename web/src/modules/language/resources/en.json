@@ -35,7 +35,13 @@
       },
       "drawerList": {
         "links": {
-          "projects": "Projects",
+          "projects": {
+            "title": "Projects",
+            "active": "Active",
+            "requested": "Requested",
+            "archived": "Archived",
+            "rejected": "Rejected"
+          },
           "admin": {
             "title": "Administrator section",
             "link": {
