@@ -28,6 +28,7 @@ import ResourceEditPage from '@/routes/admin/resources/edit';
 import { AdminContextProvider } from '@/modules/auth/admin-context';
 import FailedProjects from '@/routes/admin/failed';
 import AllocationDetail from '@/routes/project/detail/allocation/detail';
+import AllProjects from '@/routes/admin/projects';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -78,6 +79,7 @@ const App = () => {
 				</Route>
 				<Route path="/admin" element={<AdminRouteGuard />}>
 					<Route path="requests" element={<ProjectRequests />} />
+					<Route path="projects" element={<AllProjects />} />
 					<Route path="requests/:id" element={<ProjectDetailGuard />}>
 						<Route index element={<ProjectRequestDetail />} />
 					</Route>

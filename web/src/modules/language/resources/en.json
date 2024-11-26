@@ -45,8 +45,11 @@
           "admin": {
             "title": "Administrator section",
             "link": {
+              "projects": "All projects",
               "requests": "Project requests",
               "resources": "Resources",
+              "allocations": "All allocations",
+              "allocation_requests": "Allocation requests",
               "stages": "Failed stages"
             }
           }
@@ -127,6 +130,11 @@
           "label": "Justification",
           "description": "Please provide a justification for the allocation request."
         }
+      }
+    },
+    "projectTable": {
+      "admin": {
+        "noProjects": "No projects found."
       }
     }
   },
@@ -234,6 +242,9 @@
         "pi": "PI",
         "createdAt": "Created at"
       }
+    },
+    "AllProjects": {
+      "title": "All projects"
     },
     "FailedStages": {
       "title": "Failed stages",

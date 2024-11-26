@@ -27,11 +27,22 @@ export const useProjectsQuery = (status: ProjectStatus, pagination: Pagination, 
 			)
 	});
 
-export const useProjectRequestsQuery = (pagination: Pagination) =>
+export const useProjectRequestsQuery = (pagination: Pagination, sortSelector: string) =>
 	useQuery({
-		queryKey: ['project', 'requests', pagination.page, pagination.limit],
+		queryKey: ['project', 'requests', pagination.page, pagination.limit, sortSelector],
 		queryFn: () =>
-			request<PaginationResponse<Project>>(`/project/requests?page=${pagination.page}&limit=${pagination.limit}`)
+			request<PaginationResponse<Project>>(
+				`/project/all?page=${pagination.page}&limit=${pagination.limit}&status=new&sort=${sortSelector}`
+			)
+	});
+
+export const useAllProjectsQuery = (pagination: Pagination, sortSelector: string) =>
+	useQuery({
+		queryKey: ['project', 'all', pagination.page, pagination.limit, sortSelector],
+		queryFn: () =>
+			request<PaginationResponse<Project>>(
+				`/project/all?page=${pagination.page}&limit=${pagination.limit}&sort=${sortSelector}`
+			)
 	});
 
 export const useProjectDetailQuery = (id?: string) =>

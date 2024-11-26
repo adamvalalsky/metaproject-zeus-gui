@@ -6,6 +6,8 @@ import {
 	IconArchive,
 	IconBan,
 	IconClockQuestion,
+	IconCpu,
+	IconDeviceDesktopAnalytics,
 	IconDevices2,
 	IconPodium,
 	IconQuestionMark,
@@ -90,6 +92,16 @@ const DrawerList = ({ open }: DrawerListProps) => {
 			icon: <IconUserUp />,
 			links: [
 				{
+					title: 'components.global.drawerList.links.admin.link.allocations',
+					href: '/admin/allocations',
+					icon: <IconCpu />
+				},
+				{
+					title: 'components.global.drawerList.links.admin.link.projects',
+					href: '/admin/projects',
+					icon: <IconReport />
+				},
+				{
 					title: 'components.global.drawerList.links.admin.link.requests',
 					href: '/admin/requests',
 					icon: <IconQuestionMark />
@@ -98,6 +110,11 @@ const DrawerList = ({ open }: DrawerListProps) => {
 					title: 'components.global.drawerList.links.admin.link.resources',
 					href: '/admin/resources',
 					icon: <IconDevices2 />
+				},
+				{
+					title: 'components.global.drawerList.links.admin.link.allocation_requests',
+					href: '/admin/allocation-requests',
+					icon: <IconDeviceDesktopAnalytics />
 				},
 				{
 					title: 'components.global.drawerList.links.admin.link.stages',
