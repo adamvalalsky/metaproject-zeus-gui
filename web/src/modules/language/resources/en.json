@@ -136,6 +136,18 @@
       "admin": {
         "noProjects": "No projects found."
       }
+    },
+    "allocationTable": {
+      "noAllocations": "No allocations found.",
+      "columns": {
+        "id": "ID",
+        "project": "Project",
+        "pi": "PI",
+        "resource": "Resource name",
+        "status": "Status",
+        "endDate": "End date",
+        "actions": "Actions"
+      }
     }
   },
   "routes": {

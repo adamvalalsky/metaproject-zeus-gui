@@ -30,6 +30,7 @@ import FailedProjects from '@/routes/admin/failed';
 import AllocationDetail from '@/routes/project/detail/allocation/detail';
 import AllProjects from '@/routes/admin/projects';
 import AllocationRequestDetail from '@/routes/admin/allocation-requests/detail';
+import AdminAllocations from '@/routes/admin/allocations';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -90,6 +91,7 @@ const App = () => {
 					<Route path="resources/:id" element={<ResourceDetailPage />} />
 					<Route path="resources/:id/edit" element={<ResourceEditPage />} />
 					<Route path="stages" element={<FailedProjects />} />
+					<Route path="allocations" element={<AdminAllocations />} />
 					<Route path="allocations/:allocationId" element={<AllocationRequestDetail />} />
 				</Route>
 				<Route path="*" element={<NotFound />} />

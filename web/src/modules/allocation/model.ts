@@ -81,3 +81,20 @@ export type AllocationDetail = {
 		email: string;
 	}[];
 };
+
+export type AllocationAdmin = {
+	id: number;
+	project: {
+		id: number;
+		title: string;
+		pi: {
+			name: string;
+		};
+	};
+	resource: {
+		name: string;
+		type: string;
+	};
+	status: string;
+	endDate: string | null;
+};
