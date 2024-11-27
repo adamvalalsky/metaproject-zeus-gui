@@ -17,9 +17,10 @@ type ProjectAdminTableProps = {
 		limit: number,
 		sortStatus: DataTableSortStatus<Project>
 	) => UseQueryResult<PaginationResponse<Project>, Error>;
+	buildLink: (project: Project) => string;
 };
 
-const ProjectAdminTable = ({ useProjectQuery }: ProjectAdminTableProps) => {
+const ProjectAdminTable = ({ useProjectQuery, buildLink }: ProjectAdminTableProps) => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [page, setPage] = useState(1);
@@ -75,7 +76,7 @@ const ProjectAdminTable = ({ useProjectQuery }: ProjectAdminTableProps) => {
 						setSortStatus(sortStatus);
 						await refetch();
 					}}
-					onRowClick={({ record }) => navigate(`${record.id}`)}
+					onRowClick={({ record }) => navigate(buildLink(record))}
 					columns={[
 						{
 							accessor: 'id',

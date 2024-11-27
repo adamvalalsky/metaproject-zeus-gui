@@ -102,14 +102,14 @@ const DrawerList = ({ open }: DrawerListProps) => {
 					icon: <IconReport />
 				},
 				{
-					title: 'components.global.drawerList.links.admin.link.requests',
-					href: '/admin/requests',
-					icon: <IconQuestionMark />
-				},
-				{
 					title: 'components.global.drawerList.links.admin.link.resources',
 					href: '/admin/resources',
 					icon: <IconDevices2 />
+				},
+				{
+					title: 'components.global.drawerList.links.admin.link.requests',
+					href: '/admin/requests',
+					icon: <IconQuestionMark />
 				},
 				{
 					title: 'components.global.drawerList.links.admin.link.allocation_requests',
@@ -120,6 +120,41 @@ const DrawerList = ({ open }: DrawerListProps) => {
 					title: 'components.global.drawerList.links.admin.link.stages',
 					href: '/admin/stages',
 					icon: <IconPodium />
+				}
+			]
+		});
+	}
+
+	if (currentRole === Role.DIRECTOR) {
+		LINKS.push({
+			title: 'components.global.drawerList.links.director.title',
+			href: '/admin',
+			icon: <IconUserUp />,
+			links: [
+				{
+					title: 'components.global.drawerList.links.director.link.allocations',
+					href: '/director/allocations',
+					icon: <IconCpu />
+				},
+				{
+					title: 'components.global.drawerList.links.director.link.projects',
+					href: '/director/projects',
+					icon: <IconReport />
+				},
+				{
+					title: 'components.global.drawerList.links.director.link.resources',
+					href: '/director/resources',
+					icon: <IconDevices2 />
+				},
+				{
+					title: 'components.global.drawerList.links.director.link.requests',
+					href: '/director/requests',
+					icon: <IconQuestionMark />
+				},
+				{
+					title: 'components.global.drawerList.links.director.link.allocation_requests',
+					href: '/director/allocation-requests',
+					icon: <IconDeviceDesktopAnalytics />
 				}
 			]
 		});

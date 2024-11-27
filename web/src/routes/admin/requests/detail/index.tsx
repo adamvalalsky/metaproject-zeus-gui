@@ -1,7 +1,7 @@
-import { Box, Button, Divider, Group, rem, Title, Tooltip } from '@mantine/core';
+import { Alert, Box, Button, Divider, Group, rem, Title, Tooltip } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { IconChevronRight } from '@tabler/icons-react';
+import { IconChevronRight, IconInfoCircle } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { FormProvider, useForm } from 'react-hook-form';
 import { notifications } from '@mantine/notifications';
@@ -15,10 +15,13 @@ import TextEditor from '@/components/global/text-editor';
 import { useApproveProjectMutation, useRejectProjectMutation } from '@/modules/project/mutations';
 import { type RejectProjectSchema, rejectProjectSchema } from '@/modules/project/form';
 import CommentsTimeline from '@/components/project/comments-timeline';
+import { getCurrentRole } from '@/modules/auth/methods/getCurrentRole';
+import { Role } from '@/modules/user/role';
 
 const ProjectRequestDetail = () => {
 	const { t } = useTranslation();
 	const { project, rejectedComments } = useProjectOutletContext();
+	const currentRole = getCurrentRole();
 	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();
@@ -163,11 +166,21 @@ const ProjectRequestDetail = () => {
 				</Box>
 			)}
 
+			<Group justify="center">
+				<Alert variant="subtle" color="yellow" icon={<IconInfoCircle />}>
+					{t('routes.ProjectRequestDetail.director')}
+				</Alert>
+			</Group>
 			<Group grow pt={20} pb={70}>
-				<Button color="green" onClick={openApproveModal}>
+				<Button color="green" onClick={openApproveModal} disabled={currentRole === Role.DIRECTOR}>
 					{t('routes.ProjectRequestDetail.approve_button')}
 				</Button>
-				<Button color="red.7" variant="outline" onClick={openRejectModal}>
+				<Button
+					color="red.7"
+					variant="outline"
+					onClick={openRejectModal}
+					disabled={currentRole === Role.DIRECTOR}
+				>
 					{t('routes.ProjectRequestDetail.reject_button')}
 				</Button>
 			</Group>

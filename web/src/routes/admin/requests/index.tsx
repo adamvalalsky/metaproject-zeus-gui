@@ -31,6 +31,7 @@ const ProjectRequests = () => {
 						getSortQuery(sortStatus.columnAccessor, sortStatus.direction)
 					)
 				}
+				buildLink={(project: Project) => `${project.id}`}
 			/>
 		</Box>
 	);

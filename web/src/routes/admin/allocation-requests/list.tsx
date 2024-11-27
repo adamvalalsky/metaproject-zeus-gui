@@ -8,8 +8,11 @@ import AllocationAdminTable from '@/components/project/allocations/allocation-ta
 import type { AllocationAdmin } from '@/modules/allocation/model';
 import { useAllocationsRequestsQuery } from '@/modules/allocation/api/admin-allocations';
 import { getSortQuery } from '@/modules/api/sorting/utils';
+import { getCurrentRole } from '@/modules/auth/methods/getCurrentRole';
+import { Role } from '@/modules/user/role';
 
 const AllocationRequestsList = () => {
+	const prefix = getCurrentRole() === Role.ADMIN ? '/admin' : '/director';
 	const { t } = useTranslation();
 
 	return (
@@ -34,7 +37,7 @@ const AllocationRequestsList = () => {
 						getSortQuery(sortStatus.columnAccessor, sortStatus.direction)
 					)
 				}
-				buildLink={(allocation: AllocationAdmin) => `/admin/allocations/${allocation.id}`}
+				buildLink={(allocation: AllocationAdmin) => `${prefix}/allocations/${allocation.id}`}
 			/>
 		</Box>
 	);

@@ -96,6 +96,19 @@ const App = () => {
 					<Route path="allocation-requests" element={<AllocationRequestsList />} />
 					<Route path="allocations/:allocationId" element={<AllocationRequestDetail />} />
 				</Route>
+				<Route path="/director" element={<AdminRouteGuard />}>
+					<Route path="requests" element={<ProjectRequests />} />
+					<Route path="projects" element={<AllProjects />} />
+					<Route path="requests/:id" element={<ProjectDetailGuard />}>
+						<Route index element={<ProjectRequestDetail />} />
+					</Route>
+					<Route path="resources" element={<ResourceList />} />
+					<Route path="resources/attributes" element={<ResourceAttributesPage />} />
+					<Route path="resources/:id" element={<ResourceDetailPage />} />
+					<Route path="allocations" element={<AdminAllocations />} />
+					<Route path="allocation-requests" element={<AllocationRequestsList />} />
+					<Route path="allocations/:allocationId" element={<AllocationRequestDetail />} />
+				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Route>
 		)
