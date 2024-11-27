@@ -34,6 +34,9 @@ const AdminAllocations = () => {
 						getSortQuery(sortStatus.columnAccessor, sortStatus.direction)
 					)
 				}
+				buildLink={(allocation: AllocationAdmin) =>
+					`/project/${allocation.project.id}/allocation/${allocation.id}`
+				}
 			/>
 		</Box>
 	);

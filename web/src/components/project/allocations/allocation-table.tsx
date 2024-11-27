@@ -17,9 +17,10 @@ type AllocationAdminTableProps = {
 		limit: number,
 		sortStatus: DataTableSortStatus<AllocationAdmin>
 	) => UseQueryResult<PaginationResponse<AllocationAdmin>, Error>;
+	buildLink: (allocation: AllocationAdmin) => string;
 };
 
-const AllocationAdminTable = ({ useAllocationQuery }: AllocationAdminTableProps) => {
+const AllocationAdminTable = ({ useAllocationQuery, buildLink }: AllocationAdminTableProps) => {
 	const { t } = useTranslation();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(PAGE_SIZES[0]);
@@ -166,11 +167,7 @@ const AllocationAdminTable = ({ useAllocationQuery }: AllocationAdminTableProps)
 							accessor: 'actions',
 							title: t('components.allocationTable.columns.actions'),
 							render: allocation => (
-								<ActionIcon
-									variant="subtle"
-									component={Link}
-									to={`/project/${allocation.project.id}/allocation/${allocation.id}`}
-								>
+								<ActionIcon variant="subtle" component={Link} to={buildLink(allocation)}>
 									<IconFolder />
 								</ActionIcon>
 							)
