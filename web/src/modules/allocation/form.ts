@@ -28,7 +28,8 @@ export type AddAllocationSchema = z.infer<typeof addAllocationSchema>;
 
 export const approveAllocationSchema = z.object({
 	startDate: z.date().optional(),
-	endDate: z.date(),
+	endDate: z.date().optional(),
+	status: z.string().min(1),
 	description: z.string().optional()
 });
 

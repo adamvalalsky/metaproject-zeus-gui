@@ -1,6 +1,8 @@
 import { useParams } from 'react-router';
 import React from 'react';
 import { Badge, Box, Divider, Group, Title } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { notifications } from '@mantine/notifications';
 
 import notFound from '@/components/global/not-found';
 import { useAllocationDetailQuery } from '@/modules/allocation/api/allocation-detail';
@@ -9,6 +11,7 @@ import Loading from '@/components/global/loading';
 import AllocationInfo from '@/components/project/allocations/allocation-info';
 
 const AllocationRequestDetail = () => {
+	const navigate = useNavigate();
 	const { allocationId } = useParams();
 
 	if (!allocationId || isNaN(+allocationId)) {
@@ -36,7 +39,16 @@ const AllocationRequestDetail = () => {
 				</Group>
 			</Group>
 			<Divider my={10} />
-			<AllocationInfo allocation={allocation} isApprovePage />
+			<AllocationInfo
+				allocation={allocation}
+				isApprovePage
+				onSuccess={() => {
+					notifications.show({
+						message: 'Allocation request changed'
+					});
+					navigate('/admin/allocation-requests');
+				}}
+			/>
 		</Box>
 	);
 };
