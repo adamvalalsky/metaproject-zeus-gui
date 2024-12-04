@@ -69,7 +69,6 @@ const AllocationRequest = () => {
 						});
 				},
 				onError: error => {
-					console.log(error);
 					notifications.show({
 						color: 'red',
 						message: t('routes.AllocationRequest.notifications.error')
