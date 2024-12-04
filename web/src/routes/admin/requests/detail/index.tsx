@@ -166,11 +166,13 @@ const ProjectRequestDetail = () => {
 				</Box>
 			)}
 
-			<Group justify="center">
-				<Alert variant="subtle" color="yellow" icon={<IconInfoCircle />}>
-					{t('routes.ProjectRequestDetail.director')}
-				</Alert>
-			</Group>
+			{currentRole === Role.DIRECTOR && (
+				<Group justify="center">
+					<Alert variant="subtle" color="yellow" icon={<IconInfoCircle />}>
+						{t('routes.ProjectRequestDetail.director')}
+					</Alert>
+				</Group>
+			)}
 			<Group grow pt={20} pb={70}>
 				<Button color="green" onClick={openApproveModal} disabled={currentRole === Role.DIRECTOR}>
 					{t('routes.ProjectRequestDetail.approve_button')}

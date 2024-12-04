@@ -44,7 +44,7 @@ const ProjectRequestPage = () => {
 							queryKey: ['project', project.id]
 						})
 						.then(() => {
-							navigate(`/project/${project.id}`);
+							navigate(`/project`);
 						});
 				},
 				onError: error => {
