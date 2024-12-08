@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "lint": "eslint \"./**/*.{ts,tsx,js}\" && tsc --noEmit",
     "lint:fix": "eslint --fix \"./**/*.{ts,tsx,js}\"",
     "lint:ci": "eslint \"./**/*.{ts,tsx,js}\"  --format junit --output-file logs/_output/eslint.xml && tsc --noEmit",

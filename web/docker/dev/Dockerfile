@@ -1,7 +1,7 @@
-ARG BASE_IMAGE_NODE
+ARG BASE_IMAGE_NODE=node:21-alpine3.17
 
 # install node_modules
-FROM $BASE_IMAGE_NODE as node_modules
+FROM $BASE_IMAGE_NODE AS node_modules
 
 COPY package.json package-lock.json /app/
 RUN \
@@ -10,7 +10,7 @@ RUN \
 
 
 # for dev and unit tests
-FROM $BASE_IMAGE_NODE as dev
+FROM $BASE_IMAGE_NODE AS dev
 
 WORKDIR /app
 ENV NODE_ENV=development

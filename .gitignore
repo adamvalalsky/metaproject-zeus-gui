@@ -5,3 +5,5 @@
 web/tsconfig.tsbuildinfo
 
 .env
+
+web/dist
