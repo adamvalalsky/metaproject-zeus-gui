@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { type Pagination, type PaginationMetadata } from '@/modules/api/pagination/model';
+import { type Pagination, type PaginationResponse } from '@/modules/api/pagination/model';
 import { type ProjectStatus } from '@/modules/project/constants';
 import type {
 	ArchivalInfo,
@@ -11,16 +11,6 @@ import type {
 } from '@/modules/project/model';
 import { request } from '@/modules/api/request';
 
-type MyProjectResponse = {
-	metadata: PaginationMetadata;
-	projects: Project[];
-};
-
-type ProjectRequestResponse = {
-	metadata: PaginationMetadata;
-	projects: Project[];
-};
-
 type ProjectDetailResponse = {
 	project: Project;
 	permissions: string[];
@@ -28,25 +18,31 @@ type ProjectDetailResponse = {
 	rejectedComments?: RejectedComment[];
 };
 
-type MemberList = {
-	metadata: PaginationMetadata;
-	members: ProjectMember[];
-};
-
 export const useProjectsQuery = (status: ProjectStatus, pagination: Pagination, sortQuery: string) =>
 	useQuery({
 		queryKey: ['project', status.toLowerCase(), pagination.limit, pagination.page, sortQuery],
 		queryFn: () =>
-			request<MyProjectResponse>(
+			request<PaginationResponse<Project>>(
 				`/project?status=${status.toLowerCase()}&page=${pagination.page}&limit=${pagination.limit}&sort=${sortQuery}`
 			)
 	});
 
-export const useProjectRequestsQuery = (pagination: Pagination) =>
+export const useProjectRequestsQuery = (pagination: Pagination, sortSelector: string) =>
 	useQuery({
-		queryKey: ['project', 'requests', pagination.page, pagination.limit],
+		queryKey: ['project', 'requests', pagination.page, pagination.limit, sortSelector],
 		queryFn: () =>
-			request<ProjectRequestResponse>(`/project/requests?page=${pagination.page}&limit=${pagination.limit}`)
+			request<PaginationResponse<Project>>(
+				`/project/all?page=${pagination.page}&limit=${pagination.limit}&status=new&sort=${sortSelector}`
+			)
+	});
+
+export const useAllProjectsQuery = (pagination: Pagination, sortSelector: string) =>
+	useQuery({
+		queryKey: ['project', 'all', pagination.page, pagination.limit, sortSelector],
+		queryFn: () =>
+			request<PaginationResponse<Project>>(
+				`/project/all?page=${pagination.page}&limit=${pagination.limit}&sort=${sortSelector}`
+			)
 	});
 
 export const useProjectDetailQuery = (id?: string) =>
@@ -61,7 +57,7 @@ export const useProjectMembersQuery = (id: number, pagination: Pagination, sortS
 	useQuery({
 		queryKey: ['project', id, 'members', pagination.page, pagination.limit, sortSelector],
 		queryFn: () =>
-			request<MemberList>(
+			request<PaginationResponse<ProjectMember>>(
 				`/project/${id}/members?page=${pagination.page}&limit=${pagination.limit}&sort=${sortSelector}`
 			)
 	});

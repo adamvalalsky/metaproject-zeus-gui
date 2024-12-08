@@ -10,9 +10,12 @@ import Loading from '@/components/global/loading';
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import { useResourceDetailQuery } from '@/modules/resource/api/resource-detail';
 import { type ResourceDetailAttribute } from '@/modules/resource/model';
+import { getCurrentRole } from '@/modules/auth/methods/getCurrentRole';
+import { Role } from '@/modules/user/role';
 
 const ResourceDetailPage = () => {
 	const { t } = useTranslation();
+	const currentRole = getCurrentRole();
 	const { id } = useParams();
 
 	if (!id || isNaN(+id)) {
@@ -41,9 +44,11 @@ const ResourceDetailPage = () => {
 			<Stack gap={1}>
 				<Group justify="space-between">
 					<Title>{t('routes.ResourceDetailPage.title')}</Title>
-					<Button component={Link} to="edit" variant="light" leftSection={<IconPencil size={16} />}>
-						{t('routes.ResourceDetailPage.edit_button')}
-					</Button>
+					{currentRole === Role.ADMIN && (
+						<Button component={Link} to="edit" variant="light" leftSection={<IconPencil size={16} />}>
+							{t('routes.ResourceDetailPage.edit_button')}
+						</Button>
+					)}
 				</Group>
 				<Badge color={data.isAvailable ? 'green' : 'red'}>
 					{data.isAvailable

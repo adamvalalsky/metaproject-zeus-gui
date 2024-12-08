@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Avatar, Group, Menu, MenuDropdown, MenuItem, MenuTarget, rem, Text, UnstyledButton } from '@mantine/core';
-import { IconChevronDown, IconLogout, IconSettings } from '@tabler/icons-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { IconChevronDown, IconLogout } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
 
 import classes from './user-menu.module.css';
@@ -54,13 +54,6 @@ const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
 			</MenuTarget>
 			<MenuDropdown>
 				<Menu.Label>Profile settings</Menu.Label>
-				<MenuItem
-					component={Link}
-					to="/dashboard/profile"
-					leftSection={<IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
-				>
-					Account settings
-				</MenuItem>
 				<MenuItem
 					onClick={() => logout()}
 					leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}

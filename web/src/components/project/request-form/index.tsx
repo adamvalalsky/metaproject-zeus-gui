@@ -20,18 +20,23 @@ const RequestForm = ({ loading, onSubmit, submitText }: RequestFormProps) => {
 			<TextInput
 				label="Title"
 				withAsterisk
-				placeholder="Project title"
+				placeholder="My title"
 				error={form.formState.errors.title?.message as string}
 				{...form.register('title')}
 			/>
 			<TextInput
 				label="Link"
-				placeholder="Link to project"
+				withAsterisk
+				placeholder="https://muni.cz/"
 				description="Link with information to the project. Used to make review process faster, if project is already approved somewhere else."
 				error={form.formState.errors.link?.message as string}
 				{...form.register('link')}
 			/>
-			<TextEditor label="Description" inputHtmlName="description" />
+			<TextEditor
+				label="Description"
+				inputHtmlName="description"
+				placeholder="My project description talking about project..."
+			/>
 			<Flex justify="center">
 				<Button
 					loading={loading}

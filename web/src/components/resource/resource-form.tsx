@@ -115,7 +115,7 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit, defaultV
 				defaultValue={defaultValues?.resourceType.id}
 				render={({ field }) => (
 					<Select
-						value={field.value.toString()}
+						value={field.value?.toString()}
 						my={10}
 						name={field.name}
 						withAsterisk

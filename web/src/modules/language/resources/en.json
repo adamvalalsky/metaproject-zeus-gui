@@ -35,13 +35,32 @@
       },
       "drawerList": {
         "links": {
-          "projects": "Projects",
+          "projects": {
+            "title": "Projects",
+            "active": "Active",
+            "requested": "Requested",
+            "archived": "Archived",
+            "rejected": "Rejected"
+          },
           "admin": {
             "title": "Administrator section",
             "link": {
+              "projects": "All projects",
               "requests": "Project requests",
-              "resources": "Resources",
+              "resources": "All resources",
+              "allocations": "All allocations",
+              "allocation_requests": "Allocation requests",
               "stages": "Failed stages"
+            }
+          },
+          "director": {
+            "title": "Director section",
+            "link": {
+              "projects": "All projects",
+              "requests": "Project requests",
+              "resources": "All resources",
+              "allocations": "All allocations",
+              "allocation_requests": "Allocation requests"
             }
           }
         }
@@ -122,6 +141,23 @@
           "description": "Please provide a justification for the allocation request."
         }
       }
+    },
+    "projectTable": {
+      "admin": {
+        "noProjects": "No projects found."
+      }
+    },
+    "allocationTable": {
+      "noAllocations": "No allocations found.",
+      "columns": {
+        "id": "ID",
+        "project": "Project",
+        "pi": "PI",
+        "resource": "Resource name",
+        "status": "Status",
+        "endDate": "End date",
+        "actions": "Actions"
+      }
     }
   },
   "routes": {
@@ -156,6 +192,9 @@
         "success": "Allocation request created successfully. Wait for approval.",
         "error": "Could not send allocation request"
       }
+    },
+    "AllocationDetail": {
+      "title": "Allocation detail"
     },
     "ProjectDetail": {
       "status": {
@@ -226,6 +265,9 @@
         "createdAt": "Created at"
       }
     },
+    "AllProjects": {
+      "title": "All projects"
+    },
     "FailedStages": {
       "title": "Failed stages",
       "error": {
@@ -270,7 +312,8 @@
         "title": "Project request rejected",
         "message": "Project request has been rejected.",
         "error": "Could not reject project request."
-      }
+      },
+      "director": "You have director permissions and can't approve or reject project requests."
     },
     "ProjectPublicationsAddPage": {
       "title": "Add publications",
@@ -301,7 +344,8 @@
     "ResourceList": {
       "title": "Resources",
       "attributes_button": "Custom attributes",
-      "add_button": "Add resource"
+      "add_button": "Add resource",
+      "director_warning": "You have director permissions and can't add new resources."
     },
     "ResourceAddPage": {
       "title": "Add new resource",
@@ -388,7 +432,8 @@
         "submit": "Add attribute",
         "success": "Attribute added successfully"
       },
-      "delete_success": "Attribute deleted successfully"
+      "delete_success": "Attribute deleted successfully",
+      "director_warning": "You have director permissions and can't add new custom attributes."
     }
   }
 }

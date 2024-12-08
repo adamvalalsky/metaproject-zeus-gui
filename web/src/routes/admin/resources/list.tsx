@@ -7,6 +7,7 @@ import {
 	Stack,
 	Text,
 	Title,
+	Tooltip,
 	Tree,
 	type TreeNodeData,
 	useTree
@@ -21,6 +22,8 @@ import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
 import { type Resource } from '@/modules/resource/model';
 import { useResourceListQuery } from '@/modules/resource/api/resources';
+import { getCurrentRole } from '@/modules/auth/methods/getCurrentRole';
+import { Role } from '@/modules/user/role';
 
 const getDataTree = (data: Resource[], parentResourceId: number | null): TreeNodeData[] =>
 	data
@@ -65,6 +68,7 @@ const Leaf = ({ node, expanded, hasChildren, elementProps }: RenderTreeNodePaylo
 
 const ResourceList = () => {
 	const { t } = useTranslation();
+	const currentRole = getCurrentRole();
 	const { data, isPending, isError } = useResourceListQuery();
 	const tree = useTree();
 
@@ -90,9 +94,16 @@ const ResourceList = () => {
 					<Button component={Link} to="attributes" variant="light" leftSection={<IconSettings />}>
 						{t('routes.ResourceList.attributes_button')}
 					</Button>
-					<Button component={Link} to="add" leftSection={<IconPlus />}>
-						{t('routes.ResourceList.add_button')}
-					</Button>
+					<Tooltip label={t('routes.ResourceList.director_warning')} disabled={currentRole === Role.ADMIN}>
+						<Button
+							component={Link}
+							to="add"
+							leftSection={<IconPlus />}
+							disabled={currentRole === Role.DIRECTOR}
+						>
+							{t('routes.ResourceList.add_button')}
+						</Button>
+					</Tooltip>
 				</Group>
 			</Group>
 			<Box my={20}>

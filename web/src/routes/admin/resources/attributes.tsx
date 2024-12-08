@@ -1,4 +1,17 @@
-import { Anchor, Badge, Box, Button, Checkbox, Group, Select, Stack, Text, TextInput, Title } from '@mantine/core';
+import {
+	Anchor,
+	Badge,
+	Box,
+	Button,
+	Checkbox,
+	Group,
+	Select,
+	Stack,
+	Text,
+	TextInput,
+	Title,
+	Tooltip
+} from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
@@ -15,9 +28,12 @@ import { type AddAttributeSchema, addAttributeSchema } from '@/modules/attribute
 import { useCreateAttributeTypeMutation, useDeleteAttributeTypeMutation } from '@/modules/attribute/mutations';
 import { useAttributeTypesQuery } from '@/modules/attribute/api/attribute-types';
 import { useResourceAttributesQuery } from '@/modules/attribute/api/resource-attributes';
+import { getCurrentRole } from '@/modules/auth/methods/getCurrentRole';
+import { Role } from '@/modules/user/role';
 
 const ResourceAttributesPage = () => {
 	const { t } = useTranslation();
+	const currentRole = getCurrentRole();
 
 	const { data, isPending, isError, refetch } = useResourceAttributesQuery();
 	const {
@@ -156,9 +172,18 @@ const ResourceAttributesPage = () => {
 			<Group justify="space-between">
 				<Title order={2}>{t('routes.ResourceAttributesPage.title')}</Title>
 				<Group>
-					<Button onClick={openAddModal} leftSection={<IconPlus />}>
-						{t('routes.ResourceAttributesPage.add_button')}
-					</Button>
+					<Tooltip
+						label={t('routes.ResourceAttributesPage.director_warning')}
+						disabled={currentRole === Role.ADMIN}
+					>
+						<Button
+							onClick={openAddModal}
+							leftSection={<IconPlus />}
+							disabled={currentRole === Role.DIRECTOR}
+						>
+							{t('routes.ResourceAttributesPage.add_button')}
+						</Button>
+					</Tooltip>
 				</Group>
 			</Group>
 			<Stack mt={20} gap={15}>
@@ -181,7 +206,7 @@ const ResourceAttributesPage = () => {
 							<Text size="sm" c="dimmed">
 								Type: {item.attributeType.name}
 							</Text>
-							{!item.hasResources && (
+							{!item.hasResources && currentRole === Role.ADMIN && (
 								<Anchor size="sm" c="red" onClick={() => removeAttribute(item.id)}>
 									Delete <IconTrash size={13} />
 								</Anchor>

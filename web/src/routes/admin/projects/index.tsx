@@ -1,15 +1,15 @@
-import { Box, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import React from 'react';
+import { Box, Title } from '@mantine/core';
 import type { DataTableSortStatus } from 'mantine-datatable';
+import React from 'react';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import ProjectAdminTable from '@/components/project/project-table/admin-table';
-import { useProjectRequestsQuery } from '@/modules/project/queries';
 import type { Project } from '@/modules/project/model';
+import { useAllProjectsQuery } from '@/modules/project/queries';
 import { getSortQuery } from '@/modules/api/sorting/utils';
 
-const ProjectRequests = () => {
+const AllProjects = () => {
 	const { t } = useTranslation();
 
 	return (
@@ -17,13 +17,13 @@ const ProjectRequests = () => {
 			<PageBreadcrumbs
 				links={[
 					{ title: t('components.global.drawerList.links.admin.title'), href: '/admin' },
-					{ title: t('components.global.drawerList.links.admin.link.requests'), href: '/admin/requests' }
+					{ title: t('components.global.drawerList.links.admin.link.projects'), href: '/admin/projects' }
 				]}
 			/>
-			<Title order={2}>{t('routes.ProjectRequests.title')}</Title>
+			<Title order={2}>{t('routes.AllProjects.title')}</Title>
 			<ProjectAdminTable
 				useProjectQuery={(page: number, limit: number, sortStatus: DataTableSortStatus<Project>) =>
-					useProjectRequestsQuery(
+					useAllProjectsQuery(
 						{
 							page,
 							limit
@@ -31,10 +31,10 @@ const ProjectRequests = () => {
 						getSortQuery(sortStatus.columnAccessor, sortStatus.direction)
 					)
 				}
-				buildLink={(project: Project) => `${project.id}`}
+				buildLink={(project: Project) => `/project/${project.id}`}
 			/>
 		</Box>
 	);
 };
 
-export default ProjectRequests;
+export default AllProjects;

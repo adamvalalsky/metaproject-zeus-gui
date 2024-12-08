@@ -27,7 +27,12 @@ const ProjectTable = ({ status, title }: ProjectTableProps) => {
 
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const { data, isPending, isError, refetch } = useProjectsQuery(
+	const {
+		data: response,
+		isPending,
+		isError,
+		refetch
+	} = useProjectsQuery(
 		status,
 		{
 			page,
@@ -63,8 +68,8 @@ const ProjectTable = ({ status, title }: ProjectTableProps) => {
 		await refetch();
 	};
 
-	const metadata = data.metadata;
-	const projects = data.projects ?? [];
+	const metadata = response.metadata;
+	const projects = response.data ?? [];
 
 	return (
 		<Box mt={15}>

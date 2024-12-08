@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Group, Select, Stack, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Box, Button, Group, Select, Stack, Text, TextInput, Title } from '@mantine/core';
 import { useState } from 'react';
 import { IconTrash } from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
@@ -170,6 +170,11 @@ const ProjectDetailMembers = () => {
 					<Button color="teal" fullWidth mt={10} onClick={onClick} loading={isPending}>
 						Add {pickedMembers.length} member{pickedMembers.length > 1 ? 's' : ''}
 					</Button>
+					<Group justify="center" my={10}>
+						<Text c="gray">
+							Disclaimer: E-mail addresses that are already part of the project will be ignored.
+						</Text>
+					</Group>
 				</Box>
 			)}
 		</Box>

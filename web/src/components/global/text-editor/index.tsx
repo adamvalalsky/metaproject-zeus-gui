@@ -4,6 +4,7 @@ import { StarterKit } from '@tiptap/starter-kit';
 import { Underline } from '@tiptap/extension-underline';
 import { useFormContext } from 'react-hook-form';
 import { InputWrapper } from '@mantine/core';
+import { Placeholder } from '@tiptap/extension-placeholder';
 
 import classes from './text-editor.module.css';
 
@@ -13,11 +14,11 @@ type TextEditorProps = Omit<RichTextEditorProps, 'editor' | 'children'> & {
 	description?: string;
 };
 
-const TextEditor = ({ inputHtmlName, label, description, ...inputProps }: TextEditorProps) => {
+const TextEditor = ({ inputHtmlName, label, description, placeholder, ...inputProps }: TextEditorProps) => {
 	const form = useFormContext();
 
 	const editor = useEditor({
-		extensions: [StarterKit, Underline, Link],
+		extensions: [StarterKit, Underline, Link, Placeholder.configure({ placeholder })],
 		content: form?.getValues(inputHtmlName),
 		onUpdate: ({ editor }) => {
 			form.setValue(inputHtmlName, editor.getHTML());
