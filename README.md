@@ -3,6 +3,8 @@
 
 This application provides GUI for MetaProject Zeus.
 
+MetaProject Zeus is project implemented as part of a master thesis for FI MUNI. It is a system used for managing projects related to HPC, their workflows and entities related to projects. Part of this system is integration with Perun and OIDC.
+
 
 ## Authors
 
