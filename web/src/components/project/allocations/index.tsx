@@ -1,8 +1,8 @@
 import { Badge, Box, Button, Group, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
-import { IconBan, IconCheck, IconClock, IconCpu, IconNews, IconPlus } from '@tabler/icons-react';
+import { IconBan, IconCheck, IconClock, IconClockX, IconCpu, IconNews, IconPlus } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
@@ -167,6 +167,14 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 									<Group gap={4} c="red.9">
 										<IconBan size={14} />
 										<Text size="sm">Revoked</Text>
+									</Group>
+								);
+							}
+							if (allocation.status === 'expired') {
+								return (
+									<Group gap={4} c="orange.6">
+										<IconClockX size={14} />
+										<Text size="sm">Expired</Text>
 									</Group>
 								);
 							}
