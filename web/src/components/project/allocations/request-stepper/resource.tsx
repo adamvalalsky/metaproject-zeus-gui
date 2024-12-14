@@ -1,4 +1,4 @@
-import { Box, Button, NumberInput, Select, Stack, Textarea } from '@mantine/core';
+import { Box, Button, Fieldset, Group, NumberInput, Select, Stack, Text, Textarea } from '@mantine/core';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
@@ -43,6 +43,7 @@ const ResourceStep = ({ resources, setSelectedResourceId, selectedResourceId, is
 	const quantityDefaultValue = resourceDetail?.attributes.find(
 		attribute => attribute.key === QUANTITY_DEFAULT_VALUE
 	)?.value;
+	const attributes = resourceDetail?.attributes?.filter(a => !a.key.startsWith('quantity_')) ?? [];
 
 	return (
 		<Stack>
@@ -71,6 +72,20 @@ const ResourceStep = ({ resources, setSelectedResourceId, selectedResourceId, is
 						/>
 					)}
 				/>
+				{attributes.length > 0 && (
+					<Fieldset legend="Attributes" mt={10}>
+						<Stack gap={3}>
+							{attributes.map(attribute => (
+								<Group key={attribute.key} gap={3}>
+									<Text fw="bold" size="sm">
+										{attribute.key}:
+									</Text>
+									<Text size="sm">{attribute.value}</Text>
+								</Group>
+							))}
+						</Stack>
+					</Fieldset>
+				)}
 			</Box>
 			<Textarea
 				label={t('components.resourceStepper.resource.justification.label')}

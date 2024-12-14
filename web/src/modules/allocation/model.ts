@@ -6,6 +6,11 @@ export type Allocation = {
 		name: string;
 		type: string;
 	};
+	allocationUsers: {
+		id: number;
+		name: string;
+		email: string;
+	}[];
 };
 
 export type AllocationDetail = {

@@ -75,7 +75,7 @@
           "columns": {
             "resource_name": "Resource name",
             "resource_type": "Resource type",
-            "information": "Information",
+            "user": "User",
             "end_date": "End date",
             "status": "Status",
             "actions": "Actions"
