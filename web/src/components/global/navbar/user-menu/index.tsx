@@ -7,13 +7,14 @@ import { useAuth } from 'react-oidc-context';
 import classes from './user-menu.module.css';
 
 type UserMenuProps = {
+	isOpened: boolean;
 	fullWidth?: boolean;
 };
 
-const UserMenu = ({ fullWidth = false }: UserMenuProps) => {
+const UserMenu = ({ fullWidth = false, isOpened }: UserMenuProps) => {
 	const navigate = useNavigate();
 	const { user, removeUser, revokeTokens } = useAuth();
-	const [userMenuOpened, setUserMenuOpened] = useState(false);
+	const [userMenuOpened, setUserMenuOpened] = useState(isOpened);
 
 	const logout = async () => {
 		await removeUser();

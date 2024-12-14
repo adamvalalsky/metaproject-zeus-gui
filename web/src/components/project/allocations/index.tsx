@@ -125,13 +125,12 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 						render: allocation => (
 							<Stack>
 								{allocation.allocationUsers.map(user => (
-									<Text size="sm">
+									<Text key={user.id} size="sm">
 										{user.name} ({user.email})
 									</Text>
 								))}
 							</Stack>
-						),
-						sortable: true
+						)
 					},
 					{
 						accessor: 'status',

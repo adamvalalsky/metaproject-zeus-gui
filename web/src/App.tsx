@@ -33,6 +33,7 @@ import AllocationRequestDetail from '@/routes/admin/allocation-requests/detail';
 import AdminAllocations from '@/routes/admin/allocations';
 import AllocationRequestsList from '@/routes/admin/allocation-requests/list';
 import ProjectInvitation from '@/routes/project/invitation';
+import AdminLinkPage from '@/routes/admin';
 
 import Index from './routes/index/index';
 import Root from './routes/root';
@@ -83,6 +84,7 @@ const App = () => {
 					</Route>
 				</Route>
 				<Route path="/admin" element={<AdminRouteGuard />}>
+					<Route index element={<AdminLinkPage />} />
 					<Route path="requests" element={<ProjectRequests />} />
 					<Route path="projects" element={<AllProjects />} />
 					<Route path="requests/:id" element={<ProjectDetailGuard />}>
@@ -99,6 +101,7 @@ const App = () => {
 					<Route path="allocations/:allocationId" element={<AllocationRequestDetail />} />
 				</Route>
 				<Route path="/director" element={<AdminRouteGuard />}>
+					<Route index element={<AdminLinkPage />} />
 					<Route path="requests" element={<ProjectRequests />} />
 					<Route path="projects" element={<AllProjects />} />
 					<Route path="requests/:id" element={<ProjectDetailGuard />}>

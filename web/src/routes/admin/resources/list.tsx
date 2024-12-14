@@ -69,6 +69,7 @@ const Leaf = ({ node, expanded, hasChildren, elementProps }: RenderTreeNodePaylo
 const ResourceList = () => {
 	const { t } = useTranslation();
 	const currentRole = getCurrentRole();
+	const prefix = currentRole === Role.ADMIN ? '/admin' : '/director';
 	const { data, isPending, isError } = useResourceListQuery();
 	const tree = useTree();
 
@@ -84,8 +85,11 @@ const ResourceList = () => {
 		<Box>
 			<PageBreadcrumbs
 				links={[
-					{ title: t('components.global.drawerList.links.admin.title'), href: '/admin' },
-					{ title: t('components.global.drawerList.links.admin.link.resources'), href: '/admin/resources' }
+					{ title: t(`components.global.drawerList.links.${currentRole}.title`), href: prefix },
+					{
+						title: t(`components.global.drawerList.links.${currentRole}.link.resources`),
+						href: `${prefix}/resources`
+					}
 				]}
 			/>
 			<Group justify="space-between">

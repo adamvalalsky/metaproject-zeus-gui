@@ -1,4 +1,4 @@
-import { ActionIcon, Alert, Anchor, Box, Group, Skeleton, Text } from '@mantine/core';
+import { ActionIcon, Alert, Anchor, Box, Group, Text } from '@mantine/core';
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -10,6 +10,7 @@ import { IconBan, IconCheck, IconClock, IconClockX, IconFolder, IconNews } from 
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import { type PaginationResponse } from '@/modules/api/pagination/model';
 import { type AllocationAdmin } from '@/modules/allocation/model';
+import Loading from '@/components/global/loading';
 
 type AllocationAdminTableProps = {
 	useAllocationQuery: (
@@ -40,7 +41,7 @@ const AllocationAdminTable = ({ useAllocationQuery, buildLink }: AllocationAdmin
 	}
 
 	if (isPending) {
-		return <Skeleton w={200} />;
+		return <Loading />;
 	}
 
 	const metadata = response.metadata;

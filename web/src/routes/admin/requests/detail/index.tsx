@@ -22,6 +22,7 @@ const ProjectRequestDetail = () => {
 	const { t } = useTranslation();
 	const { project, rejectedComments } = useProjectOutletContext();
 	const currentRole = getCurrentRole();
+	const prefix = currentRole === Role.ADMIN ? '/admin' : '/director';
 	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();
@@ -137,7 +138,8 @@ const ProjectRequestDetail = () => {
 		<Box>
 			<PageBreadcrumbs
 				links={[
-					{ title: t('routes.ProjectRequests.title'), href: '/admin/requests' },
+					{ title: t(`components.global.drawerList.links.${currentRole}.title`), href: prefix },
+					{ title: t('routes.ProjectRequests.title'), href: `${prefix}/requests` },
 					{ title: project.title, href: `/admin/requests/${project.id}` }
 				]}
 			/>

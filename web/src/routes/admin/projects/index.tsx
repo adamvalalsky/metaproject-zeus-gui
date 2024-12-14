@@ -8,16 +8,20 @@ import ProjectAdminTable from '@/components/project/project-table/admin-table';
 import type { Project } from '@/modules/project/model';
 import { useAllProjectsQuery } from '@/modules/project/queries';
 import { getSortQuery } from '@/modules/api/sorting/utils';
+import { getCurrentRole } from '@/modules/auth/methods/getCurrentRole';
+import { Role } from '@/modules/user/role';
 
 const AllProjects = () => {
 	const { t } = useTranslation();
+	const role = getCurrentRole();
+	const prefix = role === Role.ADMIN ? '/admin' : '/director';
 
 	return (
 		<Box>
 			<PageBreadcrumbs
 				links={[
-					{ title: t('components.global.drawerList.links.admin.title'), href: '/admin' },
-					{ title: t('components.global.drawerList.links.admin.link.projects'), href: '/admin/projects' }
+					{ title: t(`components.global.drawerList.links.${role}.title`), href: prefix },
+					{ title: t(`components.global.drawerList.links.${role}.link.projects`), href: `${prefix}/projects` }
 				]}
 			/>
 			<Title order={2}>{t('routes.AllProjects.title')}</Title>
