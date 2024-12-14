@@ -34,6 +34,7 @@ import { Role } from '@/modules/user/role';
 const ResourceAttributesPage = () => {
 	const { t } = useTranslation();
 	const currentRole = getCurrentRole();
+	const prefix = currentRole === Role.ADMIN ? '/admin' : '/director';
 
 	const { data, isPending, isError, refetch } = useResourceAttributesQuery();
 	const {
@@ -164,9 +165,12 @@ const ResourceAttributesPage = () => {
 		<Box>
 			<PageBreadcrumbs
 				links={[
-					{ title: t('components.global.drawerList.links.admin.title'), href: '/admin' },
-					{ title: t('components.global.drawerList.links.admin.link.resources'), href: '/admin/resources' },
-					{ title: t('routes.ResourceAttributesPage.title'), href: '/admin/resources/attributes' }
+					{ title: t(`components.global.drawerList.links.${currentRole}.title`), href: prefix },
+					{
+						title: t(`components.global.drawerList.links.${currentRole}.link.resources`),
+						href: `${prefix}/resources`
+					},
+					{ title: t('routes.ResourceAttributesPage.title'), href: `${prefix}/resources/attributes` }
 				]}
 			/>
 			<Group justify="space-between">

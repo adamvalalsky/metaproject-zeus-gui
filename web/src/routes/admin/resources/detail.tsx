@@ -16,6 +16,7 @@ import { Role } from '@/modules/user/role';
 const ResourceDetailPage = () => {
 	const { t } = useTranslation();
 	const currentRole = getCurrentRole();
+	const prefix = currentRole === Role.ADMIN ? '/admin' : '/director';
 	const { id } = useParams();
 
 	if (!id || isNaN(+id)) {
@@ -36,9 +37,12 @@ const ResourceDetailPage = () => {
 		<Box>
 			<PageBreadcrumbs
 				links={[
-					{ title: t('components.global.drawerList.links.admin.title'), href: '/admin' },
-					{ title: t('components.global.drawerList.links.admin.link.resources'), href: '/admin/resources' },
-					{ title: data.name, href: `/admin/resources/${id}` }
+					{ title: t(`components.global.drawerList.links.${currentRole}.title`), href: prefix },
+					{
+						title: t(`components.global.drawerList.links.${currentRole}.link.resources`),
+						href: `${prefix}/resources`
+					},
+					{ title: data.name, href: `${prefix}/resources/${id}` }
 				]}
 			/>
 			<Stack gap={1}>

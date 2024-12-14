@@ -1,9 +1,10 @@
-import { Badge, Box, Button, Group, Text, Title } from '@mantine/core';
+import { Badge, Box, Button, Group, Stack, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
-import { IconBan, IconCheck, IconClock, IconCpu, IconNews, IconPlus } from '@tabler/icons-react';
+import { IconBan, IconCheck, IconClock, IconClockX, IconCpu, IconNews, IconPlus } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import { getSortQuery } from '@/modules/api/sorting/utils';
@@ -119,10 +120,17 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 						sortable: true
 					},
 					{
-						accessor: 'information',
-						title: t('components.project.allocations.index.columns.information'),
-						render: _allocation => null,
-						sortable: true
+						accessor: 'user',
+						title: t('components.project.allocations.index.columns.user'),
+						render: allocation => (
+							<Stack>
+								{allocation.allocationUsers.map(user => (
+									<Text key={user.id} size="sm">
+										{user.name} ({user.email})
+									</Text>
+								))}
+							</Stack>
+						)
 					},
 					{
 						accessor: 'status',
@@ -170,6 +178,14 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 									</Group>
 								);
 							}
+							if (allocation.status === 'expired') {
+								return (
+									<Group gap={4} c="orange.6">
+										<IconClockX size={14} />
+										<Text size="sm">Expired</Text>
+									</Group>
+								);
+							}
 
 							return <Text size="sm">{allocation.status}</Text>;
 						}
@@ -177,6 +193,8 @@ const ProjectAllocationsTable = ({ id }: ProjectAllocationTableProps) => {
 					{
 						accessor: 'endDate',
 						title: t('components.project.allocations.index.columns.end_date'),
+						render: allocation =>
+							allocation.endDate ? dayjs(allocation.endDate).format('DD.MM.YYYY') : 'None',
 						width: 150,
 						sortable: true
 					}

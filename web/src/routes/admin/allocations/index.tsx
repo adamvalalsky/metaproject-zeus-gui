@@ -8,18 +8,22 @@ import { getSortQuery } from '@/modules/api/sorting/utils';
 import { useAllAllocationsQuery } from '@/modules/allocation/api/admin-allocations';
 import { type AllocationAdmin } from '@/modules/allocation/model';
 import AllocationAdminTable from '@/components/project/allocations/allocation-table';
+import { getCurrentRole } from '@/modules/auth/methods/getCurrentRole';
+import { Role } from '@/modules/user/role';
 
 const AdminAllocations = () => {
 	const { t } = useTranslation();
+	const role = getCurrentRole();
+	const prefix = role === Role.ADMIN ? '/admin' : '/director';
 
 	return (
 		<Box>
 			<PageBreadcrumbs
 				links={[
-					{ title: t('components.global.drawerList.links.admin.title'), href: '/admin' },
+					{ title: t(`components.global.drawerList.links.${role}.title`), href: prefix },
 					{
-						title: t('components.global.drawerList.links.admin.link.allocations'),
-						href: '/admin/allocations'
+						title: t(`components.global.drawerList.links.${role}.link.allocations`),
+						href: `${prefix}/allocations`
 					}
 				]}
 			/>

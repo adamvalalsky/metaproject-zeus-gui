@@ -110,7 +110,6 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 			<DataTable
 				height={300}
 				withTableBorder
-				textSelectionDisabled
 				fetching={isPending}
 				page={page}
 				totalRecords={metadata?.totalRecords ?? 0}
@@ -194,6 +193,7 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 						accessor: 'actions',
 						title: t('components.project.members.index.columns.actions'),
 						textAlign: 'center',
+						hidden: !permissions.includes('edit_members'),
 						width: 120,
 						render: member => (
 							<Group gap={4} justify="space-between" wrap="nowrap">
@@ -201,6 +201,7 @@ const ProjectMembers = ({ id }: ProjectMembersProps) => {
 									size="sm"
 									variant="subtle"
 									color="red"
+									disabled={member.status === 'removed'}
 									loading={isRemovePending && currentMember === member.id}
 									onClick={() => removeUser(member.id)}
 								>

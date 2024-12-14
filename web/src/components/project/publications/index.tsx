@@ -144,6 +144,7 @@ const ProjectPublications = ({ id }: ProjectPublicationsType) => {
 						title: t('components.project.publications.index.columns.actions'),
 						textAlign: 'center',
 						width: 120,
+						hidden: !permissions.includes('edit_publications'),
 						render: publication => (
 							<Group gap={4} justify="space-between" wrap="nowrap">
 								<ActionIcon

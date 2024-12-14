@@ -12,17 +12,27 @@ import classes from './navbar.module.css';
 import DrawerList from './drawer-list';
 import UserMenu from './user-menu';
 
+const DEFAULT_OPENED = 'defaultMenuOpened';
+const OPEN_WINDOW_SIZE = 1200;
+
+const shouldOpenByDefault = (windowSize: number) =>
+	windowSize > OPEN_WINDOW_SIZE &&
+	(localStorage.getItem(DEFAULT_OPENED) === null || localStorage.getItem(DEFAULT_OPENED) === 'true');
+
 const Navbar = ({ children }: PropsWithChildren) => {
 	const { t } = useTranslation();
 	const { isAuthenticated } = useAuth();
 	const windowSize = useWindowSize();
 	const stepUpAccess = getStepUpAccess();
-	const [drawerOpened, setDrawerOpened] = useState(windowSize > 1000);
+	const [drawerOpened, setDrawerOpened] = useState<boolean>(shouldOpenByDefault(windowSize));
 
-	const toggleDrawer = () => setDrawerOpened(opened => !opened);
+	const toggleDrawer = (opened: boolean) => {
+		localStorage.setItem(DEFAULT_OPENED, opened ? 'true' : 'false');
+		setDrawerOpened(opened);
+	};
 
 	useEffect(() => {
-		setDrawerOpened(windowSize > 1000);
+		setDrawerOpened(shouldOpenByDefault(windowSize));
 	}, [windowSize]);
 
 	return (
@@ -33,7 +43,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 						{isAuthenticated && (
 							<Group>
 								<Tooltip label="Menu" zIndex={600}>
-									<Burger size="sm" color="white" onClick={toggleDrawer} />
+									<Burger size="sm" color="white" onClick={() => toggleDrawer(!drawerOpened)} />
 								</Tooltip>
 							</Group>
 						)}
@@ -54,13 +64,13 @@ const Navbar = ({ children }: PropsWithChildren) => {
 				{isAuthenticated && (
 					<Group mr={10}>
 						<StepUpToggle stepUpAccess={stepUpAccess} />
-						<UserMenu />
+						<UserMenu isOpened={drawerOpened} />
 					</Group>
 				)}
 			</Flex>
 			<Flex>
 				{isAuthenticated && <DrawerList open={drawerOpened} />}
-				<Box w="100%">{children}</Box>
+				<Box w={drawerOpened ? `calc(100% - 300px)` : `100%`}>{children}</Box>
 			</Flex>
 		</>
 	);

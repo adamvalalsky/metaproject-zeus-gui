@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - '**' # Run on all branches for pull requests
+  push:
+    branches:
+      - master
+
+jobs:
+  test-lint:
+    runs-on: ubuntu-latest
+    container:
+      image: node:21-alpine3.17
+    env:
+      CI: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: .npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        working-directory: ./web
+        run: npm ci --cache .npm --prefer-offline
+
+      - name: Run lint
+        working-directory: ./web
+        run: npm run lint:ci
+
+      - name: Upload eslint report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: eslint-report
+          path: web/logs/_output/eslint.xml
+          retention-days: 1

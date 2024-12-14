@@ -41,6 +41,7 @@ export type ProjectFailedStage = {
 	projectId: number;
 	title: string;
 	lastStage: string;
+	message?: string;
 	updatedAt: string;
 };
 

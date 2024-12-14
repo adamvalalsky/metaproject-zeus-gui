@@ -12,17 +12,18 @@ import { getCurrentRole } from '@/modules/auth/methods/getCurrentRole';
 import { Role } from '@/modules/user/role';
 
 const AllocationRequestsList = () => {
-	const prefix = getCurrentRole() === Role.ADMIN ? '/admin' : '/director';
+	const role = getCurrentRole();
+	const prefix = role === Role.ADMIN ? '/admin' : '/director';
 	const { t } = useTranslation();
 
 	return (
 		<Box>
 			<PageBreadcrumbs
 				links={[
-					{ title: t('components.global.drawerList.links.admin.title'), href: '/admin' },
+					{ title: t(`components.global.drawerList.links.${role}.title`), href: prefix },
 					{
-						title: t('components.global.drawerList.links.admin.link.allocation_requests'),
-						href: '/admin/allocation-requests'
+						title: t(`components.global.drawerList.links.${role}.link.allocation_requests`),
+						href: `${prefix}/allocation-requests`
 					}
 				]}
 			/>

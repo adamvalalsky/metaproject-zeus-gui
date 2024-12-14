@@ -64,6 +64,9 @@ const AllocationInfo = ({ allocation, isApprovePage, onSuccess }: AllocationInfo
 	return (
 		<form onSubmit={handleSubmit(onApprove)}>
 			<Stack mt={15}>
+				<Text c="dimmed" size="sm" hiddenFrom="sm">
+					Last modified: {dayjs(allocation.updatedAt).format('DD.MM.YYYY')}
+				</Text>
 				<Stack gap={2}>
 					<Group justify="space-between">
 						<Group gap={10}>
@@ -79,7 +82,7 @@ const AllocationInfo = ({ allocation, isApprovePage, onSuccess }: AllocationInfo
 								</Anchor>
 							)}
 						</Group>
-						<Text c="dimmed" size="sm">
+						<Text c="dimmed" size="sm" visibleFrom="sm">
 							Last modified: {dayjs(allocation.updatedAt).format('DD.MM.YYYY')}
 						</Text>
 					</Group>
@@ -91,7 +94,11 @@ const AllocationInfo = ({ allocation, isApprovePage, onSuccess }: AllocationInfo
 						{!showAdminPage && (
 							<>
 								<Title order={4}>Start date:</Title>
-								<Text>{allocation.startDate ? allocation.startDate : '-not defined-'}</Text>
+								<Text>
+									{allocation.startDate
+										? dayjs(allocation.startDate).format('DD.MM.YYYY')
+										: '-not defined-'}
+								</Text>
 							</>
 						)}
 						{showAdminPage && (
@@ -117,7 +124,11 @@ const AllocationInfo = ({ allocation, isApprovePage, onSuccess }: AllocationInfo
 						{!showAdminPage && (
 							<>
 								<Title order={4}>End date:</Title>
-								<Text>{allocation.endDate ? allocation.endDate : '-not defined-'}</Text>
+								<Text>
+									{allocation.endDate
+										? dayjs(allocation.endDate).format('DD.MM.YYYY')
+										: '-not defined-'}
+								</Text>
 							</>
 						)}
 						{showAdminPage && (

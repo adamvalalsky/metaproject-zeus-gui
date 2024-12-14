@@ -1,15 +1,16 @@
-import { ActionIcon, Alert, Anchor, Box, Group, Skeleton, Text } from '@mantine/core';
+import { ActionIcon, Alert, Anchor, Box, Group, Text } from '@mantine/core';
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { type UseQueryResult } from '@tanstack/react-query';
-import { IconBan, IconCheck, IconClock, IconFolder, IconNews } from '@tabler/icons-react';
+import { IconBan, IconCheck, IconClock, IconClockX, IconFolder, IconNews } from '@tabler/icons-react';
 
 import { PAGE_SIZES } from '@/modules/api/pagination/constants';
 import { type PaginationResponse } from '@/modules/api/pagination/model';
 import { type AllocationAdmin } from '@/modules/allocation/model';
+import Loading from '@/components/global/loading';
 
 type AllocationAdminTableProps = {
 	useAllocationQuery: (
@@ -40,7 +41,7 @@ const AllocationAdminTable = ({ useAllocationQuery, buildLink }: AllocationAdmin
 	}
 
 	if (isPending) {
-		return <Skeleton w={200} />;
+		return <Loading />;
 	}
 
 	const metadata = response.metadata;
@@ -149,6 +150,14 @@ const AllocationAdminTable = ({ useAllocationQuery, buildLink }: AllocationAdmin
 										<Group gap={4} c="red.9">
 											<IconBan size={14} />
 											<Text size="sm">Revoked</Text>
+										</Group>
+									);
+								}
+								if (allocation.status === 'expired') {
+									return (
+										<Group gap={4} c="orange.9">
+											<IconClockX size={14} />
+											<Text size="sm">Expired</Text>
 										</Group>
 									);
 								}

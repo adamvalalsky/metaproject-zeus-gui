@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Skeleton, Title } from '@mantine/core';
+import { Alert, Box, Button, Skeleton, Stack, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import { DataTable } from 'mantine-datatable';
@@ -102,7 +102,17 @@ const FailedProjects = () => {
 							{
 								accessor: 'lastStage',
 								width: 300,
-								title: t('routes.FailedStages.table.lastStage')
+								title: t('routes.FailedStages.table.lastStage'),
+								render: stage => (
+									<Stack gap={1}>
+										<Text size="sm">{stage.lastStage}</Text>
+										{stage.message && (
+											<Text c="gray" size="xs">
+												{stage.message}
+											</Text>
+										)}
+									</Stack>
+								)
 							},
 							{
 								accessor: 'updatedAt',
