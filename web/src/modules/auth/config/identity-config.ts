@@ -8,5 +8,5 @@ export const IDENTITY_CONFIG = {
 	loadUserInfo: false,
 	post_logout_redirect_uri: `${import.meta.env.VITE_CLIENT_BASE_URL}/logout`,
 	scope: 'openid profile email eduperson_entitlement offline_access',
-	stateStore: new WebStorageStateStore({ store: window.sessionStorage })
+	userStore: new WebStorageStateStore({ store: window.localStorage })
 };
