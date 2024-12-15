@@ -1,11 +1,11 @@
-import {useTranslation} from 'react-i18next';
-import {type PropsWithChildren, useEffect, useState} from 'react';
-import {Anchor, Box, Burger, Flex, Group, Image, Tooltip} from '@mantine/core';
-import {Link} from 'react-router-dom';
-import {useAuth} from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
+import { type PropsWithChildren, useEffect, useState } from 'react';
+import { Anchor, Box, Burger, Flex, Group, Image, Tooltip } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import { useAuth } from 'react-oidc-context';
 
 import useWindowSize from '@/hooks/useWindowSize';
-import {getStepUpAccess} from '@/modules/auth/methods/getStepUpAccess';
+import { getStepUpAccess } from '@/modules/auth/methods/getStepUpAccess';
 import StepUpToggle from '@/components/global/step-up-toggle';
 
 import classes from './navbar.module.css';

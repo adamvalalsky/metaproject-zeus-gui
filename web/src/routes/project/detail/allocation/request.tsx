@@ -68,7 +68,7 @@ const AllocationRequest = () => {
 							navigate(`/project/${project.id}`);
 						});
 				},
-				onError: error => {
+				onError: () => {
 					notifications.show({
 						color: 'red',
 						message: t('routes.AllocationRequest.notifications.error')
