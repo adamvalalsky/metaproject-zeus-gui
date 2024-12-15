@@ -23,14 +23,6 @@ Either run with docker
   docker compose up --build
 ```
 
-or npm
-
-```
-cd web
-npm i
-npm run dev
-```
-
 ## Environment Variables
 
 If you want to test this project, you need to copy variables from `.env.example` to `.env` and fill some variables with your values. 
