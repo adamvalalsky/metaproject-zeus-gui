@@ -21,5 +21,6 @@ FROM $BASE_IMAGE_NGINX
 
 COPY docker/prod/nginx/conf.d /etc/nginx/conf.d
 COPY docker/prod/nginx/includes /etc/nginx/includes
-COPY public /var/www/public
-COPY --from=build /app/dist /var/www/web
+COPY docker/prod/envconfig.replace.sh /docker-entrypoint.d/10-envconfig.replace.sh
+COPY --chown=nginx:nginx docker/prod/envconfig.template.html /var/www/config/envconfig.template.html
+COPY --chown=nginx:nginx --from=build /app/dist /var/www/web

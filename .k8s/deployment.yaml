@@ -16,7 +16,6 @@ spec:
         app: metaproject-zeus-gui
     spec:
       securityContext:
-        runAsUser: 1000
         runAsNonRoot: true
       containers:
         - name: gui
