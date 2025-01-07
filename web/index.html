@@ -7,6 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!--# include file="/config/envconfig.html" -->
+    <script>
+      const isDev = "%DEV%" === "true";
+      if (isDev) {
+        window.Config = {
+          VITE_API_URL: "%VITE_API_URL%",
+          VITE_CLIENT_BASE_URL: "%VITE_CLIENT_BASE_URL%",
+          VITE_IDENTITY_AUTH_URL: "%VITE_IDENTITY_AUTH_URL%",
+
+          VITE_IDENTITY_ISSUER: "%VITE_IDENTITY_ISSUER%",
+          VITE_IDENTITY_CLIENT_ID: "%VITE_IDENTITY_CLIENT_ID%",
+        };
+      }
+    </script>
     <title>MetaProject Zeus</title>
   </head>
   <body>

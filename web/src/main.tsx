@@ -9,7 +9,6 @@ import '@mantine/dropzone/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/dates/styles.css';
 import React from 'react';
-import './modules/config/development';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
