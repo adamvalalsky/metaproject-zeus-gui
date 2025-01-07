@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metaproject-zeus-gui
+  labels:
+    app: metaproject-zeus-gui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metaproject-zeus-gui
+  template:
+    metadata:
+      labels:
+        app: metaproject-zeus-gui
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: gui
+          image: ghcr.io/adamvalalsky/metaproject-zeus-gui/web:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 80
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: VITE_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: VITE_API_URL
+            - name: VITE_CLIENT_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: VITE_CLIENT_BASE_URL
+            - name: VITE_IDENTITY_AUTH_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: VITE_IDENTITY_AUTH_URL
+            - name: VITE_IDENTITY_ISSUER
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: VITE_IDENTITY_ISSUER
+            - name: VITE_IDENTITY_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: identity-zeus-gui
+                  key: CLIENT_ID
+      imagePullSecrets:
+        - name: regcred-zeus

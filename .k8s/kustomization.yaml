@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+configMapGenerator:
+  - name: config
+    literals:
+      - VITE_API_URL=https://metaproject-zeus-api.dyn.cloud.e-infra.cz
+      - VITE_CLIENT_BASE_URL=https://metaproject-zeus.dyn.cloud.e-infra.cz
+      - VITE_IDENTITY_AUTH_URL=https://login.e-infra.cz/oidc
+      - VITE_IDENTITY_ISSUER=https://login.e-infra.cz/oidc

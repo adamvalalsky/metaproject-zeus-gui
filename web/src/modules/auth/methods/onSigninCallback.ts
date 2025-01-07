@@ -12,5 +12,5 @@ export const onSigninCallback = async (user: User | void): Promise<void> => {
 		}
 	}
 
-	window.history.replaceState({}, document.title, `${import.meta.env.VITE_CLIENT_BASE_URL}/project`);
+	window.history.replaceState({}, document.title, `${window.Config.VITE_CLIENT_BASE_URL}/project`);
 };

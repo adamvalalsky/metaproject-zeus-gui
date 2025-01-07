@@ -39,7 +39,7 @@ const requestWrapper = async <T>(url: string, init?: Options): Promise<KyRespons
 		defaultHeaders['X-Step-Up'] = 'true';
 	}
 
-	return ky<T>(import.meta.env.VITE_API_URL + url, {
+	return ky<T>(window.Config.VITE_API_URL + url, {
 		method: Method.GET,
 		signal,
 		...init,
