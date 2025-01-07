@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, NavLink, rem, ScrollArea } from '@mantine/core';
+import { Box, Drawer, getBreakpointValue, NavLink, rem, ScrollArea, useMantineTheme } from '@mantine/core';
 import {
 	IconActivity,
 	IconArchive,
@@ -14,15 +14,17 @@ import {
 	IconReport,
 	IconUserUp
 } from '@tabler/icons-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useAdminContext } from '@/modules/auth/admin-context';
 import { Role } from '@/modules/user/role';
+import useWindowSize from '@/hooks/useWindowSize';
 
 import classes from '../navbar.module.css';
 
 type DrawerListProps = {
 	open: boolean;
+	onClose: () => void;
 };
 
 type LinkNode = {
@@ -32,7 +34,17 @@ type LinkNode = {
 	links?: LinkNode[];
 };
 
-const DrawerList = ({ open }: DrawerListProps) => {
+const DrawerList = ({ open, onClose }: DrawerListProps) => {
+	const windowSize = useWindowSize();
+	const theme = useMantineTheme();
+	const location = useLocation();
+
+	useEffect(() => {
+		if (windowSize < getBreakpointValue(theme.breakpoints.md, theme.breakpoints)) {
+			onClose();
+		}
+	}, [location]);
+
 	const getLinkTree = (link: LinkNode) => {
 		const { title, href, icon, links } = link;
 		return (
@@ -160,12 +172,20 @@ const DrawerList = ({ open }: DrawerListProps) => {
 		});
 	}
 
+	if (windowSize > getBreakpointValue(theme.breakpoints.md, theme.breakpoints)) {
+		return (
+			<Box className={classes.sidebar} data-opened={open}>
+				<ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
+					<Box px="md">{LINKS.map(link => getLinkTree(link))}</Box>
+				</ScrollArea>
+			</Box>
+		);
+	}
+
 	return (
-		<Box className={classes.sidebar} data-opened={open}>
-			<ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-				<Box px="md">{LINKS.map(link => getLinkTree(link))}</Box>
-			</ScrollArea>
-		</Box>
+		<Drawer opened={open} onClose={onClose} withCloseButton={false} padding={0}>
+			<Box mt={64}>{LINKS.map(link => getLinkTree(link))}</Box>
+		</Drawer>
 	);
 };
 

@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { type PropsWithChildren, useEffect, useState } from 'react';
-import { Anchor, Box, Burger, Flex, Group, Image, Tooltip } from '@mantine/core';
+import { Anchor, Box, Burger, Flex, getBreakpointValue, Group, Image, Tooltip, useMantineTheme } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
 
 import useWindowSize from '@/hooks/useWindowSize';
 import { getStepUpAccess } from '@/modules/auth/methods/getStepUpAccess';
 import StepUpToggle from '@/components/global/step-up-toggle';
+import DrawerList from '@/components/global/navbar/drawer-list';
 
 import classes from './navbar.module.css';
-import DrawerList from './drawer-list';
 import UserMenu from './user-menu';
 
 const DEFAULT_OPENED = 'defaultMenuOpened';
@@ -20,6 +20,7 @@ const shouldOpenByDefault = (windowSize: number) =>
 	(localStorage.getItem(DEFAULT_OPENED) === null || localStorage.getItem(DEFAULT_OPENED) === 'true');
 
 const Navbar = ({ children }: PropsWithChildren) => {
+	const theme = useMantineTheme();
 	const { t } = useTranslation();
 	const { isAuthenticated } = useAuth();
 	const windowSize = useWindowSize();
@@ -55,7 +56,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 									filter: 'invert(100%)'
 								}}
 							/>
-							<Anchor component={Link} to="/" c="white" underline="never">
+							<Anchor component={Link} to="/" c="white" underline="never" visibleFrom="sm">
 								{t('components.global.navbar.header')}
 							</Anchor>
 						</Group>
@@ -69,8 +70,16 @@ const Navbar = ({ children }: PropsWithChildren) => {
 				)}
 			</Flex>
 			<Flex justify="center">
-				{isAuthenticated && <DrawerList open={drawerOpened} />}
-				<Box w={drawerOpened ? `calc(100% - 300px)` : `100%`}>{children}</Box>
+				{isAuthenticated && <DrawerList open={drawerOpened} onClose={() => toggleDrawer(false)} />}
+				<Box
+					w={
+						drawerOpened && windowSize > getBreakpointValue(theme.breakpoints.md, theme.breakpoints)
+							? `calc(100% - 300px)`
+							: `100%`
+					}
+				>
+					{children}
+				</Box>
 			</Flex>
 		</>
 	);
