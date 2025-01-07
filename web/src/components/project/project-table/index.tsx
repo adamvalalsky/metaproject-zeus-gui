@@ -1,4 +1,4 @@
-import { Alert, Box, Skeleton, Title } from '@mantine/core';
+import { Alert, Box, Title } from '@mantine/core';
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ import { useProjectsQuery } from '@/modules/project/queries';
 import type { Project } from '@/modules/project/model';
 import { getSortQuery } from '@/modules/api/sorting/utils';
 import { strip } from '@/modules/html/strip';
+import Loading from '@/components/global/loading';
 
 type ProjectTableProps = {
 	title: string;
@@ -50,7 +51,7 @@ const ProjectTable = ({ status, title }: ProjectTableProps) => {
 	}
 
 	if (isPending) {
-		return <Skeleton w={200} />;
+		return <Loading />;
 	}
 
 	const onPageChange = async (newPage: number) => {
