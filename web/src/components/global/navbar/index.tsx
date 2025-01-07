@@ -63,7 +63,7 @@ const Navbar = ({ children }: PropsWithChildren) => {
 					</Group>
 				</Box>
 				{isAuthenticated && (
-					<Group mr={10}>
+					<Group mr={10} gap={1}>
 						<StepUpToggle stepUpAccess={stepUpAccess} />
 						<UserMenu isOpened={drawerOpened} />
 					</Group>
