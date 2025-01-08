@@ -205,7 +205,7 @@ const ResourceForm = ({ isPending, attributes, setAttributes, onSubmit, defaultV
 				)}
 			</Box>
 			<CustomAttributes
-				defaultAttributes={defaultValues?.attributes}
+				defaultAttributes={defaultValues?.attributes ?? []}
 				attributes={resourceAttributes}
 				setAttributes={attributes => setAttributes(attributes)}
 			/>

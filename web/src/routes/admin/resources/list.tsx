@@ -1,4 +1,5 @@
 import {
+	Alert,
 	Anchor,
 	Box,
 	Button,
@@ -9,13 +10,12 @@ import {
 	Title,
 	Tooltip,
 	Tree,
-	type TreeNodeData,
-	useTree
+	type TreeNodeData
 } from '@mantine/core';
 import { IconChevronDown, IconChevronRight, IconLink, IconPlus, IconSettings } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import PageBreadcrumbs from '@/components/global/page-breadcrumbs';
 import Loading from '@/components/global/loading';
@@ -71,7 +71,6 @@ const ResourceList = () => {
 	const currentRole = getCurrentRole();
 	const prefix = currentRole === Role.ADMIN ? '/admin' : '/director';
 	const { data, isPending, isError } = useResourceListQuery();
-	const tree = useTree();
 
 	if (isPending) {
 		return <Loading />;
@@ -80,6 +79,8 @@ const ResourceList = () => {
 	if (isError) {
 		return <ErrorAlert />;
 	}
+
+	const dataTree = useMemo(() => getDataTree(data, null), [data]);
 
 	return (
 		<Box>
@@ -111,7 +112,12 @@ const ResourceList = () => {
 				</Group>
 			</Group>
 			<Box my={20}>
-				<Tree tree={tree} data={getDataTree(data, null)} renderNode={payload => <Leaf {...payload} />} />
+				{dataTree.length === 0 && (
+					<Alert color="blue" variant="light" mt={15}>
+						No resources added yet.
+					</Alert>
+				)}
+				{dataTree.length > 0 && <Tree data={dataTree} renderNode={payload => <Leaf {...payload} />} />}
 			</Box>
 		</Box>
 	);

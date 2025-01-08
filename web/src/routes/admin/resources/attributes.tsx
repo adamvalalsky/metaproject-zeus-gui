@@ -1,4 +1,5 @@
 import {
+	Alert,
 	Anchor,
 	Badge,
 	Box,
@@ -190,35 +191,42 @@ const ResourceAttributesPage = () => {
 					</Tooltip>
 				</Group>
 			</Group>
-			<Stack mt={20} gap={15}>
-				{valuesToShow.map(item => (
-					<Stack gap={0} key={item.id}>
-						<Group>
-							<Text>{item.name}</Text>
-							{item.isPublic && (
-								<Badge color="yellow" size="sm">
-									Public
-								</Badge>
-							)}
-							{item.isRequired && (
-								<Badge color="lime" size="sm">
-									Required
-								</Badge>
-							)}
-						</Group>
-						<Group>
-							<Text size="sm" c="dimmed">
-								Type: {item.attributeType.name}
-							</Text>
-							{!item.hasResources && currentRole === Role.ADMIN && (
-								<Anchor size="sm" c="red" onClick={() => removeAttribute(item.id)}>
-									Delete <IconTrash size={13} />
-								</Anchor>
-							)}
-						</Group>
-					</Stack>
-				))}
-			</Stack>
+			{valuesToShow.length === 0 && (
+				<Alert color="blue" variant="light" mt={15}>
+					No custom attributes added yet.
+				</Alert>
+			)}
+			{valuesToShow.length > 0 && (
+				<Stack mt={20} gap={15}>
+					{valuesToShow.map(item => (
+						<Stack gap={0} key={item.id}>
+							<Group>
+								<Text>{item.name}</Text>
+								{item.isPublic && (
+									<Badge color="yellow" size="sm">
+										Public
+									</Badge>
+								)}
+								{item.isRequired && (
+									<Badge color="lime" size="sm">
+										Required
+									</Badge>
+								)}
+							</Group>
+							<Group>
+								<Text size="sm" c="dimmed">
+									Type: {item.attributeType.name}
+								</Text>
+								{!item.hasResources && currentRole === Role.ADMIN && (
+									<Anchor size="sm" c="red" onClick={() => removeAttribute(item.id)}>
+										Delete <IconTrash size={13} />
+									</Anchor>
+								)}
+							</Group>
+						</Stack>
+					))}
+				</Stack>
+			)}
 		</Box>
 	);
 };
