@@ -1,4 +1,4 @@
-import { Group, rem } from '@mantine/core';
+import { Alert, Group, rem } from '@mantine/core';
 import {
 	IconCloud,
 	IconComponents,
@@ -8,6 +8,7 @@ import {
 	IconLicense,
 	IconServer
 } from '@tabler/icons-react';
+import React from 'react';
 
 import Loading from '@/components/global/loading';
 import ErrorAlert from '@/components/global/error-alert';
@@ -73,17 +74,23 @@ const ResourceTypeStep = ({ setComplete, resourceTypeId, setResourceType }: Reso
 
 	return (
 		<Group justify="center">
-			{resourceTypes.map(resourceType => (
-				<SelectCard
-					key={resourceType.id}
-					selected={resourceTypeId === resourceType.id}
-					onClick={() => onClick(resourceType.id)}
-					size={200}
-					icon={getResourceTypeIcon(resourceType.name)}
-					label={resourceType.name}
-					description={resourceType.description}
-				/>
-			))}
+			{resourceTypes.length === 0 && (
+				<Alert color="blue" variant="light" mt={15}>
+					No resources added yet. Please wait for admin to add some resources.
+				</Alert>
+			)}
+			{resourceTypes.length > 0 &&
+				resourceTypes.map(resourceType => (
+					<SelectCard
+						key={resourceType.id}
+						selected={resourceTypeId === resourceType.id}
+						onClick={() => onClick(resourceType.id)}
+						size={200}
+						icon={getResourceTypeIcon(resourceType.name)}
+						label={resourceType.name}
+						description={resourceType.description}
+					/>
+				))}
 		</Group>
 	);
 };
