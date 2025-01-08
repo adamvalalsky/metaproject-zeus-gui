@@ -1,6 +1,6 @@
-import { ActionIcon, Anchor, Box, Group, Select, Stack, Text, Title, Tooltip } from '@mantine/core';
+import { ActionIcon, Anchor, Box, Fieldset, Group, Select, Stack, Text, Title, Tooltip } from '@mantine/core';
 import { IconEyeCheck, IconEyeClosed, IconPlus, IconTrash } from '@tabler/icons-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AttributeInput from '@/components/resource/attributes/attribute-input';
@@ -8,59 +8,56 @@ import { type Attribute } from '@/modules/attribute/model';
 import { type ResourceAttribute, type ResourceDetailAttribute } from '@/modules/resource/model';
 
 type AttributesProps = {
-	defaultAttributes?: ResourceDetailAttribute[];
+	defaultAttributes: ResourceDetailAttribute[];
 	attributes: ResourceAttribute[];
 	setAttributes: (attributes: Attribute[]) => void;
 };
 
 const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: AttributesProps) => {
 	const { t } = useTranslation();
-	const [requiredAttributes, setRequiredAttributes] = useState<Attribute[]>([]);
-	const [optionalAttributes, setOptionalAttributes] = useState<Attribute[]>([]);
-
-	useEffect(() => {
-		if (!defaultAttributes) {
-			return;
-		}
-
-		const customAttributes = defaultAttributes.filter(a => !a.key.startsWith('quantity_'));
-		if (customAttributes) {
-			let optionalAttributeIndex = 0;
-			let requiredAttributeIndex = 0;
-
-			for (const attribute of customAttributes) {
-				if (attribute.isRequired) {
-					addRequiredAttribute(attribute.key, attribute.value, requiredAttributeIndex);
-					requiredAttributeIndex++;
-				} else {
-					addOptionalAttribute(attribute.key, attribute.value, optionalAttributeIndex);
-					optionalAttributeIndex++;
-				}
-			}
-		}
-	}, [!!defaultAttributes]);
+	const [requiredAttributes, setRequiredAttributes] = useState<Attribute[]>(
+		defaultAttributes
+			.filter(a => a.isRequired)
+			.map(a => ({
+				key: a.key,
+				value: a.value,
+				type: a.type,
+				isPublic: a.isPublic
+			}))
+	);
+	const [optionalAttributes, setOptionalAttributes] = useState<Attribute[]>(
+		defaultAttributes
+			.filter(a => !a.isRequired)
+			.map(a => ({
+				key: a.key,
+				value: a.value,
+				type: a.type,
+				isPublic: a.isPublic
+			}))
+	);
 
 	if (!attributes && !optionalAttributes && !requiredAttributes) {
 		return null;
 	}
 
-	const addRequiredAttribute = (key: string, value: string, index: number) => {
-		const resourceAttribute = attributes.find(a => a.name === key);
-		if (index >= requiredAttributes.length) {
-			setRequiredAttributes([
-				...requiredAttributes,
-				{ key, value, index, isPublic: resourceAttribute?.isPublic }
-			]);
-		} else {
-			const type = resourceAttribute?.attributeType.name;
-			const newAttributes = requiredAttributes.map(attribute =>
-				attribute.index === index
-					? { key, value, index, type, isPublic: resourceAttribute?.isPublic }
-					: attribute
-			);
-			setRequiredAttributes(newAttributes);
-			setAttributes(newAttributes.map(a => ({ key: a.key, value: a.value })));
-		}
+	const setAllAttributes = () => {
+		setAttributes([
+			...requiredAttributes.map(a => ({ key: a.key, value: a.value })),
+			...optionalAttributes.map(a => ({ key: a.key, value: a.value }))
+		]);
+	};
+
+	const addRequiredAttribute = (key: string, value: string) => {
+		setRequiredAttributes(attributes =>
+			attributes.map(a => {
+				if (a.key === key) {
+					return { ...a, value };
+				}
+
+				return a;
+			})
+		);
+		setAllAttributes();
 	};
 
 	const addOptionalAttribute = (key: string, value: string, index: number) => {
@@ -78,7 +75,7 @@ const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: Attr
 					: attribute
 			);
 			setOptionalAttributes(newAttributes);
-			setAttributes(newAttributes.map(a => ({ key: a.key, value: a.value })));
+			setAllAttributes();
 		}
 	};
 
@@ -91,31 +88,31 @@ const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: Attr
 			.filter(attribute => attribute.index !== index)
 			.map((attribute, i) => ({ ...attribute, index: i }));
 		setOptionalAttributes(newAttributes);
-		setAttributes(newAttributes.map(a => ({ key: a.key, value: a.value })));
+		setAllAttributes();
 	};
 
 	return (
 		<Box my={20}>
 			<Title order={4}>{t('routes.ResourceAddPage.form.custom_attributes.title')}</Title>
 			<Text c="dimmed">{t('routes.ResourceAddPage.form.custom_attributes.description')}</Text>
-			<Group>
+			<Fieldset legend="Required attributes" my={10}>
 				{requiredAttributes.map(attribute => (
-					<Group key={attribute.index}>
+					<Group my={5} key={attribute.key}>
 						{attribute.key && attribute.type && (
 							<AttributeInput
 								value={attribute.value}
 								label={attribute.key}
 								type={attribute.type}
 								onChange={value => {
-									if (value && attribute.index !== undefined) {
-										addRequiredAttribute(value, '', attribute.index);
+									if (value) {
+										addRequiredAttribute(attribute.key, value);
 									}
 								}}
 							/>
 						)}
 					</Group>
 				))}
-			</Group>
+			</Fieldset>
 			<Stack>
 				<Anchor onClick={() => addOptionalAttribute('', '', optionalAttributes.length)}>
 					<Group gap={5}>
@@ -164,7 +161,7 @@ const CustomAttributes = ({ attributes, setAttributes, defaultAttributes }: Attr
 									type={attribute.type}
 									onChange={value => {
 										if (attribute.index !== undefined) {
-											addOptionalAttribute(attribute.key, value, attribute.index);
+											addOptionalAttribute(attribute.key, value ?? '', attribute.index);
 										}
 									}}
 								/>
