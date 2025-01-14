@@ -72,6 +72,13 @@ const ResourceList = () => {
 	const prefix = currentRole === Role.ADMIN ? '/admin' : '/director';
 	const { data, isPending, isError } = useResourceListQuery();
 
+	const dataTree = useMemo(() => {
+		if (!data) {
+			return [];
+		}
+		return getDataTree(data, null);
+	}, [data]);
+
 	if (isPending) {
 		return <Loading />;
 	}
@@ -79,8 +86,6 @@ const ResourceList = () => {
 	if (isError) {
 		return <ErrorAlert />;
 	}
-
-	const dataTree = useMemo(() => getDataTree(data, null), [data]);
 
 	return (
 		<Box>

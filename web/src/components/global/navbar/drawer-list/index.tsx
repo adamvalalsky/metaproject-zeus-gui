@@ -37,13 +37,15 @@ type LinkNode = {
 const DrawerList = ({ open, onClose }: DrawerListProps) => {
 	const windowSize = useWindowSize();
 	const theme = useMantineTheme();
-	const location = useLocation();
+	const { pathname } = useLocation();
+	const { t } = useTranslation();
+	const { currentRole } = useAdminContext();
 
 	useEffect(() => {
 		if (windowSize < getBreakpointValue(theme.breakpoints.md, theme.breakpoints)) {
 			onClose();
 		}
-	}, [location]);
+	}, [pathname]);
 
 	const getLinkTree = (link: LinkNode) => {
 		const { title, href, icon, links } = link;
@@ -92,10 +94,6 @@ const DrawerList = ({ open, onClose }: DrawerListProps) => {
 			]
 		}
 	];
-
-	const { pathname } = useLocation();
-	const { t } = useTranslation();
-	const { currentRole } = useAdminContext();
 
 	if (currentRole === Role.ADMIN) {
 		LINKS.push({
